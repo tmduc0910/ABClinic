@@ -2,20 +2,18 @@ package com.abclinic.entity;
 
 import java.util.Date;
 
-public class Patient {
+public abstract class Doctor {
     private int id;
-    private int coordinatorId;
-    private String uid;
+    private int uid;
     private String avatar;
     private String name;
     private Date birthDate;
-    private String integer;
-    private String address;
-    private String preDisease;
+    private String gender;
     private String email;
     private String password;
     private String phoneNumber;
 
+    //Getter Setter
     public int getId() {
         return id;
     }
@@ -24,19 +22,11 @@ public class Patient {
         this.id = id;
     }
 
-    public int getCoordinatorId() {
-        return coordinatorId;
-    }
-
-    public void setCoordinatorId(int coordinatorId) {
-        this.coordinatorId = coordinatorId;
-    }
-
-    public String getUid() {
+    public int getUid() {
         return uid;
     }
 
-    public void setUid(String uid) {
+    public void setUid(int uid) {
         this.uid = uid;
     }
 
@@ -64,28 +54,12 @@ public class Patient {
         this.birthDate = birthDate;
     }
 
-    public String getInteger() {
-        return integer;
+    public String getGender() {
+        return gender;
     }
 
-    public void setInteger(String integer) {
-        this.integer = integer;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getPreDisease() {
-        return preDisease;
-    }
-
-    public void setPreDisease(String preDisease) {
-        this.preDisease = preDisease;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public String getEmail() {
@@ -111,6 +85,5 @@ public class Patient {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
-
 
 }
