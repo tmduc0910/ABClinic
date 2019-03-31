@@ -9,6 +9,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -17,6 +18,11 @@ android {
         }
     }
 }
+
+repositories {
+    mavenCentral()
+}
+
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -29,10 +35,5 @@ dependencies {
     implementation files('libs/jackson-annotations-2.9.8.jar')
     implementation files('libs/jackson-core-2.9.8.jar')
     implementation files('libs/jackson-databind-2.9.8.jar')
-}
-
-android {
-    defaultConfig {
-        vectorDrawables.useSupportLibrary = true
-    }
+    implementation 'com.github.f0ris.sweetalert:library:1.5.1'
 }

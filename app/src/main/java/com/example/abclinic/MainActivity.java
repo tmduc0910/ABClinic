@@ -1,6 +1,6 @@
 package com.example.abclinic;
 
-import android.app.ProgressDialog;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +14,9 @@ import com.abclinic.utils.services.JsonJavaConvertingService;
 import com.abclinic.utils.services.RequestHandlingService;
 
 import java.io.IOException;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 
 public class MainActivity extends AppCompatActivity {
     Button loginBtn;
@@ -49,12 +52,15 @@ public class MainActivity extends AppCompatActivity {
         private final String TAG = "DEBUG LOG";
         private RequestHandlingService requestHandler = new RequestHandlingService();
         private JsonJavaConvertingService converter = new JsonJavaConvertingService();
-        private ProgressDialog progressDialog;
+        private SweetAlertDialog progressDialog = new SweetAlertDialog(MainActivity.this, SweetAlertDialog.PROGRESS_TYPE);
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog = ProgressDialog.show(MainActivity.this, "", "Loading", true, false);
+            progressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+            progressDialog.setTitleText("Loading")
+                    .setCancelable(false);
+            progressDialog.show();
         }
 
         @Override

@@ -18,7 +18,7 @@ allprojects {
     repositories {
         google()
         jcenter()
-        
+        mavenCentral()
     }
     tasks.withType(JavaCompile) {
         options.deprecation = true
