@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.abclinic"
-        minSdkVersion 15
+        minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -29,4 +29,10 @@ dependencies {
     implementation files('libs/jackson-annotations-2.9.8.jar')
     implementation files('libs/jackson-core-2.9.8.jar')
     implementation files('libs/jackson-databind-2.9.8.jar')
+}
+
+android {
+    defaultConfig {
+        vectorDrawables.useSupportLibrary = true
+    }
 }
