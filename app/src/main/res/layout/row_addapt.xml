@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="25dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_centerHorizontal="true"
+        android:text="event on "
+        android:textColor="#696969"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/tv_title"
+        android:textSize="16dp"
+        android:id="@+id/tv_name"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_centerHorizontal="true"
+        android:text="event on "
+        android:textColor="#696969"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/tv_name"
+        android:textSize="16dp"
+        android:id="@+id/tv_type"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:visibility="gone"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_centerHorizontal="true"
+        android:text="event on "
+        android:textColor="#696969"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/tv_type"
+        android:textSize="16dp"
+        android:id="@+id/tv_desc"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_centerHorizontal="true"
+        android:text="event on "
+        android:textColor="#696969"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/tv_desc"
+        android:textSize="16dp"
+        android:id="@+id/tv_class"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:text="event on "
+        android:textColor="#696969"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/tv_class"
+        android:textSize="16dp"
+        android:id="@+id/tv_section"/>
+
+</RelativeLayout>
