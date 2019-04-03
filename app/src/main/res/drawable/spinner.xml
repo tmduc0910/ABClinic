@@ -1,6 +1,14 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <stroke android:width="0dp" android:color="#000"></stroke>
     <solid android:color="#00BCD4"></solid>
     <corners android:radius="5dp"></corners>
+=======
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <stroke android:width="0dp" android:color="#000"></stroke>
+    <solid android:color="#00BCD4"></solid>
+    <corners android:radius="5dp"></corners>
+>>>>>>> origin/master
 </shape>
