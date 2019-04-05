@@ -15,9 +15,9 @@
         android:text="event on "
         android:textColor="#696969"
         android:layout_marginTop="10dp"
-        android:layout_below="@+id/tv_title"
+        android:id="@+id/nameTxt"
         android:textSize="16dp"
-        android:id="@+id/tv_name"/>
+        android:layout_below="@+id/titleTxt" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,9 +28,9 @@
         android:text="event on "
         android:textColor="#696969"
         android:layout_marginTop="5dp"
-        android:layout_below="@+id/tv_name"
+        android:id="@+id/typeTxt"
         android:textSize="16dp"
-        android:id="@+id/tv_type"/>
+        android:layout_below="@+id/nameTxt" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,9 +42,9 @@
         android:text="event on "
         android:textColor="#696969"
         android:layout_marginTop="5dp"
-        android:layout_below="@+id/tv_type"
+        android:id="@+id/descTxt"
         android:textSize="16dp"
-        android:id="@+id/tv_desc"/>
+        android:layout_below="@+id/typeTxt" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -55,9 +55,9 @@
         android:text="event on "
         android:textColor="#696969"
         android:layout_marginTop="5dp"
-        android:layout_below="@+id/tv_desc"
+        android:id="@+id/classTxt"
         android:textSize="16dp"
-        android:id="@+id/tv_class"/>
+        android:layout_below="@+id/descTxt" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -69,7 +69,7 @@
         android:text="event on "
         android:textColor="#696969"
         android:layout_marginTop="5dp"
-        android:layout_below="@+id/tv_class"
+        android:layout_below="@+id/classTxt"
         android:textSize="16dp"
         android:id="@+id/tv_section"/>
 
