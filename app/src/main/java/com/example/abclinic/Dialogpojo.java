@@ -1,154 +1,76 @@
-<<<<<<< HEAD
 package com.example.abclinic;
 
-public class Dialogpojo {
-    private String titles;
-    private String subjects;
-    private String types;
-    private String duedates;
-    private String descripts;
-    private String attatchmentd;
-    private String sections;
-    private String classe;
+public class DialogPojo {
+    private String title;
+    private String subject;
+    private String type;
+    private String dueDate;
+    private String description;
+    private String attachment;
+    private String section;
+    private String className;
 
-    public void setTitles(String titles) {
-        this.titles = titles;
+    public String getTitle() {
+        return title;
     }
 
-    public void setSubjects(String subjects) {
-        this.subjects = subjects;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public void setTypes(String types) {
-        this.types = types;
+    public String getSubject() {
+        return subject;
     }
 
-    public void setDuedates(String duedates) {
-        this.duedates = duedates;
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
-    public void setDescripts(String descripts) {
-        this.descripts = descripts;
+    public String getType() {
+        return type;
     }
 
-    public void setAttatchmentd(String attatchmentd) {
-        this.attatchmentd = attatchmentd;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public String getTitles() {
-        return titles;
+    public String getDueDate() {
+        return dueDate;
     }
 
-    public String getSubjects() {
-        return subjects;
+    public void setDueDate(String dueDate) {
+        this.dueDate = dueDate;
     }
 
-    public String getTypes() {
-        return types;
+    public String getDescription() {
+        return description;
     }
 
-    public String getDuedates() {
-        return duedates;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getDescripts() {
-        return descripts;
+    public String getAttachment() {
+        return attachment;
     }
 
-    public String getAttatchmentd() {
-        return attatchmentd;
+    public void setAttachment(String attachment) {
+        this.attachment = attachment;
     }
 
-    public void setSections(String sections) {
-        this.sections = sections;
+    public String getClassName() {
+        return className;
     }
 
-    public void setClasse(String classe) {
-        this.classe = classe;
+    public void setClassName(String className) {
+        this.className = className;
     }
 
-    public String getClasse() {
-        return classe;
+    public String getSection() {
+        return section;
     }
 
-    public String getSections() {
-        return sections;
+    public void setSection(String section) {
+        this.section = section;
     }
-=======
-package com.example.login;
-
-public class Dialogpojo {
-    private String titles;
-    private String subjects;
-    private String types;
-    private String duedates;
-    private String descripts;
-    private String attatchmentd;
-    private String sections;
-    private String classe;
-
-    public void setTitles(String titles) {
-        this.titles = titles;
-    }
-
-    public void setSubjects(String subjects) {
-        this.subjects = subjects;
-    }
-
-    public void setTypes(String types) {
-        this.types = types;
-    }
-
-    public void setDuedates(String duedates) {
-        this.duedates = duedates;
-    }
-
-    public void setDescripts(String descripts) {
-        this.descripts = descripts;
-    }
-
-    public void setAttatchmentd(String attatchmentd) {
-        this.attatchmentd = attatchmentd;
-    }
-
-    public String getTitles() {
-        return titles;
-    }
-
-    public String getSubjects() {
-        return subjects;
-    }
-
-    public String getTypes() {
-        return types;
-    }
-
-    public String getDuedates() {
-        return duedates;
-    }
-
-    public String getDescripts() {
-        return descripts;
-    }
-
-    public String getAttatchmentd() {
-        return attatchmentd;
-    }
-
-    public void setSections(String sections) {
-        this.sections = sections;
-    }
-
-    public void setClasse(String classe) {
-        this.classe = classe;
-    }
-
-    public String getClasse() {
-        return classe;
-    }
-
-    public String getSections() {
-        return sections;
-    }
->>>>>>> origin/master
 }
