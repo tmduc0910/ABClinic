@@ -1,6 +1,8 @@
 package com.example.abclinic;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.abclinic.test.login.Account;
 import com.abclinic.utils.services.JsonJavaConvertingService;
@@ -30,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         loginBtn = findViewById(R.id.loginButton);
-        usernameEdt = findViewById(R.id.usernameText);
+        usernameEdt = findViewById(R.id.usernameTxt);
         passwordEdt = findViewById(R.id.passwordText);
         urlEdt = findViewById(R.id.urlText);
         statusTxt = findViewById(R.id.statusText);
@@ -82,7 +85,9 @@ public class MainActivity extends AppCompatActivity {
             if (result != null) {
                 Account account;
                 account = (Account) converter.mapJsonToObject(result, Account.class);
-                statusTxt.setText(account.toString());
+                //statusTxt.setText(account.toString());
+
+                saveUserData(account);
 
                 Intent uploadIntent = new Intent(MainActivity.this, UpLoad.class);
                 startActivity(uploadIntent);
@@ -92,6 +97,23 @@ public class MainActivity extends AppCompatActivity {
                 statusTxt.setTextColor(Color.RED);
                 //Log.d(TAG, "NULL");
             }
+        }
+
+        private void saveUserData(Account account) {
+            SharedPreferences sharedPreferences = getSharedPreferences("userAccount", Context.MODE_PRIVATE);
+
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+            editor.putString("Username", account.getUsername());
+            editor.putString("Password", account.getPassword());
+            editor.putInt("Id", account.getId());
+            editor.putString("Name", account.getName());
+            editor.putString("Gender", account.getGender());
+            editor.putString("Email", account.getEmail());
+            editor.putString("Phone", account.getPhone());
+
+            editor.commit();
+            Toast.makeText(MainActivity.this, "Đăng nhập thành công!", Toast.LENGTH_LONG).show();
         }
     }
 }
