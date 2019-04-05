@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class Message extends AppCompatActivity {
+public class MessageActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,18 +26,18 @@ public class Message extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.upload:
-                        Intent intentMess = new Intent(Message.this, UpLoad.class);
+                        Intent intentMess = new Intent(MessageActivity.this, UploadActivity.class);
                         startActivity(intentMess);
                         break;
                     case R.id.mess:
 
                         break;
                     case R.id.notifi:
-                        Intent intentAcc = new Intent(Message.this, Notification.class);
+                        Intent intentAcc = new Intent(MessageActivity.this, NotificationActivity.class);
                         startActivity(intentAcc);
                         break;
                     case R.id.profile:
-                        Intent intentHome = new Intent(Message.this, Profile.class);
+                        Intent intentHome = new Intent(MessageActivity.this, ProfileActivity.class);
                         startActivity(intentHome);
                         break;
                 }

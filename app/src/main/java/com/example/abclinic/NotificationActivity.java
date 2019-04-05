@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 
-public class Notification extends AppCompatActivity {
+public class NotificationActivity extends AppCompatActivity {
 
     public GregorianCalendar calMonth, calMonthCopy;
     private HwAdapter hwAdapter;
@@ -40,18 +40,18 @@ public class Notification extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.upload:
-                        Intent intent_acc = new Intent(Notification.this, UpLoad.class);
+                        Intent intent_acc = new Intent(NotificationActivity.this, UploadActivity.class);
                         startActivity(intent_acc);
                         break;
                     case R.id.mess:
-                        Intent intent_mess = new Intent(Notification.this, Message.class);
+                        Intent intent_mess = new Intent(NotificationActivity.this, MessageActivity.class);
                         startActivity(intent_mess);
                         break;
                     case R.id.notifi:
 
                         break;
                     case R.id.profile:
-                        Intent intent_home = new Intent(Notification.this, Profile.class);
+                        Intent intent_home = new Intent(NotificationActivity.this, ProfileActivity.class);
                         startActivity(intent_home);
                         break;
                 }
@@ -89,7 +89,7 @@ public class Notification extends AppCompatActivity {
                         public void onClick(View v) {
                             if (calMonth.get(GregorianCalendar.MONTH) == 12 && calMonth.get(GregorianCalendar.YEAR) == 2018) {
                                 //calMonth.set((calMonth.get(GregorianCalendar.YEAR) - 1), calMonth.getActualMaximum(GregorianCalendar.MONTH), 1);
-                                Toast.makeText(Notification.this, "Không có thông báo trong quá khứ.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(NotificationActivity.this, "Không có thông báo trong quá khứ.", Toast.LENGTH_SHORT).show();
                             }
                             else {
                                 setPreviousMonth();
@@ -105,7 +105,7 @@ public class Notification extends AppCompatActivity {
             public void onClick(View v) {
                 if (calMonth.get(GregorianCalendar.MONTH) == 5 && calMonth.get(GregorianCalendar.YEAR) == 2030) {
                     //calMonth.set((calMonth.get(GregorianCalendar.YEAR) + 1), calMonth.getActualMinimum(GregorianCalendar.MONTH), 1);
-                    Toast.makeText(Notification.this, "Không có thông báo.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NotificationActivity.this, "Không có thông báo.", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     setNextMonth();
@@ -119,7 +119,7 @@ public class Notification extends AppCompatActivity {
 
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 String selectedGridDate = HwAdapter.dayString.get(position);
-                ((HwAdapter) parent.getAdapter()).getPositionList(selectedGridDate, Notification.this);
+                ((HwAdapter) parent.getAdapter()).getPositionList(selectedGridDate, NotificationActivity.this);
                 ((HwAdapter) parent.getAdapter()).getView(position, v, parent);
             }
 

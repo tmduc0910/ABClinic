@@ -48,7 +48,7 @@ class HwAdapter extends BaseAdapter {
     String itemValue, currentDateString;
     private String gridValue;
     private ListView listTeachers;
-    private ArrayList<DialogPojo> alCustom = new ArrayList<DialogPojo>();
+    private ArrayList<DialogPoJo> alCustom = new ArrayList<DialogPoJo>();
 
     public HwAdapter(Activity context, GregorianCalendar monthCalendar, ArrayList<HighlightEvent> dateCollectionArr) {
         this.dateCollectionArr = dateCollectionArr;
@@ -243,15 +243,15 @@ class HwAdapter extends BaseAdapter {
 
     }
 
-    private ArrayList<DialogPojo> getMatchList(String detail) {
+    private ArrayList<DialogPoJo> getMatchList(String detail) {
         try {
             JSONArray jsonArray = new JSONArray(detail);
-            alCustom = new ArrayList<DialogPojo>();
+            alCustom = new ArrayList<DialogPoJo>();
             for (int i = 0; i < jsonArray.length(); i++) {
 
                 JSONObject jsonObject = jsonArray.optJSONObject(i);
 
-                DialogPojo pojo = new DialogPojo();
+                DialogPoJo pojo = new DialogPoJo();
 
                 pojo.setTitle(jsonObject.optString("hnames"));
                 pojo.setSubject(jsonObject.optString("hsubject"));

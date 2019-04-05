@@ -22,7 +22,7 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 
-public class UpLoad extends AppCompatActivity {
+public class UploadActivity extends AppCompatActivity {
 
     ImageView imageView;
 
@@ -52,15 +52,15 @@ public class UpLoad extends AppCompatActivity {
 
                         break;
                     case R.id.mess:
-                        Intent intent_mess = new Intent(UpLoad.this, Message.class);
+                        Intent intent_mess = new Intent(UploadActivity.this, MessageActivity.class);
                         startActivity(intent_mess);
                         break;
                     case R.id.notifi:
-                        Intent intent_notifi = new Intent(UpLoad.this, Notification.class);
+                        Intent intent_notifi = new Intent(UploadActivity.this, NotificationActivity.class);
                         startActivity(intent_notifi);
                         break;
                     case R.id.profile:
-                        Intent intent_acc = new Intent(UpLoad.this, Profile.class);
+                        Intent intent_acc = new Intent(UploadActivity.this, ProfileActivity.class);
                         startActivity(intent_acc);
                         break;
                 }
@@ -97,7 +97,7 @@ public class UpLoad extends AppCompatActivity {
 
                 Log.d("DEBUG CALENDAR", "Day: " + day + ", month: " + month + ", year: " + year);
 
-                datePickerDialog = new DatePickerDialog(UpLoad.this, new DatePickerDialog.OnDateSetListener() {
+                datePickerDialog = new DatePickerDialog(UploadActivity.this, new DatePickerDialog.OnDateSetListener() {
 
                     @Override
                     public void onDateSet(DatePicker datePicker, int mYear, int mMonth, int mDay) {
@@ -126,7 +126,7 @@ public class UpLoad extends AppCompatActivity {
                 int currentHour = c.get(Calendar.HOUR_OF_DAY);
                 int currentMinute = c.get(Calendar.MINUTE);
 
-                tpd = new TimePickerDialog(UpLoad.this, new TimePickerDialog.OnTimeSetListener() {
+                tpd = new TimePickerDialog(UploadActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hourOfDay, int minutes) {
                         showTime.setText(hourOfDay + ":" + minutes);
@@ -147,7 +147,7 @@ public class UpLoad extends AppCompatActivity {
                 switch (v.getId())
                 {
                     case R.id.submit:
-                        Toast.makeText(UpLoad.this, "Thành công!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(UploadActivity.this, "Thành công!", Toast.LENGTH_SHORT).show();
                         break;
                 }
 

@@ -14,9 +14,9 @@ import java.util.ArrayList;
 class DialogAdaptor extends BaseAdapter {
 
     private Activity context;
-    private ArrayList<DialogPojo> listCustom;
+    private ArrayList<DialogPoJo> listCustom;
 
-    public DialogAdaptor(Activity context, ArrayList<DialogPojo> listCustom) {
+    public DialogAdaptor(Activity context, ArrayList<DialogPoJo> listCustom) {
         this.context = context;
         this.listCustom = listCustom;
 

@@ -6,7 +6,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Profile">
+    tools:context=".ProfileActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,7 +23,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Username"
+                android:text="Password"
                 android:textSize="17dp" />
 
             <EditText
@@ -36,7 +36,12 @@
                 android:hint=""
                 android:inputType="none"
                 android:padding="10dp"
+                android:cursorVisible="false"
+                android:enabled="false"
+                android:maxLines="1"
                 android:textColor="#000" />
+
+
         </LinearLayout>
 
         <LinearLayout
@@ -60,9 +65,19 @@
                 android:background="@drawable/edt_login"
                 android:focusable="false"
                 android:hint=""
-                android:inputType="none"
+                android:inputType="none|textPassword"
                 android:padding="10dp"
+                android:maxLines="1"
                 android:textColor="#000" />
+
+            <ImageButton
+                android:id="@+id/toggleImg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:background="@color/float_transparent"
+                android:src="@drawable/ic_show_password" />
         </LinearLayout>
 
         <LinearLayout
@@ -88,6 +103,9 @@
                 android:hint=""
                 android:inputType="none"
                 android:padding="10dp"
+                android:cursorVisible="false"
+                android:enabled="false"
+                android:maxLines="1"
                 android:textColor="#000" />
         </LinearLayout>
 
@@ -114,6 +132,9 @@
                 android:hint=""
                 android:inputType="none"
                 android:padding="10dp"
+                android:cursorVisible="false"
+                android:enabled="false"
+                android:maxLines="1"
                 android:textColor="#000" />
         </LinearLayout>
 
@@ -140,6 +161,9 @@
                 android:hint=""
                 android:inputType="none"
                 android:padding="10dp"
+                android:cursorVisible="false"
+                android:enabled="false"
+                android:maxLines="1"
                 android:textColor="#000" />
         </LinearLayout>
 
@@ -164,6 +188,7 @@
                 android:background="@drawable/edt_login"
                 android:hint=""
                 android:padding="10dp"
+                android:maxLines="1"
                 android:textColor="#000" />
         </LinearLayout>
 
@@ -188,7 +213,21 @@
                 android:background="@drawable/edt_login"
                 android:hint=""
                 android:padding="10dp"
+                android:maxLines="1"
                 android:textColor="#000" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/submitBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Submit" />
         </LinearLayout>
     </LinearLayout>
 
@@ -208,7 +247,7 @@
             design:itemTextColor="@color/nav_color"
 
             />
-
     </LinearLayout>
+
 
 </android.support.design.widget.CoordinatorLayout>
