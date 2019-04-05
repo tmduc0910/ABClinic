@@ -33,9 +33,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         loginBtn = findViewById(R.id.loginButton);
-        usernameEdt = findViewById(R.id.usernameTxt);
-        passwordEdt = findViewById(R.id.passwordText);
-        urlEdt = findViewById(R.id.urlText);
+        usernameEdt = findViewById(R.id.usernameEdit);
+        passwordEdt = findViewById(R.id.passwordEdit);
+        urlEdt = findViewById(R.id.urlEdit);
         statusTxt = findViewById(R.id.statusText);
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
 
                 saveUserData(account);
 
-                Intent uploadIntent = new Intent(MainActivity.this, UpLoad.class);
+                Intent uploadIntent = new Intent(MainActivity.this, UploadActivity.class);
                 startActivity(uploadIntent);
                 //Log.d(TAG, result);
             } else {

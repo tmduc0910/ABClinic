@@ -1,6 +1,6 @@
 package com.example.abclinic;
 
-public class DialogPojo {
+public class DialogPoJo {
     private String title;
     private String subject;
     private String type;
