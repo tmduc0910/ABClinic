@@ -1,5 +1,6 @@
 package com.example.abclinic;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,7 +21,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class MainActivity extends AppCompatActivity {
     Button loginBtn;
-    EditText usernameEdt, passwordEdt;
+    EditText usernameEdt, passwordEdt, urlEdt;
     TextView statusTxt;
 
     @Override
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         loginBtn = findViewById(R.id.loginButton);
         usernameEdt = findViewById(R.id.usernameText);
         passwordEdt = findViewById(R.id.passwordText);
+        urlEdt = findViewById(R.id.urlText);
         statusTxt = findViewById(R.id.statusText);
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
@@ -38,12 +40,13 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String username = usernameEdt.getText().toString();
                 String password = passwordEdt.getText().toString();
+                String url = urlEdt.getText().toString();
 
                 String postParam = "{\n" +
                         "    \"username\": \"" + username + "\",\n" +
                         "    \"password\": \"" + password + "\"\n" +
                         "}";
-                new PostJSONTask().execute(postParam, "http://192.168.1.136:3000/auth/login");
+                new PostJSONTask().execute(postParam, "http://" + url + ":3000/auth/login");
             }
         });
     }
@@ -80,9 +83,13 @@ public class MainActivity extends AppCompatActivity {
                 Account account;
                 account = (Account) converter.mapJsonToObject(result, Account.class);
                 statusTxt.setText(account.toString());
+
+                Intent uploadIntent = new Intent(MainActivity.this, UpLoad.class);
+                startActivity(uploadIntent);
                 //Log.d(TAG, result);
             } else {
                 statusTxt.setText("FAILED! USERNAME OR PASSWORD NOT MATCHED!\n");
+                statusTxt.setTextColor(Color.RED);
                 //Log.d(TAG, "NULL");
             }
         }
