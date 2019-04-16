@@ -3,73 +3,60 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="25dp">
+    android:padding="10dp"
+    android:layout_marginTop="30dp">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:layout_centerHorizontal="true"
+        android:paddingTop="5dp"
         android:text="event on "
         android:textColor="#696969"
-        android:layout_marginTop="10dp"
-        android:id="@+id/nameTxt"
+        android:layout_below="@+id/tv_title"
         android:textSize="16dp"
-        android:layout_below="@+id/titleTxt" />
+        android:id="@+id/tv_name"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:layout_centerHorizontal="true"
         android:text="event on "
+        android:paddingTop="5dp"
         android:textColor="#696969"
-        android:layout_marginTop="5dp"
-        android:id="@+id/typeTxt"
+        android:layout_below="@+id/tv_name"
         android:textSize="16dp"
-        android:layout_below="@+id/nameTxt" />
+        android:id="@+id/tv_type"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:visibility="gone"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_centerHorizontal="true"
-        android:text="event on "
-        android:textColor="#696969"
-        android:layout_marginTop="5dp"
-        android:id="@+id/descTxt"
-        android:textSize="16dp"
-        android:layout_below="@+id/typeTxt" />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_centerHorizontal="true"
-        android:text="event on "
-        android:textColor="#696969"
-        android:layout_marginTop="5dp"
-        android:id="@+id/classTxt"
-        android:textSize="16dp"
-        android:layout_below="@+id/descTxt" />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:visibility="gone"
         android:layout_centerHorizontal="true"
         android:text="event on "
+        android:paddingTop="5dp"
+        android:textColor="#696969"
+        android:layout_below="@+id/tv_type"
+        android:textSize="16dp"
+        android:id="@+id/tv_desc"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="event on "
+        android:paddingTop="5dp"
+        android:textColor="#696969"
+        android:layout_below="@+id/tv_desc"
+        android:textSize="16dp"
+        android:id="@+id/tv_class"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:text="event on "
+        android:paddingTop="5dp"
         android:textColor="#696969"
         android:layout_marginTop="5dp"
-        android:layout_below="@+id/classTxt"
+        android:layout_below="@+id/tv_class"
         android:textSize="16dp"
         android:id="@+id/tv_section"/>
 

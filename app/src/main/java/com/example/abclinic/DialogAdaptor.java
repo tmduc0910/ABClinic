@@ -7,30 +7,39 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.TextView;
+
+import com.example.abclinic.DialogNotifi;
+import com.example.abclinic.R;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
 class DialogAdaptor extends BaseAdapter {
+    Activity activity;
 
     private Activity context;
-    private ArrayList<DialogPojo> listCustom;
+    private ArrayList<DialogNotifi> alCustom;
+    private String sturl;
 
-    public DialogAdaptor(Activity context, ArrayList<DialogPojo> listCustom) {
+
+    public DialogAdaptor(Activity context, ArrayList<DialogNotifi> alCustom) {
         this.context = context;
-        this.listCustom = listCustom;
+        this.alCustom = alCustom;
 
     }
 
     @Override
     public int getCount() {
-        return listCustom.size();
+        return alCustom.size();
 
     }
 
     @Override
     public Object getItem(int i) {
-        return listCustom.get(i);
+        return alCustom.get(i);
     }
 
     @Override
@@ -44,16 +53,19 @@ class DialogAdaptor extends BaseAdapter {
         LayoutInflater inflater = context.getLayoutInflater();
         View listViewItem = inflater.inflate(R.layout.row_addapt, null, true);
 
-        TextView tvTitle = (TextView) listViewItem.findViewById(R.id.nameTxt);
-        TextView tvSubject = (TextView) listViewItem.findViewById(R.id.typeTxt);
-        TextView tvDescription = (TextView) listViewItem.findViewById(R.id.classTxt);
+        TextView tvTitle=(TextView)listViewItem.findViewById(R.id.tv_name);
+        TextView tvSubject=(TextView)listViewItem.findViewById(R.id.tv_type);
+        TextView tvDuedate=(TextView)listViewItem.findViewById(R.id.tv_desc);
+        TextView tvDescription=(TextView)listViewItem.findViewById(R.id.tv_class);
 
 
-        tvTitle.setText("Title : " + listCustom.get(position).getTitle());
-        tvSubject.setText("Subject : " + listCustom.get(position).getSubject());
-        tvDescription.setText("Description : " + listCustom.get(position).getDescription());
+        tvTitle.setText("Title : "+alCustom.get(position).getTitles());
+        tvSubject.setText("Subject : "+alCustom.get(position).getSubjects());
+        //tvDuedate.setText("Due Date : "+alCustom.get(position).getDuedates());
+        tvDescription.setText("Description : "+alCustom.get(position).getDescripts());
 
-        return listViewItem;
+        return  listViewItem;
     }
 
 }
+

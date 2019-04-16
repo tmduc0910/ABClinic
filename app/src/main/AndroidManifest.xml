@@ -14,6 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
+        <activity android:name=".ChatBox"></activity>
+        <activity android:name=".Meal" />
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
@@ -24,10 +26,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UploadActivity"></activity>
-        <activity android:name=".MessageActivity"></activity>
-        <activity android:name=".NotificationActivity"></activity>
-        <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".UpLoadActivity" />
+        <activity android:name=".NotificationActivity" />
+        <activity android:name=".HistoryActivity" />
+        <activity android:name=".ProfileActivity" />
     </application>
 
 </manifest>

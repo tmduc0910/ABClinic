@@ -1,15 +1,14 @@
 package com.example.abclinic;
 
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,15 +19,20 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.abclinic.HistoryActivity;
+import com.example.abclinic.NotificationActivity;
+import com.example.abclinic.R;
+
 import java.util.Calendar;
 
-public class UploadActivity extends AppCompatActivity {
+public class UpLoadActivity extends AppCompatActivity {
 
     ImageView imageView;
 
     TextView showTime, showDate;
     Button pickTime, pickDate;
-    DatePickerDialog datePickerDialog;
+    Calendar c;
+    DatePickerDialog dpd;
     TimePickerDialog tpd;
 
     Button btnSubmit;
@@ -51,16 +55,16 @@ public class UploadActivity extends AppCompatActivity {
                     case R.id.upload:
 
                         break;
-                    case R.id.mess:
-                        Intent intent_mess = new Intent(UploadActivity.this, MessageActivity.class);
+                    case R.id.notifi:
+                        Intent intent_mess = new Intent(UpLoadActivity.this, NotificationActivity.class);
                         startActivity(intent_mess);
                         break;
-                    case R.id.notifi:
-                        Intent intent_notifi = new Intent(UploadActivity.this, NotificationActivity.class);
+                    case R.id.history:
+                        Intent intent_notifi = new Intent(UpLoadActivity.this, HistoryActivity.class);
                         startActivity(intent_notifi);
                         break;
                     case R.id.profile:
-                        Intent intent_acc = new Intent(UploadActivity.this, ProfileActivity.class);
+                        Intent intent_acc = new Intent(UpLoadActivity.this, ProfileActivity.class);
                         startActivity(intent_acc);
                         break;
                 }
@@ -71,7 +75,7 @@ public class UploadActivity extends AppCompatActivity {
 
 
         // open camera
-        Button butCam = (Button) findViewById(R.id.openCamBtn);
+        Button butCam = (Button)findViewById(R.id.butOpencam);
         imageView = (ImageView)findViewById(R.id.imageView);
 
         butCam.setOnClickListener(new View.OnClickListener() {
@@ -83,30 +87,25 @@ public class UploadActivity extends AppCompatActivity {
         });
 
         //show date
-        showDate = (TextView) findViewById(R.id.showDateTxt);
-        pickDate = (Button) findViewById(R.id.pickDateBtn);
+        showDate = (TextView) findViewById(R.id.showDate);
+        pickDate = (Button) findViewById(R.id.btnPickDate);
 
         pickDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                final Calendar c = Calendar.getInstance();
+                c = Calendar.getInstance();
                 int day = c.get(Calendar.DAY_OF_MONTH);
                 int month = c.get(Calendar.MONTH);
                 int year = c.get(Calendar.YEAR);
 
-                Log.d("DEBUG CALENDAR", "Day: " + day + ", month: " + month + ", year: " + year);
-
-                datePickerDialog = new DatePickerDialog(UploadActivity.this, new DatePickerDialog.OnDateSetListener() {
-
+                dpd = new DatePickerDialog(UpLoadActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int mYear, int mMonth, int mDay) {
-                        showDate.setText(mDay + "/" + (mMonth + 1) + "/" + mYear);
-                        Log.d("DEBUG CALENDAR", "Day: " + mDay + ", month: " + mMonth + ", year: " + mYear);
+                        showDate.setText(mDay + "/" + (mMonth+1) + "/" + mYear);
                     }
                 }, day, month, year);
-                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
-                datePickerDialog.show();
+                dpd.show();
 
             }
 
@@ -122,11 +121,11 @@ public class UploadActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                final Calendar c = Calendar.getInstance();
+                c = Calendar.getInstance();
                 int currentHour = c.get(Calendar.HOUR_OF_DAY);
                 int currentMinute = c.get(Calendar.MINUTE);
 
-                tpd = new TimePickerDialog(UploadActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                tpd = new TimePickerDialog(UpLoadActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hourOfDay, int minutes) {
                         showTime.setText(hourOfDay + ":" + minutes);
@@ -147,7 +146,7 @@ public class UploadActivity extends AppCompatActivity {
                 switch (v.getId())
                 {
                     case R.id.submit:
-                        Toast.makeText(UploadActivity.this, "Thành công!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(UpLoadActivity.this, "Thành công!", Toast.LENGTH_SHORT).show();
                         break;
                 }
 
@@ -157,11 +156,11 @@ public class UploadActivity extends AppCompatActivity {
 
     }
 
-
+    //save picture
     @Override
-    protected void onActivityResult( int requestCode, int resultCode, Intent data){
+    protected  void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
-        Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+        Bitmap bitmap = (Bitmap) data.getExtras().get(("data"));
         imageView.setImageBitmap(bitmap);
     }
 }

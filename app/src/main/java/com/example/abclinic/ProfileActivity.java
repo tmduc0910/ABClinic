@@ -1,94 +1,108 @@
 package com.example.abclinic;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.method.PasswordTransformationMethod;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.abclinic.HistoryActivity;
+import com.example.abclinic.MainActivity;
+import com.example.abclinic.NotificationActivity;
+import com.example.abclinic.R;
+import com.example.abclinic.UpLoadActivity;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    EditText edtUsername, edtPassword, edtId, edtName, edtGender, edtEmail, edtPhone;
-    ImageButton imgToggle;
-    Button btnSubmit;
+    Button setting, help, exit, edtprofile, accept, cancel;
+    EditText edtphonenumber,edtemail, edtaddress;
+    TextView  phonenumber,email, address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        edtUsername = findViewById(R.id.usernameTxt);
-        edtPassword = findViewById(R.id.passwordTxt);
-        edtId = findViewById(R.id.idTxt);
-        edtName = findViewById(R.id.nameTxt);
-        edtGender = findViewById(R.id.genderTxt);
-        edtEmail = findViewById(R.id.emailTxt);
-        edtPhone = findViewById(R.id.phoneTxt);
-        btnSubmit = findViewById(R.id.submitBtn);
-        imgToggle = findViewById(R.id.toggleImg);
+        //setting button
+        setting = (Button) this.findViewById(R.id.settings);
 
-        final SharedPreferences sharedPreferences = getSharedPreferences("userAccount", Context.MODE_PRIVATE);
-        if (sharedPreferences != null) {
-            String username = sharedPreferences.getString("Username", "");
-            String password = sharedPreferences.getString("Password", "");
-            int id = sharedPreferences.getInt("Id", 0);
-            String name = sharedPreferences.getString("Name", "");
-            String gender = sharedPreferences.getString("Gender", "");
-            String email = sharedPreferences.getString("Email", "");
-            String phone = sharedPreferences.getString("Phone", "");
 
-            edtUsername.setHint(username);
-            edtPassword.setText(password);
-            edtId.setHint(Integer.toString(id));
-            edtName.setHint(name);
-            edtGender.setHint(gender);
-            edtEmail.setHint(email);
-            edtPhone.setHint(phone);
-        }
-
-        imgToggle.setOnTouchListener(new View.OnTouchListener() {
+        //help button
+        help = (Button) this.findViewById(R.id.helps);
+        help.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        edtPassword.setTransformationMethod(null);
-                        imgToggle.setColorFilter(Color.RED);
-                        return true;
-                    case MotionEvent.ACTION_UP:
-                        edtPassword.setTransformationMethod(new PasswordTransformationMethod());
-                        imgToggle.setColorFilter(Color.BLACK);
-                        return true;
-                }
-                return false;
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
+                View view = getLayoutInflater().inflate(R.layout.dialog_help, null);
+                builder.setView(view);
+                final AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
 
-        btnSubmit.setOnClickListener(new View.OnClickListener() {
+        //exit button
+        exit = (Button) this.findViewById(R.id.exit);
+        exit.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                Intent intent_exit = new Intent(ProfileActivity.this, MainActivity.class);
+                startActivity(intent_exit);
+            }
+        });
+
+        //edit profile
+        phonenumber = (TextView) this.findViewById(R.id.phonenumber);
+        email = (TextView) this.findViewById(R.id.email);
+        address = (TextView) this.findViewById(R.id.address);
+
+        edtprofile = (Button) this.findViewById(R.id.show_edtbox);
+        edtprofile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                if (!edtEmail.getText().toString().equals(""))
-                    editor.putString("Email", edtEmail.getText().toString());
-                if (!edtPhone.getText().toString().equals(""))
-                    editor.putString("Phone", edtPhone.getText().toString());
-                editor.commit();
+                AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
+                View viewdialog = getLayoutInflater().inflate(R.layout.dialog_editprofile, null);
+                edtphonenumber = (EditText) viewdialog.findViewById(R.id.edtphonenumber);
+                edtemail = (EditText) viewdialog.findViewById(R.id.edtemail);
+                edtaddress = (EditText) viewdialog.findViewById(R.id.edtaddress);
 
-                Toast.makeText(ProfileActivity.this, "Đã lưu!", Toast.LENGTH_SHORT).show();
+                accept = (Button) viewdialog.findViewById(R.id.accept_edit);
+                cancel = (Button) viewdialog.findViewById(R.id.cancel_edit);
 
-                finish();
-                startActivity(getIntent());
+                builder.setView(viewdialog);
+                final  AlertDialog dialog =builder.create();
+                dialog.show();
+
+                accept.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(!edtphonenumber.getText().toString().isEmpty() && !edtemail.getText().toString().isEmpty()
+                                && !edtaddress.getText().toString().isEmpty()){
+                            phonenumber.setText(edtphonenumber.getText().toString());
+                            email.setText(edtemail.getText().toString());
+                            address.setText(edtaddress.getText().toString());
+                            Toast.makeText(ProfileActivity.this, "Thành công!", Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                        } else {
+                            Toast.makeText(ProfileActivity.this, "Đề nghị điền đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+
+                cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
             }
         });
 
@@ -103,15 +117,15 @@ public class ProfileActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.upload:
-                        Intent intent_home = new Intent(ProfileActivity.this, UploadActivity.class);
+                        Intent intent_home = new Intent(ProfileActivity.this, UpLoadActivity.class);
                         startActivity(intent_home);
                         break;
-                    case R.id.mess:
-                        Intent intent_mess = new Intent(ProfileActivity.this, MessageActivity.class);
+                    case R.id.notifi:
+                        Intent intent_mess = new Intent(ProfileActivity.this, NotificationActivity.class);
                         startActivity(intent_mess);
                         break;
-                    case R.id.notifi:
-                        Intent intent_acc = new Intent(ProfileActivity.this, NotificationActivity.class);
+                    case R.id.history:
+                        Intent intent_acc = new Intent(ProfileActivity.this, HistoryActivity.class);
                         startActivity(intent_acc);
                         break;
                     case R.id.profile:

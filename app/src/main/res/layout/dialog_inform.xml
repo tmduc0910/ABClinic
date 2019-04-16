@@ -7,18 +7,17 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:id="@+id/titleTxt"
+        android:id="@+id/tv_title"
         android:layout_height="wrap_content">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="20dp"
-            android:text="Thông báo"
+            android:text="Lịch sử"
             android:textSize="20dp"
             android:textColor="#fff"
-            android:background="@color/white"
-            android:id="@+id/dateTxt" />
+            android:background="@color/blue"/>
 
     </LinearLayout>
 
@@ -26,19 +25,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-
         <ListView
-            android:id="@+id/teacherLst"
+            android:id="@+id/list_teachers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/titleTxt">
+            android:layout_below="@+id/tv_title">
 
         </ListView>
 
-
-
-
     </LinearLayout>
-
 
 </LinearLayout>

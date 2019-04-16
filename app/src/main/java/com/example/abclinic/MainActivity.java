@@ -1,25 +1,12 @@
 package com.example.abclinic;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.abclinic.test.login.Account;
-import com.abclinic.utils.services.JsonJavaConvertingService;
-import com.abclinic.utils.services.RequestHandlingService;
-
-import java.io.IOException;
-
-import cn.pedant.SweetAlert.SweetAlertDialog;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -41,6 +28,10 @@ public class MainActivity extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Intent open = new Intent(MainActivity.this, UpLoadActivity.class);
+                startActivity(open);
+                /*
                 String username = usernameEdt.getText().toString();
                 String password = passwordEdt.getText().toString();
                 String url = urlEdt.getText().toString();
@@ -50,10 +41,12 @@ public class MainActivity extends AppCompatActivity {
                         "    \"password\": \"" + password + "\"\n" +
                         "}";
                 new PostJSONTask().execute(postParam, "http://" + url + ":3000/auth/login");
+                */
             }
         });
     }
 
+    /*
     private class PostJSONTask extends AsyncTask<String, Void, String> {
         private final String TAG = "DEBUG LOG";
         private RequestHandlingService requestHandler = new RequestHandlingService();
@@ -89,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
                 saveUserData(account);
 
-                Intent uploadIntent = new Intent(MainActivity.this, UploadActivity.class);
+                Intent uploadIntent = new Intent(MainActivity.this, UpLoadActivity.class);
                 startActivity(uploadIntent);
                 //Log.d(TAG, result);
             } else {
@@ -116,4 +109,5 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, "Đăng nhập thành công!", Toast.LENGTH_LONG).show();
         }
     }
+    */
 }

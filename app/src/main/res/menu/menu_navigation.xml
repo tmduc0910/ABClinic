@@ -8,20 +8,20 @@
 
         />
     <item
-        android:id="@+id/mess"
+        android:id="@+id/notifi"
         android:title="Message"
-        android:icon="@drawable/ic_mess"
+        android:icon="@drawable/ic_notifi"
 
         />
     <item
-        android:id="@+id/notifi"
+        android:id="@+id/history"
         android:title="Notification"
         android:icon="@drawable/ic_invitation"
         />
     <item
         android:id="@+id/profile"
         android:title="Profile"
-        android:icon="@drawable/ic_account2"
+        android:icon="@drawable/ic_account"
         />
 
 </menu>

@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:design="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HistoryActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#343434"
+        android:id="@+id/ll_calendar"
+        android:orientation="vertical"
+        android:layout_marginBottom="50dp">
+
+        <LinearLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#3F51B5"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="20dp" >
+
+            <FrameLayout
+                android:layout_width="45dp"
+                android:layout_height="45dp" >
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ib_prev"
+                    android:background="@drawable/ic_back"/>
+
+            </FrameLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" >
+
+                <TextView
+                    android:id="@+id/tv_month"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="January"
+                    android:textColor="#fff"
+                    android:textSize="30dip"
+                    android:textStyle="bold"
+                    android:padding="5dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_month"
+                    android:text="Bấm vào để xem thông báo"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="#fff"
+                    android:textSize="12dp"
+                    android:textStyle="normal" />
+            </RelativeLayout>
+
+            <FrameLayout
+                android:layout_width="45dp"
+                android:layout_height="45dp" >
+
+                <Button
+                    android:id="@+id/Ib_next"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_next" />
+
+            </FrameLayout>
+        </LinearLayout>
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFE91E63">
+
+            <TextView
+                android:id="@+id/sunday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="S"
+                android:textSize="20dp"
+                android:background="@drawable/tablerow"
+                android:textColor="#fff" />
+
+            <TextView
+                android:id="@+id/monday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="M"
+                android:textSize="20dp"
+                android:background="@drawable/tablerow"
+                android:textColor="#fff" />
+
+            <TextView
+                android:id="@+id/tuesday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="T"
+                android:textSize="20dp"
+                android:background="@drawable/tablerow"
+                android:textColor="#fff" />
+
+            <TextView
+                android:id="@+id/wednesday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="W"
+                android:textSize="20dp"
+                android:background="@drawable/tablerow"
+                android:textColor="#fff" />
+
+            <TextView
+                android:id="@+id/thursday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="T"
+                android:textSize="20dp"
+                android:background="@drawable/tablerow"
+                android:textColor="#fff" />
+
+            <TextView
+                android:id="@+id/friday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="F"
+                android:textSize="20dp"
+                android:background="@drawable/tablerow"
+                android:textColor="#fff" />
+
+            <TextView
+                android:id="@+id/saturday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="S"
+                android:textSize="20dp"
+                android:background="@drawable/tablerow"
+                android:textColor="#fff" />
+
+        </TableRow>
+
+        <GridView
+            android:id="@+id/gv_calendar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
+            android:cacheColorHint="#ffffff"
+            android:gravity="center"
+            android:listSelector="@android:color/transparent"
+            android:numColumns="7"
+            android:stretchMode="columnWidth"
+            android:textAlignment="gravity"
+            android:verticalSpacing="5dp"
+            android:horizontalSpacing="10dp">
+        </GridView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textSize="15dp"
+                android:drawableLeft="@drawable/ic_cycle"
+                android:drawableTint="#E9967A"
+                android:text="Ngày hiện tại."/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:drawableLeft="@drawable/ic_cycle"
+                android:drawableTint="#ff0000"
+                android:textSize="15dp"
+                android:text="Ngày có thông báo."/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom">
+
+        <android.support.design.widget.BottomNavigationView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="#fff"
+            android:id="@+id/navigation"
+            design:menu="@menu/menu_navigation"
+            design:itemIconTint="@color/color_nav"
+            design:itemTextColor="@color/color_nav" />
+
+    </LinearLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>

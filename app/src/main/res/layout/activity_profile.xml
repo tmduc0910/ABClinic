@@ -3,251 +3,184 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:design="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ProfileActivity">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
+        android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Password"
-                android:textSize="17dp" />
+                android:background="@drawable/background_profile"
+                android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/usernameTxt"
-                android:layout_width="250dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="10dp"
-                android:background="@drawable/edt_login"
-                android:focusable="false"
-                android:hint=""
-                android:inputType="none"
-                android:padding="10dp"
-                android:cursorVisible="false"
-                android:enabled="false"
-                android:maxLines="1"
-                android:textColor="#000" />
+                <ImageView
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:src="@drawable/avatar"
+                    android:background="@drawable/imgprofile"
+                    android:id="@+id/avatar"
+                    android:layout_gravity="center"
+                    android:layout_margin="30dp"/>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/name"
+                        android:text="Ngô Bá Khá"
+                        android:layout_gravity="center"
+                        android:textColor="#fff"
+                        android:textSize="30dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_margin="10dp"
+                        android:weightSum = "3">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:padding="10dp"
+                            android:layout_height="wrap_content">
+                            <Button
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/settings"
+                                android:textColor="#fff"
+                                android:drawableLeft="@drawable/ic_setting"
+                                android:background="@color/transparent"
+                                android:gravity="center"
+                                android:text="Cài đặt"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:padding="10dp"
+                            android:layout_height="wrap_content">
+                            <Button
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/helps"
+                                android:textColor="#fff"
+                                android:drawableLeft="@drawable/ic_help"
+                                android:background="@color/transparent"
+                                android:gravity="center"
+                                android:text="Trợ giúp"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:padding="10dp"
+                            android:layout_height="wrap_content">
+                            <Button
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/exit"
+                                android:textColor="#fff"
+                                android:background="@color/transparent"
+                                android:drawableLeft="@drawable/ic_exit"
+                                android:gravity="center"
+                                android:text="Đăng xuất"/>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="60dp">
+
+                <TextView
+                    android:layout_width="300dp"
+                    android:id="@+id/sex"
+                    android:layout_height="wrap_content"
+                    style="@style/profile"
+                    android:drawableLeft="@drawable/ic_sex"
+                    android:text="Nam "/>
+
+                <TextView
+                    android:layout_width="300dp"
+                    android:id="@+id/phonenumber"
+                    android:layout_height="wrap_content"
+                    style="@style/profile"
+                    android:drawableLeft="@drawable/ic_phone"
+                    android:text="0648 854 986 "/>
+
+                <TextView
+                    android:layout_width="300dp"
+                    android:id="@+id/email"
+                    android:layout_height="wrap_content"
+                    style="@style/profile"
+                    android:drawableLeft="@drawable/ic_email"
+                    android:text="khabanhidol@gmail.com "/>
+
+
+                <TextView
+                    android:layout_width="300dp"
+                    android:id="@+id/address"
+                    android:layout_height="wrap_content"
+                    style="@style/profile"
+                    android:drawableLeft="@drawable/ic_address"
+                    android:text="Ha Noi, Viet Nam "/>
+
+
+                <Button
+                    android:layout_width="150dp"
+                    android:layout_height="50dp"
+                    android:text="Chỉnh sửa"
+                    android:id="@+id/show_edtbox"
+                    android:layout_marginTop="20dp"
+                    android:textColor="#fff"
+                    android:drawableLeft="@drawable/ic_creat"
+                    android:background="@drawable/btn_edit"
+                    android:textSize="15dp" />
+
+
+            </LinearLayout>
 
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Password"
-                android:textSize="17dp" />
-
-            <EditText
-                android:id="@+id/passwordTxt"
-                android:layout_width="250dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="10dp"
-                android:background="@drawable/edt_login"
-                android:focusable="false"
-                android:hint=""
-                android:inputType="none|textPassword"
-                android:padding="10dp"
-                android:maxLines="1"
-                android:textColor="#000" />
-
-            <ImageButton
-                android:id="@+id/toggleImg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="5dp"
-                android:background="@color/float_transparent"
-                android:src="@drawable/ic_show_password" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="ID"
-                android:textSize="17dp" />
-
-            <EditText
-                android:id="@+id/idTxt"
-                android:layout_width="250dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="70dp"
-                android:background="@drawable/edt_login"
-                android:focusable="false"
-                android:hint=""
-                android:inputType="none"
-                android:padding="10dp"
-                android:cursorVisible="false"
-                android:enabled="false"
-                android:maxLines="1"
-                android:textColor="#000" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Name"
-                android:textSize="17dp" />
-
-            <EditText
-                android:id="@+id/nameTxt"
-                android:layout_width="250dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="40dp"
-                android:background="@drawable/edt_login"
-                android:focusable="false"
-                android:hint=""
-                android:inputType="none"
-                android:padding="10dp"
-                android:cursorVisible="false"
-                android:enabled="false"
-                android:maxLines="1"
-                android:textColor="#000" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Gender"
-                android:textSize="17dp" />
-
-            <EditText
-                android:id="@+id/genderTxt"
-                android:layout_width="250dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="30dp"
-                android:background="@drawable/edt_login"
-                android:focusable="false"
-                android:hint=""
-                android:inputType="none"
-                android:padding="10dp"
-                android:cursorVisible="false"
-                android:enabled="false"
-                android:maxLines="1"
-                android:textColor="#000" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Email"
-                android:textSize="17dp" />
-
-            <EditText
-                android:id="@+id/emailTxt"
-                android:layout_width="250dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="45dp"
-                android:background="@drawable/edt_login"
-                android:hint=""
-                android:padding="10dp"
-                android:maxLines="1"
-                android:textColor="#000" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Phone"
-                android:textSize="17dp" />
-
-            <EditText
-                android:id="@+id/phoneTxt"
-                android:layout_width="250dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="40dp"
-                android:background="@drawable/edt_login"
-                android:hint=""
-                android:padding="10dp"
-                android:maxLines="1"
-                android:textColor="#000" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:gravity="center">
-
-            <Button
-                android:id="@+id/submitBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Submit" />
-        </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <android.support.design.widget.BottomNavigationView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:id="@+id/navigation"
+            android:background="#fff"
             design:menu="@menu/menu_navigation"
-            design:itemIconTint="@color/nav_color"
-            design:itemTextColor="@color/nav_color"
+            design:itemIconTint="@color/color_nav"
+            design:itemTextColor="@color/color_nav" />
 
-            />
     </LinearLayout>
-
 
 </android.support.design.widget.CoordinatorLayout>
