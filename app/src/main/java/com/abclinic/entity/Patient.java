@@ -4,17 +4,30 @@ import java.util.Date;
 
 public class Patient {
     private int id;
-    private int coordinatorId;
     private String uid;
-    private String avatar;
-    private String name;
-    private Date birthDate;
-    private String integer;
-    private String address;
-    private String preDisease;
     private String email;
     private String password;
-    private String phoneNumber;
+    private String name;
+    private int gender;
+    private Date birthday;
+    private String phone;
+    private String address;
+    private Date joinDate;
+    private Date createdAt;
+
+    public Patient(int id, String uid, String email, String password, String name, int gender, Date birthday, String phone, String address, Date joinDate, Date createdAt) {
+        this.id = id;
+        this.uid = uid;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.gender = gender;
+        this.birthday = birthday;
+        this.phone = phone;
+        this.address = address;
+        this.joinDate = joinDate;
+        this.createdAt = createdAt;
+    }
 
     public int getId() {
         return id;
@@ -24,68 +37,12 @@ public class Patient {
         this.id = id;
     }
 
-    public int getCoordinatorId() {
-        return coordinatorId;
-    }
-
-    public void setCoordinatorId(int coordinatorId) {
-        this.coordinatorId = coordinatorId;
-    }
-
     public String getUid() {
         return uid;
     }
 
     public void setUid(String uid) {
         this.uid = uid;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Date getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public String getInteger() {
-        return integer;
-    }
-
-    public void setInteger(String integer) {
-        this.integer = integer;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getPreDisease() {
-        return preDisease;
-    }
-
-    public void setPreDisease(String preDisease) {
-        this.preDisease = preDisease;
     }
 
     public String getEmail() {
@@ -104,13 +61,59 @@ public class Patient {
         this.password = password;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getName() {
+        return name;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setName(String name) {
+        this.name = name;
     }
 
+    public int getGender() {
+        return gender;
+    }
 
+    public void setGender(int gender) {
+        this.gender = gender;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Date getJoinDate() {
+        return joinDate;
+    }
+
+    public void setJoinDate(Date joinDate) {
+        this.joinDate = joinDate;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
 }
