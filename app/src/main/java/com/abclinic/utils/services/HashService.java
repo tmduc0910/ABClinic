@@ -13,9 +13,11 @@ public class HashService {
     private KeySpec spec;
     private SecretKeyFactory factory;
 
-    public SecureRandom setSecureRandom() {
+    public byte[] getSecureRandom() {
         random = new SecureRandom();
-        return random;
+        byte[] secureRandom = new byte[16];
+        random.nextBytes(secureRandom);
+        return secureRandom;
     }
 
     public byte[] hashPassword(String passwordToHash) throws InvalidKeySpecException {
@@ -34,5 +36,13 @@ public class HashService {
         }
 
         return factory.generateSecret(spec).getEncoded();
+    }
+
+    public String bytesToString(byte[] hashInBytes) {
+        StringBuilder sb = new StringBuilder();
+        for (byte b : hashInBytes) {
+            sb.append(String.format("%02x", b));
+        }
+        return sb.toString();
     }
 }

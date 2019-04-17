@@ -1,7 +1,5 @@
 package com.abclinic.entity;
 
-import java.util.Date;
-
 public class Patient {
     private int id;
     private String uid;
@@ -9,13 +7,13 @@ public class Patient {
     private String password;
     private String name;
     private int gender;
-    private Date birthday;
+    private String birthday;
     private String phone;
     private String address;
-    private Date joinDate;
-    private Date createdAt;
+    private String joinDate;
+    private String createdAt;
 
-    public Patient(int id, String uid, String email, String password, String name, int gender, Date birthday, String phone, String address, Date joinDate, Date createdAt) {
+    public Patient(int id, String uid, String email, String password, String name, int gender, String birthday, String phone, String address, String joinDate, String createdAt) {
         this.id = id;
         this.uid = uid;
         this.email = email;
@@ -77,11 +75,11 @@ public class Patient {
         this.gender = gender;
     }
 
-    public Date getBirthday() {
+    public String getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
 
@@ -101,19 +99,19 @@ public class Patient {
         this.address = address;
     }
 
-    public Date getJoinDate() {
+    public String getJoinDate() {
         return joinDate;
     }
 
-    public void setJoinDate(Date joinDate) {
+    public void setJoinDate(String joinDate) {
         this.joinDate = joinDate;
     }
 
-    public Date getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 }
