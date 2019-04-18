@@ -1,8 +1,10 @@
 package com.example.abclinic;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.abclinic.HighlightEvent;
 import com.example.abclinic.HistoryActivity;
@@ -23,6 +26,8 @@ import com.example.abclinic.UpLoadActivity;
 import java.util.ArrayList;
 
 public class NotificationActivity extends AppCompatActivity {
+
+    private long pressback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +73,8 @@ public class NotificationActivity extends AppCompatActivity {
                     case R.id.upload:
                         Intent intent_home = new Intent(NotificationActivity.this, UpLoadActivity.class);
                         startActivity(intent_home);
+                        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+
                         break;
                     case R.id.notifi:
 
@@ -75,10 +82,12 @@ public class NotificationActivity extends AppCompatActivity {
                     case R.id.history:
                         Intent intent_acc = new Intent(NotificationActivity.this, HistoryActivity.class);
                         startActivity(intent_acc);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_feft);
                         break;
                     case R.id.profile:
                         Intent intent_mess = new Intent(NotificationActivity.this, ProfileActivity.class);
                         startActivity(intent_mess);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_feft);
                         break;
                 }
                 return false;
@@ -119,4 +128,16 @@ public class NotificationActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        if (pressback +2000> System.currentTimeMillis()){
+            moveTaskToBack(true);
+            return;
+        } else {
+            Toast.makeText(this, "Nhấn thoát lại lần nữa", Toast.LENGTH_SHORT).show();
+        }
+
+        pressback = System.currentTimeMillis();
+
+    }
 }

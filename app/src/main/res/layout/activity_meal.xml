@@ -17,15 +17,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/nameview"
-            style="@style/MyEditTextStyle1"
+            android:textColor="#000"
+            android:textStyle="bold"
+            android:textSize="45dp"
             android:text="Loại"
             android:gravity="center"/>
         <Button
+            android:layout_marginRight="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/open_chat"
+            android:padding="10dp"
             android:layout_gravity="right"
+            android:background="#2196F3"
             android:drawableEnd="@drawable/ic_mess"
+            android:textColor="#fff"
             android:text="Chat"/>
         <LinearLayout
             android:layout_width="match_parent"

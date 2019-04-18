@@ -1,5 +1,7 @@
 package com.example.abclinic;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.app.DatePickerDialog;
@@ -36,6 +38,7 @@ public class UpLoadActivity extends AppCompatActivity {
     TimePickerDialog tpd;
 
     Button btnSubmit;
+    private long pressback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,14 +61,17 @@ public class UpLoadActivity extends AppCompatActivity {
                     case R.id.notifi:
                         Intent intent_mess = new Intent(UpLoadActivity.this, NotificationActivity.class);
                         startActivity(intent_mess);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_feft);
                         break;
                     case R.id.history:
                         Intent intent_notifi = new Intent(UpLoadActivity.this, HistoryActivity.class);
                         startActivity(intent_notifi);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_feft);
                         break;
                     case R.id.profile:
                         Intent intent_acc = new Intent(UpLoadActivity.this, ProfileActivity.class);
                         startActivity(intent_acc);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_feft);
                         break;
                 }
                 return false;
@@ -162,5 +168,19 @@ public class UpLoadActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         Bitmap bitmap = (Bitmap) data.getExtras().get(("data"));
         imageView.setImageBitmap(bitmap);
+    }
+
+    //set back press
+    @Override
+    public void onBackPressed() {
+        if (pressback +2000> System.currentTimeMillis()){
+            moveTaskToBack(true);
+            return;
+        } else {
+            Toast.makeText(this, "Nhấn thoát lại lần nữa", Toast.LENGTH_SHORT).show();
+        }
+
+        pressback = System.currentTimeMillis();
+
     }
 }

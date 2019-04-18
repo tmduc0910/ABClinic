@@ -1,8 +1,10 @@
 package com.example.abclinic;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -29,42 +31,12 @@ public class HistoryActivity extends AppCompatActivity {
     public GregorianCalendar cal_month, cal_month_copy;
     private Process hwAdapter;
     private TextView tv_month;
+    private long pressback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
-
-        //bottomnavigationbar
-        BottomNavigationView bottomNav = findViewById(R.id.navigation);
-        Menu menu = bottomNav.getMenu();
-        MenuItem menuItem = menu.getItem(2);
-        menuItem.setChecked(true);
-
-        bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.upload:
-                        Intent intent_acc = new Intent(HistoryActivity.this, UpLoadActivity.class);
-                        startActivity(intent_acc);
-                        break;
-                    case R.id.notifi:
-                        Intent intent_mess = new Intent(HistoryActivity.this, NotificationActivity.class);
-                        startActivity(intent_mess);
-                        break;
-                    case R.id.history:
-
-                        break;
-                    case R.id.profile:
-                        Intent intent_home = new Intent(HistoryActivity.this, ProfileActivity.class);
-                        startActivity(intent_home);
-                        break;
-                }
-                return false;
-            }
-        });
-
 
         HighlightEvent.date_collection_arr=new ArrayList<HighlightEvent>();
         HighlightEvent.date_collection_arr.add( new HighlightEvent("2019-04-14" ,"Dinh dưỡng","Holiday","this is holiday", false));
@@ -130,6 +102,41 @@ public class HistoryActivity extends AppCompatActivity {
             }
 
         });
+
+        //bottomnavigationbar
+        BottomNavigationView bottomNav = findViewById(R.id.navigation);
+        Menu menu = bottomNav.getMenu();
+        MenuItem menuItem = menu.getItem(2);
+        menuItem.setChecked(true);
+
+        bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.upload:
+                        Intent intent_acc = new Intent(HistoryActivity.this, UpLoadActivity.class);
+                        startActivity(intent_acc);
+                        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                        break;
+                    case R.id.notifi:
+                        Intent intent_mess = new Intent(HistoryActivity.this, NotificationActivity.class);
+                        startActivity(intent_mess);
+                        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                        break;
+                    case R.id.history:
+
+                        break;
+                    case R.id.profile:
+                        Intent intent_home = new Intent(HistoryActivity.this, ProfileActivity.class);
+                        startActivity(intent_home);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_feft);
+                        break;
+                }
+                return false;
+            }
+        });
+
+
     }
 
     protected void setNextMonth() {
@@ -151,11 +158,22 @@ public class HistoryActivity extends AppCompatActivity {
 
     }
 
-
     public void refreshCalendar() {
         hwAdapter.refreshDays();
         hwAdapter.notifyDataSetChanged();
         tv_month.setText(android.text.format.DateFormat.format("MMMM yyyy", cal_month));
     }
 
+    @Override
+    public void onBackPressed() {
+        if (pressback +2000> System.currentTimeMillis()){
+            moveTaskToBack(true);
+            return;
+        } else {
+            Toast.makeText(this, "Nhấn thoát lại lần nữa", Toast.LENGTH_SHORT).show();
+        }
+
+        pressback = System.currentTimeMillis();
+
+    }
 }

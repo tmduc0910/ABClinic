@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     Button loginBtn;
     EditText usernameEdt, passwordEdt, urlEdt;
     TextView statusTxt;
+    private long pressback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +43,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-//                Intent open = new Intent(MainActivity.this, UpLoadActivity.class);
-//                startActivity(open);
+                Intent open = new Intent(MainActivity.this, UpLoadActivity.class);
+               startActivity(open);
+                /*
                 String username = usernameEdt.getText().toString();
                 String password = passwordEdt.getText().toString();
                 String url = urlEdt.getText().toString();
@@ -53,12 +55,12 @@ public class MainActivity extends AppCompatActivity {
                         "    \"password\": \"" + password + "\"\n" +
                         "}";
                 new PostJSONTask().execute(postParam, "http://" + url + ":3000/auth/login");
-
+                */
             }
         });
     }
 
-
+/*
     private class PostJSONTask extends AsyncTask<String, Void, String> {
         private final String TAG = "DEBUG LOG";
         private RequestHandlingService requestHandler = new RequestHandlingService();
@@ -121,5 +123,18 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, "Đăng nhập thành công!", Toast.LENGTH_LONG).show();
         }
     }
+*/
 
+    @Override
+    public void onBackPressed() {
+        if (pressback +2000> System.currentTimeMillis()){
+            moveTaskToBack(true);
+            return;
+        } else {
+            Toast.makeText(this, "Nhấn thoát lại lần nữa", Toast.LENGTH_SHORT).show();
+        }
+
+        pressback = System.currentTimeMillis();
+
+    }
 }
