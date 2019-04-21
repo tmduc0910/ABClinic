@@ -19,6 +19,8 @@
             android:layout_height="wrap_content"
             android:background="#f0f8ff"
             android:orientation="vertical"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:padding="20dp">
 
 
@@ -140,7 +142,7 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/showDate"
+                            android:id="@+id/showDateText"
                             style="@style/MyEditTextStyle1"
                             android:layout_width="300dp"
                             android:layout_height="wrap_content"
@@ -149,7 +151,7 @@
                             android:hint=" ngày / tháng / năm" />
 
                         <Button
-                            android:id="@+id/btnPickDate"
+                            android:id="@+id/pickDateButton"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:background="@drawable/ic_showcalender" />

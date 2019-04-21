@@ -1,16 +1,14 @@
 package com.example.abclinic;
 
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,18 +19,15 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.example.abclinic.HistoryActivity;
-import com.example.abclinic.NotificationActivity;
-import com.example.abclinic.R;
-
 import java.util.Calendar;
+import java.util.Date;
 
 public class UpLoadActivity extends AppCompatActivity {
 
     ImageView imageView;
 
-    TextView showTime, showDate;
-    Button pickTime, pickDate;
+    TextView showTime, showDateTxt;
+    Button pickTime, pickDateBtn;
     Calendar c;
     DatePickerDialog dpd;
     TimePickerDialog tpd;
@@ -81,8 +76,8 @@ public class UpLoadActivity extends AppCompatActivity {
 
 
         // open camera
-        Button butCam = (Button)findViewById(R.id.butOpencam);
-        imageView = (ImageView)findViewById(R.id.imageView);
+        Button butCam = findViewById(R.id.butOpencam);
+        imageView = findViewById(R.id.imageView);
 
         butCam.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,14 +88,15 @@ public class UpLoadActivity extends AppCompatActivity {
         });
 
         //show date
-        showDate = (TextView) findViewById(R.id.showDate);
-        pickDate = (Button) findViewById(R.id.btnPickDate);
+        showDateTxt = findViewById(R.id.showDateText);
+        pickDateBtn = findViewById(R.id.pickDateButton);
 
-        pickDate.setOnClickListener(new View.OnClickListener() {
+        pickDateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 c = Calendar.getInstance();
+                c.setTime(new Date());
                 int day = c.get(Calendar.DAY_OF_MONTH);
                 int month = c.get(Calendar.MONTH);
                 int year = c.get(Calendar.YEAR);
@@ -108,9 +104,10 @@ public class UpLoadActivity extends AppCompatActivity {
                 dpd = new DatePickerDialog(UpLoadActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int mYear, int mMonth, int mDay) {
-                        showDate.setText(mDay + "/" + (mMonth+1) + "/" + mYear);
+                        showDateTxt.setText(mDay + "/" + (mMonth + 1) + "/" + mYear);
                     }
-                }, day, month, year);
+                }, year, month, day);
+
                 dpd.show();
 
             }
@@ -120,8 +117,8 @@ public class UpLoadActivity extends AppCompatActivity {
 
 
         //showTime
-        showTime = (TextView) findViewById(R.id.showTime);
-        pickTime = (Button) findViewById(R.id.btnPickTime);
+        showTime = findViewById(R.id.showTime);
+        pickTime = findViewById(R.id.btnPickTime);
 
         pickTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,7 +140,7 @@ public class UpLoadActivity extends AppCompatActivity {
         });
 
         //submit
-        btnSubmit = (Button) findViewById(R.id.submit);
+        btnSubmit = findViewById(R.id.submit);
         btnSubmit.setOnClickListener(new Button.OnClickListener() {
 
             @Override
