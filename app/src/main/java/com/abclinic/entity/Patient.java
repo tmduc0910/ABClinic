@@ -11,7 +11,7 @@ public class Patient {
     private String phone;
     private String address;
     private String joinDate;
-    private String createdAt;
+    private String createdDate;
 
     public Patient(int id, String uid, String email, String password, String name, int gender, String birthday, String phone, String address, String joinDate, String createdAt) {
         this.id = id;
@@ -24,8 +24,12 @@ public class Patient {
         this.phone = phone;
         this.address = address;
         this.joinDate = joinDate;
-        this.createdAt = createdAt;
+        this.createdDate = createdAt;
     }
+
+    public Patient() {
+
+    };
 
     public int getId() {
         return id;
@@ -107,11 +111,11 @@ public class Patient {
         this.joinDate = joinDate;
     }
 
-    public String getCreatedAt() {
-        return createdAt;
+    public String getCreatedDate() {
+        return createdDate;
     }
 
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
     }
 }

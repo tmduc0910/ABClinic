@@ -23,7 +23,7 @@
 
         <EditText
             android:layout_width="220dp"
-            android:id="@+id/edtphonenumber"
+            android:id="@+id/phoneNumberEdit"
             android:layout_height="wrap_content"
             style="@style/edit_profile"
             android:drawableLeft="@drawable/ic_phone"
@@ -40,7 +40,7 @@
 
         <EditText
             android:layout_width="220dp"
-            android:id="@+id/edtaddress"
+            android:id="@+id/addressEdit"
             android:layout_height="wrap_content"
             style="@style/edit_profile"
             android:drawableLeft="@drawable/ic_address"
@@ -57,7 +57,7 @@
                 android:layout_width="120dp"
                 android:layout_height="50dp"
                 android:text="Hủy bỏ"
-                android:id="@+id/cancel_edit"
+                android:id="@+id/cancelButton"
                 android:layout_marginTop="20dp"
                 android:textColor="#000"
                 android:textSize="10dp" />
@@ -65,7 +65,7 @@
             <Button
                 android:layout_width="120dp"
                 android:layout_height="50dp"
-                android:id="@+id/accept_edit"
+                android:id="@+id/acceptButton"
                 android:text="Đồng ý"
                 android:layout_marginTop="20dp"
                 android:textColor="#000"

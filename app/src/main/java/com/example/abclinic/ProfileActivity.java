@@ -1,8 +1,9 @@
 package com.example.abclinic;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AlertDialog;
@@ -13,49 +14,44 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.abclinic.HistoryActivity;
-import com.example.abclinic.MainActivity;
-import com.example.abclinic.NotificationActivity;
-import com.example.abclinic.R;
-import com.example.abclinic.UpLoadActivity;
+import com.abclinic.enums.Gender;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    Button setting, help, exit, edtprofile, accept, cancel;
-    EditText edtphonenumber,edtemail, edtaddress;
-    TextView  phonenumber,email, address;
-    private long pressback;
+    Button settingBtn, helpBtn, exitBtn, profileBtn, acceptBtn, cancelBtn;
+    EditText phoneNumberEdt, emailEdt, addressEdt;
+    TextView nameTxt, phoneNumberTxt, emailTxt, addressTxt, joinDateTxt, genderTxt;
+    private long pressBack;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        //setting button
-        setting = (Button) this.findViewById(R.id.settings);
+        //settingBtn button
+        settingBtn = (Button) this.findViewById(R.id.settings);
 
-        //help button
-        help = (Button) this.findViewById(R.id.helps);
-        help.setOnClickListener(new View.OnClickListener() {
+        //helpBtn button
+        helpBtn = (Button) this.findViewById(R.id.helps);
+        helpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new SweetAlertDialog(ProfileActivity.this)
-                        .setTitleText("Thôn tin liên hệ:")
+                        .setTitleText("Thông tin liên hệ:")
                         .setContentText("Số điện thoại: 09658 235 458\nEmail: abc@gmail.com")
                         .show();
             }
         });
 
-        //exit button
-        exit = (Button) this.findViewById(R.id.exit);
-        exit.setOnClickListener(new Button.OnClickListener() {
+        //exitBtn button
+        exitBtn = (Button) this.findViewById(R.id.exit);
+        exitBtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v){
                 final AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
@@ -80,35 +76,53 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
         //edit profile
-        phonenumber = (TextView) this.findViewById(R.id.phonenumber);
-        email = (TextView) this.findViewById(R.id.email);
-        address = (TextView) this.findViewById(R.id.address);
+        nameTxt = this.findViewById(R.id.name);
+        genderTxt = this.findViewById(R.id.gender);
+        phoneNumberTxt = (TextView) this.findViewById(R.id.phoneNumber);
+        emailTxt = (TextView) this.findViewById(R.id.email);
+        addressTxt = (TextView) this.findViewById(R.id.address);
+        joinDateTxt = this.findViewById(R.id.joinDate);
 
-        edtprofile = (Button) this.findViewById(R.id.show_edtbox);
-        edtprofile.setOnClickListener(new View.OnClickListener() {
+        sharedPreferences = getSharedPreferences("userAccount", Context.MODE_PRIVATE);
+        String nameValue = sharedPreferences.getString("Name", "");
+        String genderValue = Gender.toString(Gender.toGender(sharedPreferences.getInt("Gender", 0)));
+        String phoneValue = sharedPreferences.getString("Phone", "");
+        String emailValue = sharedPreferences.getString("Email", "");
+        String addressValue = sharedPreferences.getString("Address", "");
+        String joinDateValue = sharedPreferences.getString("JoinDate", "");
+
+        nameTxt.setText(nameValue);
+        genderTxt.setText(genderValue);
+        phoneNumberTxt.setText(phoneValue);
+        emailTxt.setText(emailValue);
+        addressTxt.setText(addressValue);
+        joinDateTxt.setText("Khám từ ngày: " + joinDateValue);
+
+        profileBtn = (Button) this.findViewById(R.id.editInfoButton);
+        profileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
-                View viewdialog = getLayoutInflater().inflate(R.layout.dialog_editprofile, null);
-                edtphonenumber = (EditText) viewdialog.findViewById(R.id.edtphonenumber);
-                edtemail = (EditText) viewdialog.findViewById(R.id.edtemail);
-                edtaddress = (EditText) viewdialog.findViewById(R.id.edtaddress);
+                View dialogView = getLayoutInflater().inflate(R.layout.dialog_edit_profile, null);
+                phoneNumberEdt = (EditText) dialogView.findViewById(R.id.phoneNumberEdit);
+                emailEdt = (EditText) dialogView.findViewById(R.id.edtemail);
+                addressEdt = (EditText) dialogView.findViewById(R.id.addressEdit);
 
-                accept = (Button) viewdialog.findViewById(R.id.accept_edit);
-                cancel = (Button) viewdialog.findViewById(R.id.cancel_edit);
+                acceptBtn = (Button) dialogView.findViewById(R.id.acceptButton);
+                cancelBtn = (Button) dialogView.findViewById(R.id.cancelButton);
 
-                builder.setView(viewdialog);
-                final  AlertDialog dialog =builder.create();
+                builder.setView(dialogView);
+                final AlertDialog dialog = builder.create();
                 dialog.show();
 
-                accept.setOnClickListener(new View.OnClickListener() {
+                acceptBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(!edtphonenumber.getText().toString().isEmpty() && !edtemail.getText().toString().isEmpty()
-                                && !edtaddress.getText().toString().isEmpty()){
-                            phonenumber.setText(edtphonenumber.getText().toString());
-                            email.setText(edtemail.getText().toString());
-                            address.setText(edtaddress.getText().toString());
+                        if(!phoneNumberEdt.getText().toString().isEmpty() && !emailEdt.getText().toString().isEmpty()
+                                && !addressEdt.getText().toString().isEmpty()){
+                            phoneNumberTxt.setText(phoneNumberEdt.getText().toString());
+                            emailTxt.setText(emailEdt.getText().toString());
+                            addressTxt.setText(addressEdt.getText().toString());
 
                             new SweetAlertDialog(ProfileActivity.this, SweetAlertDialog.SUCCESS_TYPE)
                                     .setTitleText("Thành công!")
@@ -125,7 +139,7 @@ public class ProfileActivity extends AppCompatActivity {
                     }
                 });
 
-                cancel.setOnClickListener(new View.OnClickListener() {
+                cancelBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         dialog.dismiss();
@@ -145,18 +159,18 @@ public class ProfileActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.upload:
-                        Intent intent_home = new Intent(ProfileActivity.this, UpLoadActivity.class);
-                        startActivity(intent_home);
+                        Intent homeIntent = new Intent(ProfileActivity.this, UpLoadActivity.class);
+                        startActivity(homeIntent);
                         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                         break;
                     case R.id.notifi:
-                        Intent intent_mess = new Intent(ProfileActivity.this, NotificationActivity.class);
-                        startActivity(intent_mess);
+                        Intent messIntent = new Intent(ProfileActivity.this, NotificationActivity.class);
+                        startActivity(messIntent);
                         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                         break;
                     case R.id.history:
-                        Intent intent_acc = new Intent(ProfileActivity.this, HistoryActivity.class);
-                        startActivity(intent_acc);
+                        Intent historyIntent = new Intent(ProfileActivity.this, HistoryActivity.class);
+                        startActivity(historyIntent);
                         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                         break;
                     case R.id.profile:
@@ -171,14 +185,14 @@ public class ProfileActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (pressback +2000> System.currentTimeMillis()){
+        if (pressBack + 2000 > System.currentTimeMillis()){
             moveTaskToBack(true);
             return;
         } else {
             Toast.makeText(this, "Nhấn thoát lại lần nữa", Toast.LENGTH_SHORT).show();
         }
 
-        pressback = System.currentTimeMillis();
+        pressBack = System.currentTimeMillis();
 
     }
 }

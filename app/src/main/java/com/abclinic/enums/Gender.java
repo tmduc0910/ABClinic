@@ -18,4 +18,13 @@ public enum Gender {
         }
     }
 
+    public static String toString(Gender gender) {
+        switch (gender) {
+            case MALE: return "Nam";
+            case FEMALE: return "Nữ";
+            case OTHER: return "Khác";
+            default: return "";
+        }
+    }
+
 }

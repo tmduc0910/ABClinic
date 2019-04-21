@@ -113,7 +113,7 @@ class Process extends BaseAdapter {
             dayView.setClickable(false);
             dayView.setFocusable(false);
         } else {
-            // setting curent month's days in blue color.
+            // settingBtn curent month's days in blue color.
             dayView.setTextColor(Color.parseColor("#696969"));
         }
 

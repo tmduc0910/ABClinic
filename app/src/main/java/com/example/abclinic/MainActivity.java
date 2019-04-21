@@ -7,15 +7,17 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.abclinic.test.login.Account;
+import com.abclinic.entity.Patient;
 import com.abclinic.utils.services.JsonJavaConvertingService;
 import com.abclinic.utils.services.RequestHandlingService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.io.IOException;
 
@@ -24,9 +26,10 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class MainActivity extends AppCompatActivity {
     Button loginBtn;
-    EditText usernameEdt, passwordEdt, urlEdt;
+    EditText emailEdt, passwordEdt, urlEdt;
     TextView statusTxt;
-    private long pressback;
+    private long pressBack;
+    private final String TAG = "DEBUG LOG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         loginBtn = findViewById(R.id.loginButton);
-        usernameEdt = findViewById(R.id.usernameEdit);
+        emailEdt = findViewById(R.id.emailEdit);
         passwordEdt = findViewById(R.id.passwordEdit);
         urlEdt = findViewById(R.id.urlEdit);
         statusTxt = findViewById(R.id.statusText);
@@ -43,24 +46,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent open = new Intent(MainActivity.this, UpLoadActivity.class);
-               startActivity(open);
-                /*
-                String username = usernameEdt.getText().toString();
+//                Intent open = new Intent(MainActivity.this, UpLoadActivity.class);
+//                startActivity(open);
+                String email = emailEdt.getText().toString();
                 String password = passwordEdt.getText().toString();
                 String url = urlEdt.getText().toString();
 
                 String postParam = "{\n" +
-                        "    \"username\": \"" + username + "\",\n" +
-                        "    \"password\": \"" + password + "\"\n" +
+                        "    \"email\": \"" + email.trim() + "\",\n" +
+                        "    \"password\": \"" + password.trim() + "\"\n" +
                         "}";
+                //Log.d(TAG, postParam);
                 new PostJSONTask().execute(postParam, "http://" + url + ":3000/auth/login");
-                */
+
             }
         });
     }
 
-/*
+
     private class PostJSONTask extends AsyncTask<String, Void, String> {
         private final String TAG = "DEBUG LOG";
         private RequestHandlingService requestHandler = new RequestHandlingService();
@@ -80,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(String... strings) {
             try {
                 //Log.d(TAG, "EXECUTING");
-                return requestHandler.postRequest(strings[0], strings[1]);
+                return requestHandler.postRequest(strings[0].trim(), strings[1]);
             } catch (IOException e) {
                 return "Unable to retrieve data";
             }
@@ -90,14 +93,21 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String result) {
             progressDialog.dismiss();
             if (result != null) {
-                Account account;
-                account = (Account) converter.mapJsonToObject(result, Account.class);
+                Log.d(TAG, result);
+                Patient patient;
+                try {
+                    patient = (Patient) converter.mapJsonToObjectsWithStatus(result, Patient.class).get(1);
+
+                    saveUserData(patient);
+
+                    Intent uploadIntent = new Intent(MainActivity.this, UpLoadActivity.class);
+                    startActivity(uploadIntent);
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
                 //statusTxt.setText(account.toString());
 
-                saveUserData(account);
 
-                Intent uploadIntent = new Intent(MainActivity.this, UpLoadActivity.class);
-                startActivity(uploadIntent);
                 //Log.d(TAG, result);
             } else {
                 statusTxt.setText("FAILED! USERNAME OR PASSWORD NOT MATCHED!\n");
@@ -106,35 +116,40 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        private void saveUserData(Account account) {
+        private void saveUserData(Patient patient) {
             SharedPreferences sharedPreferences = getSharedPreferences("userAccount", Context.MODE_PRIVATE);
 
             SharedPreferences.Editor editor = sharedPreferences.edit();
 
-            editor.putString("Username", account.getUsername());
-            editor.putString("Password", account.getPassword());
-            editor.putInt("Id", account.getId());
-            editor.putString("Name", account.getName());
-            editor.putString("Gender", account.getGender());
-            editor.putString("Email", account.getEmail());
-            editor.putString("Phone", account.getPhone());
+            //TODO: tự động lấy các attribute và gán vào editor?
+
+            editor.putInt("Id", patient.getId());
+            editor.putString("Uid", patient.getUid());
+            editor.putString("Email", patient.getEmail());
+            editor.putString("Password", patient.getPassword());
+            editor.putString("Name", patient.getName());
+            editor.putInt("Gender", patient.getGender());
+            editor.putString("Birthday", patient.getBirthday());
+            editor.putString("Phone", patient.getPhone());
+            editor.putString("Address", patient.getAddress());
+            editor.putString("JoinDate", patient.getJoinDate());
+            editor.putString("CreatedAt", patient.getCreatedDate());
 
             editor.commit();
             Toast.makeText(MainActivity.this, "Đăng nhập thành công!", Toast.LENGTH_LONG).show();
         }
     }
-*/
 
     @Override
     public void onBackPressed() {
-        if (pressback +2000> System.currentTimeMillis()){
+        if (pressBack +2000> System.currentTimeMillis()){
             moveTaskToBack(true);
             return;
         } else {
             Toast.makeText(this, "Nhấn thoát lại lần nữa", Toast.LENGTH_SHORT).show();
         }
 
-        pressback = System.currentTimeMillis();
+        pressBack = System.currentTimeMillis();
 
     }
 }

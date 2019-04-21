@@ -1,22 +1,30 @@
 {
   "users": [
     {
-      "username": "admin",
-      "password": "123456",
       "id": 100,
-      "email": "abc@mail.com",
-      "name": "a b c",
-      "gender": "male",
-      "phone": "0123444555"
+      "uid": "MH370",
+      "email": "email1@mail.com",
+      "password": "pass",
+      "name": "a b c ",
+      "gender": 1,
+      "birthday": "1997-10-09",
+      "phone": "0123456667",
+      "joinDate": "2019-03-01",
+      "createdDate": "2019-04-01",
+      "address": "Somewhere"
     },
     {
-      "username": "admin2",
-      "password": "abcxyz",
-      "id": 200,
-      "email": "xyz@mail.com",
+      "id": 101,
+      "uid": "MH375",
+      "email": "email2@mail.com",
+      "password": "",
       "name": "x y z",
-      "gender": "female",
-      "phone": "0123456789"
+      "gender": 2,
+      "birthday": "1992-10-09",
+      "phone": "0123456789",
+      "joinDate": "2019-04-01",
+      "createdDate": "2019-05-01",
+      "address": "Somewhere near"
     }
   ]
 }

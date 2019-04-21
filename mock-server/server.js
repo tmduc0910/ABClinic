@@ -10,22 +10,40 @@ server.use(jsonServer.defaults())
 server.use(bodyParser.urlencoded({extended: true}))
 server.use(bodyParser.json())
 
+//Check if the user account is correct in database
+function isAuthenticated({email, password}) {
+    return userdb.users.findIndex(user => user.email === email && user.password === password) !== -1 
+}
+
 //Check if the user exist in database
-function isAuthenticated({username, password}) {
-    return userdb.users.findIndex(user => user.username === username && user.password === password) !== -1 
+function isExist(email) {
+    return userdb.users.findIndex(user => user.email === email) !== -1
 }
 
 server.post('/auth/login', (req, res) => {
-    const {username, password} = req.body
-    if (isAuthenticated({username, password}) === false) {
+    const {email, password} = req.body
+    if (isAuthenticated({email, password}) === false) {
         const status = 401
-        const message = 'Incorrect username or password'
+        const message = 'Incorrect email or password'
         res.status(status).json({status, message})
         return
     }
 
-    let user = userdb.users[userdb.users.findIndex(user => user.username === username && user.password === password)]
-    res.status(201).json({ username: user.username, password: user.password, name: user.name, email: user.email, gender: user.gender, phone: user.phone });
+    let user = userdb.users[userdb.users.findIndex(user => user.email === email && user.password === password)]
+    res.status(201).json({ status: 201, data: { id: user.id, uid: user.uid, email: user.email, password: user.password, name: user.name, gender: user.gender, birthday: user.birthday, phone: user.phone, joinDate: user.joinDate, createdDate: user.createdDate, address: user.address }});
+})
+
+server.post('/auth/get-salt', (req, res) => {
+    const {email} = req.body
+    if (isExist(email) === false) {
+        const status = 401
+        const message = 'Email has not been registered yet!'
+        res.status(status).json({status, message})
+        return
+    }
+
+    let user = userdb.users[userdb.users.findIndex(user => user.email === email)]
+    res.status(201).json({ status: 200, salt: user.salt});
 })
 
 server.use(router)

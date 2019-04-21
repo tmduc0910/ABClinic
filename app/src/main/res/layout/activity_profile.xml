@@ -25,7 +25,7 @@
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:src="@drawable/avatar"
-                    android:background="@drawable/imgprofile"
+                    android:background="@drawable/profile_image"
                     android:id="@+id/avatar"
                     android:layout_gravity="center"
                     android:layout_margin="30dp"/>
@@ -40,7 +40,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/name"
-                        android:text="Ngô Bá Khá"
+                        android:text=""
                         android:layout_gravity="center"
                         android:textColor="#fff"
                         android:textSize="30dp"/>
@@ -116,19 +116,19 @@
 
                 <TextView
                     android:layout_width="300dp"
-                    android:id="@+id/sex"
+                    android:id="@+id/gender"
                     android:layout_height="wrap_content"
                     style="@style/profile"
-                    android:drawableLeft="@drawable/ic_sex"
-                    android:text="Nam "/>
+                    android:drawableLeft="@drawable/ic_gender"
+                    android:text=""/>
 
                 <TextView
                     android:layout_width="300dp"
-                    android:id="@+id/phonenumber"
+                    android:id="@+id/phoneNumber"
                     android:layout_height="wrap_content"
                     style="@style/profile"
                     android:drawableLeft="@drawable/ic_phone"
-                    android:text="0648 854 986 "/>
+                    android:text=""/>
 
                 <TextView
                     android:layout_width="300dp"
@@ -136,7 +136,7 @@
                     android:layout_height="wrap_content"
                     style="@style/profile"
                     android:drawableLeft="@drawable/ic_email"
-                    android:text="khabanhidol@gmail.com "/>
+                    android:text=""/>
 
 
                 <TextView
@@ -145,17 +145,24 @@
                     android:layout_height="wrap_content"
                     style="@style/profile"
                     android:drawableLeft="@drawable/ic_address"
-                    android:text="Ha Noi, Viet Nam "/>
+                    android:text=""/>
 
+                <TextView
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/joinDate"
+                    style="@style/profile"
+                    android:drawableLeft="@drawable/ic_globe"
+                    android:text=""/>
 
                 <Button
                     android:layout_width="150dp"
                     android:layout_height="50dp"
                     android:text="Chỉnh sửa"
-                    android:id="@+id/show_edtbox"
+                    android:id="@+id/editInfoButton"
                     android:layout_marginTop="20dp"
                     android:textColor="#fff"
-                    android:drawableLeft="@drawable/ic_creat"
+                    android:drawableLeft="@drawable/ic_edit_info"
                     android:background="@drawable/btn_edit"
                     android:textSize="15dp" />
 
