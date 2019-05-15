@@ -46,9 +46,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-//                Intent open = new Intent(MainActivity.this, UpLoadActivity.class);
-//                startActivity(open);
-                String email = emailEdt.getText().toString();
+                startActivity(new Intent(MainActivity.this, UpLoadActivity.class));
+  /*              String email = emailEdt.getText().toString();
                 String password = passwordEdt.getText().toString();
                 String url = urlEdt.getText().toString();
 
@@ -59,12 +58,12 @@ public class MainActivity extends AppCompatActivity {
                 //Log.d(TAG, postParam);
                 new PostJSONTask().execute(postParam, "http://" + url + ":3000/auth/login");
 
-            }
+            */}
         });
     }
 
 
-    private class PostJSONTask extends AsyncTask<String, Void, String> {
+/*    private class PostJSONTask extends AsyncTask<String, Void, String> {
         private final String TAG = "DEBUG LOG";
         private RequestHandlingService requestHandler = new RequestHandlingService();
         private JsonJavaConvertingService converter = new JsonJavaConvertingService();
@@ -138,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
             editor.commit();
             Toast.makeText(MainActivity.this, "Đăng nhập thành công!", Toast.LENGTH_LONG).show();
         }
-    }
+    } */
 
     @Override
     public void onBackPressed() {

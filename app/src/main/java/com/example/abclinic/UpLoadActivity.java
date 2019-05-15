@@ -4,11 +4,13 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,8 +24,11 @@ import android.widget.Toast;
 import java.util.Calendar;
 import java.util.Date;
 
-public class UpLoadActivity extends AppCompatActivity {
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
+public class UpLoadActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener{
+
+    Uri imageUri;
     ImageView imageView;
 
     TextView showTime, showDateTxt;
@@ -54,18 +59,15 @@ public class UpLoadActivity extends AppCompatActivity {
 
                         break;
                     case R.id.notifi:
-                        Intent intent_mess = new Intent(UpLoadActivity.this, NotificationActivity.class);
-                        startActivity(intent_mess);
+                        startActivity(new Intent(UpLoadActivity.this, NotificationActivity.class));
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_feft);
                         break;
                     case R.id.history:
-                        Intent intent_notifi = new Intent(UpLoadActivity.this, HistoryActivity.class);
-                        startActivity(intent_notifi);
+                        startActivity(new Intent(UpLoadActivity.this, HistoryActivity.class));
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_feft);
                         break;
                     case R.id.profile:
-                        Intent intent_acc = new Intent(UpLoadActivity.this, ProfileActivity.class);
-                        startActivity(intent_acc);
+                        startActivity(new Intent(UpLoadActivity.this, ProfileActivity.class));
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_feft);
                         break;
                 }
@@ -73,19 +75,8 @@ public class UpLoadActivity extends AppCompatActivity {
             }
         });
 
-
-
-        // open camera
-        Button butCam = findViewById(R.id.butOpencam);
+        // display image from camera capture
         imageView = findViewById(R.id.imageView);
-
-        butCam.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intentOpencam = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intentOpencam, 0);
-            }
-        });
 
         //show date
         showDateTxt = findViewById(R.id.showDateText);
@@ -111,10 +102,7 @@ public class UpLoadActivity extends AppCompatActivity {
                 dpd.show();
 
             }
-
-
         });
-
 
         //showTime
         showTime = findViewById(R.id.showTime);
@@ -149,22 +137,53 @@ public class UpLoadActivity extends AppCompatActivity {
                 switch (v.getId())
                 {
                     case R.id.submit:
-                        Toast.makeText(UpLoadActivity.this, "Thành công!", Toast.LENGTH_SHORT).show();
+                        new SweetAlertDialog(UpLoadActivity.this, SweetAlertDialog.SUCCESS_TYPE)
+                                .setTitleText("Thành công!")
+                                .show();
                         break;
                 }
 
             }});
-
-
-
     }
 
-    //save picture
+    //popup menu to upload image
+    public void showPopup(View v) {
+        PopupMenu popup = new PopupMenu(UpLoadActivity.this, v);
+        popup.setOnMenuItemClickListener(UpLoadActivity.this);
+        popup.inflate(R.menu.popup_menu);
+        popup.show();
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.open_camera:
+                startActivityForResult(new Intent( MediaStore.ACTION_IMAGE_CAPTURE), 0);
+                break;
+            case R.id.open_library:
+                startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI), 1);
+                break;
+        }
+        return false;
+    }
+
+    //save cameracapture
     @Override
     protected  void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
-        Bitmap bitmap = (Bitmap) data.getExtras().get(("data"));
-        imageView.setImageBitmap(bitmap);
+
+        switch (requestCode){
+            case 0:
+                Bitmap bitmap = (Bitmap) data.getExtras().get(("data"));
+                imageView.setImageBitmap(bitmap);
+                break;
+            case 1:
+                if (resultCode == RESULT_OK ){
+                    imageUri = data.getData();
+                    imageView.setImageURI(imageUri);
+                }
+                break;
+        }
     }
 
     //set back press

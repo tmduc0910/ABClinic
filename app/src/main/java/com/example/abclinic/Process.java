@@ -30,6 +30,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 class Process extends BaseAdapter {
     private Activity context;
 
@@ -175,8 +177,7 @@ class Process extends BaseAdapter {
 
     private int getMaxP() {
         int maxP;
-        if (month.get(GregorianCalendar.MONTH) == month
-                .getActualMinimum(GregorianCalendar.MONTH)) {
+        if (month.get(GregorianCalendar.MONTH) == month.getActualMinimum(GregorianCalendar.MONTH)) {
             pmonth.set((month.get(GregorianCalendar.YEAR) - 1),
                     month.getActualMaximum(GregorianCalendar.MONTH), 1);
         } else {
@@ -238,8 +239,9 @@ class Process extends BaseAdapter {
             dialogs.show();
 
         } else {
-            Toast.makeText( act, "Không có thông báo!", Toast.LENGTH_SHORT).show();
-        }
+            new SweetAlertDialog(act)
+                    .setTitleText("Không có thông báo!")
+                    .show();        }
 
     }
 

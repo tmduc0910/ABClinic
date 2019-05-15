@@ -83,7 +83,7 @@ public class ProfileActivity extends AppCompatActivity {
         addressTxt = (TextView) this.findViewById(R.id.address);
         joinDateTxt = this.findViewById(R.id.joinDate);
 
-        sharedPreferences = getSharedPreferences("userAccount", Context.MODE_PRIVATE);
+ /*       sharedPreferences = getSharedPreferences("userAccount", Context.MODE_PRIVATE);
         String nameValue = sharedPreferences.getString("Name", "");
         String genderValue = Gender.toString(Gender.toGender(sharedPreferences.getInt("Gender", 0)));
         String phoneValue = sharedPreferences.getString("Phone", "");
@@ -97,7 +97,7 @@ public class ProfileActivity extends AppCompatActivity {
         emailTxt.setText(emailValue);
         addressTxt.setText(addressValue);
         joinDateTxt.setText("Khám từ ngày: " + joinDateValue);
-
+*/
         profileBtn = (Button) this.findViewById(R.id.editInfoButton);
         profileBtn.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -3,24 +3,24 @@
 
     <item
         android:id="@+id/upload"
-        android:title="Upload"
+        android:title="Đăng"
         android:icon="@drawable/ic_upload"
 
         />
     <item
         android:id="@+id/notifi"
-        android:title="Message"
+        android:title="Thông báo"
         android:icon="@drawable/ic_notifi"
 
         />
     <item
         android:id="@+id/history"
-        android:title="Notification"
+        android:title="Lịch sử"
         android:icon="@drawable/ic_invitation"
         />
     <item
         android:id="@+id/profile"
-        android:title="Profile"
+        android:title="Người dùng"
         android:icon="@drawable/ic_account"
         />
 
