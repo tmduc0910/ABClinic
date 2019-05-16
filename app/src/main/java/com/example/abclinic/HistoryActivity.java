@@ -1,29 +1,41 @@
 package com.example.abclinic;
 
-import android.content.DialogInterface;
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.abclinic.HighlightEvent;
-import com.example.abclinic.NotificationActivity;
-import com.example.abclinic.ProfileActivity;
-import com.example.abclinic.R;
-import com.example.abclinic.UpLoadActivity;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 
 public class HistoryActivity extends AppCompatActivity {
@@ -38,24 +50,14 @@ public class HistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
 
-        HighlightEvent.date_collection_arr=new ArrayList<HighlightEvent>();
-        HighlightEvent.date_collection_arr.add( new HighlightEvent("2019-04-14" ,"Dinh dưỡng","Holiday","this is holiday", false));
-        HighlightEvent.date_collection_arr.add( new HighlightEvent("2019-04-10" ,"Dinh dưỡng","Holiday","this is holiday", false));
-        HighlightEvent.date_collection_arr.add( new HighlightEvent("2019-04-08" ,"Khám bệnh","Holiday","this is holiday", false));
-        HighlightEvent.date_collection_arr.add( new HighlightEvent("2019-03-22" ,"Dinh dưỡng","Holiday","this is holiday", false));
-        HighlightEvent.date_collection_arr.add( new HighlightEvent("2019-03-21" ,"Khám bệnh","Holiday","this is holiday", false));
-        HighlightEvent.date_collection_arr.add( new HighlightEvent("2019-03-15" ,"Dinh dưỡng","Holiday","this is holiday", false));
-        HighlightEvent.date_collection_arr.add( new HighlightEvent("2019-03-02" ,"Khám bệnh","Holiday","this is holiday", false));
-        HighlightEvent.date_collection_arr.add( new HighlightEvent("2019-02-01" ,"Khám bệnh","Holiday","this is holiday", false));
-        HighlightEvent.date_collection_arr.add( new HighlightEvent("2019-02-25" ,"Khám bệnh","Holiday","this is holiday", false));
-        HighlightEvent.date_collection_arr.add( new HighlightEvent("2019-02-03" ,"Dinh dưỡng","Holiday","this is holiday", false));
-        HighlightEvent.date_collection_arr.add( new HighlightEvent("2019-01-14" ,"Dinh dưỡng","Holiday","this is holiday", false));
-        HighlightEvent.date_collection_arr.add( new HighlightEvent("2019-01-09" ,"Dinh dưỡng","Holiday","this is holiday", false));
-
+        ItemMeal.add_item=new ArrayList<ItemMeal>();
+        ItemMeal.add_item.add(new ItemMeal("2019-05-05", "Dinh dưỡng", "bệnh nhân cần hạn chế ăn thức ăn chứa nhiều tinh bột", new int[]{R.drawable.meal01, R.drawable.meal02}));
+        ItemMeal.add_item.add(new ItemMeal("2019-05-05", "Khám bệnh", "bệnh nhân cần hạn chế ăn thức ăn chứa nhiều tinh bột", new int[]{R.drawable.meal01, R.drawable.meal02}));
+        ItemMeal.add_item.add(new ItemMeal("2019-05-02", "Khám bệnh", "bệnh nhân cần hạn chế ăn thức ăn chứa nhiều tinh bột", new int[]{R.drawable.meal01, R.drawable.meal02}));
 
         cal_month = (GregorianCalendar) GregorianCalendar.getInstance();
         cal_month_copy = (GregorianCalendar) cal_month.clone();
-        hwAdapter = new Process(this, cal_month, HighlightEvent.date_collection_arr);
+        hwAdapter = new Process(this, cal_month, ItemMeal.add_item);
 
         tv_month = (TextView) findViewById(R.id.tv_month);
         tv_month.setText(android.text.format.DateFormat.format("MMMM yyyy", cal_month));
@@ -176,4 +178,5 @@ public class HistoryActivity extends AppCompatActivity {
         pressback = System.currentTimeMillis();
 
     }
+
 }

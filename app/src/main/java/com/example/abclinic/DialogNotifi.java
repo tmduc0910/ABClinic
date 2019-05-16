@@ -2,10 +2,7 @@ package com.example.abclinic;
 
 public class DialogNotifi {
     private String titles;
-    private String subjects;
-    private String types;
-    private String duedates;
-    private String descripts;
+    private int images;
     private String attatchmentd;
     private String sections;
     private String classe;
@@ -14,21 +11,7 @@ public class DialogNotifi {
         this.titles = titles;
     }
 
-    public void setSubjects(String subjects) {
-        this.subjects = subjects;
-    }
-
-    public void setTypes(String types) {
-        this.types = types;
-    }
-
-    public void setDuedates(String duedates) {
-        this.duedates = duedates;
-    }
-
-    public void setDescripts(String descripts) {
-        this.descripts = descripts;
-    }
+    public void setImages(int images) { this.images = images; }
 
     public void setAttatchmentd(String attatchmentd) {
         this.attatchmentd = attatchmentd;
@@ -38,21 +21,7 @@ public class DialogNotifi {
         return titles;
     }
 
-    public String getSubjects() {
-        return subjects;
-    }
-
-    public String getTypes() {
-        return types;
-    }
-
-    public String getDuedates() {
-        return duedates;
-    }
-
-    public String getDescripts() {
-        return descripts;
-    }
+    public int getImages() { return images; }
 
     public String getAttatchmentd() {
         return attatchmentd;

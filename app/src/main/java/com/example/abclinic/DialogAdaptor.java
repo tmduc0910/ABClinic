@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.abclinic.DialogNotifi;
@@ -53,16 +54,11 @@ class DialogAdaptor extends BaseAdapter {
         LayoutInflater inflater = context.getLayoutInflater();
         View listViewItem = inflater.inflate(R.layout.row_addapt, null, true);
 
-        TextView tvTitle=(TextView)listViewItem.findViewById(R.id.tv_name);
-        TextView tvSubject=(TextView)listViewItem.findViewById(R.id.tv_type);
-        TextView tvDuedate=(TextView)listViewItem.findViewById(R.id.tv_desc);
-        TextView tvDescription=(TextView)listViewItem.findViewById(R.id.tv_class);
+        TextView name_history=(TextView)listViewItem.findViewById(R.id.name_history);
+        ImageView image_history=(ImageView) listViewItem.findViewById(R.id.image_history);
 
-
-        tvTitle.setText("Title : "+alCustom.get(position).getTitles());
-        tvSubject.setText("Subject : "+alCustom.get(position).getSubjects());
-        //tvDuedate.setText("Due Date : "+alCustom.get(position).getDuedates());
-        tvDescription.setText("Description : "+alCustom.get(position).getDescripts());
+        name_history.setText(alCustom.get(position).getTitles());
+        image_history.setImageResource(alCustom.get(position).getImages());
 
         return  listViewItem;
     }

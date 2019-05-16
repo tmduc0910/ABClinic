@@ -5,24 +5,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.example.abclinic.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Meal extends AppCompatActivity {
 
-    TextView nameview, timeview ;
+    TextView nameview, timeview, comment ;
     ListView listView;
     CustomImage customImage;
     Button chat;
@@ -43,16 +36,20 @@ public class Meal extends AppCompatActivity {
             }
         });
 
-        InforItem.add_item = new ArrayList<InforItem>();
-        InforItem.add_item.add(new InforItem("10:20 14/04/2019", "Dinh dưỡng", new int[]{R.drawable.meal01, R.drawable.meal02}));
+        ItemMeal.add_item = new ArrayList<ItemMeal>();
+        ItemMeal.add_item.add(new ItemMeal("10:20 14/04/2019", "Dinh dưỡng", "bệnh nhân cần hạn chế ăn thức ăn chứa nhiều tinh bột", new int[]{R.drawable.meal01, R.drawable.meal02}));
 
         //name view
-        nameview = (TextView) this.findViewById(R.id.nameview);
-        nameview.setText(InforItem.add_item.get(0).name);
+        nameview = (TextView) this.findViewById(R.id.namepost);
+        nameview.setText(ItemMeal.add_item.get(0).name);
 
         //time view
         timeview = (TextView) this.findViewById(R.id.timeview);
-        timeview.setText(InforItem.add_item.get(0).date);
+        timeview.setText(ItemMeal.add_item.get(0).date);
+
+        //comment
+        comment = (TextView) this.findViewById(R.id.comment);
+        comment.setText(ItemMeal.add_item.get(0).comment);
 
         //image view
         listView = (ListView) this.findViewById(R.id.list_img_meal);
@@ -67,7 +64,7 @@ public class Meal extends AppCompatActivity {
 
         @Override
         public int getCount(){
-            return InforItem.add_item.get(0).image_src.length;
+            return ItemMeal.add_item.get(0).image_src.length;
         }
         @Override
         public  Object getItem(int i){
@@ -83,7 +80,7 @@ public class Meal extends AppCompatActivity {
 
             ImageView imageView = (ImageView) view.findViewById(R.id.item_img);
 
-            imageView.setImageResource(InforItem.add_item.get(0).image_src[i]);
+            imageView.setImageResource(ItemMeal.add_item.get(0).image_src[i]);
 
             return view;
 

@@ -1,63 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp"
-    android:layout_marginTop="30dp">
+    android:layout_marginTop="10dp"
+    android:orientation="vertical"
+    android:padding="10dp">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:paddingTop="5dp"
-        android:text="event on "
-        android:textColor="#696969"
-        android:layout_below="@+id/tv_title"
+        android:text="Tên"
+        android:textColor="#000"
         android:textSize="16dp"
-        android:id="@+id/tv_name"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="event on "
-        android:paddingTop="5dp"
-        android:textColor="#696969"
-        android:layout_below="@+id/tv_name"
-        android:textSize="16dp"
-        android:id="@+id/tv_type"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_centerHorizontal="true"
-        android:text="event on "
-        android:paddingTop="5dp"
-        android:textColor="#696969"
-        android:layout_below="@+id/tv_type"
-        android:textSize="16dp"
-        android:id="@+id/tv_desc"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="event on "
-        android:paddingTop="5dp"
-        android:textColor="#696969"
-        android:layout_below="@+id/tv_desc"
-        android:textSize="16dp"
-        android:id="@+id/tv_class"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_centerHorizontal="true"
-        android:text="event on "
-        android:paddingTop="5dp"
-        android:textColor="#696969"
-        android:layout_marginTop="5dp"
-        android:layout_below="@+id/tv_class"
-        android:textSize="16dp"
-        android:id="@+id/tv_section"/>
+        android:id="@+id/name_history"/>
 
-</RelativeLayout>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:id="@+id/image_history"/>
+
+</LinearLayout>

@@ -11,12 +11,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.example.abclinic.DialogAdaptor;
-import com.example.abclinic.DialogNotifi;
-import com.example.abclinic.HighlightEvent;
-import com.example.abclinic.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,13 +46,13 @@ class Process extends BaseAdapter {
 
     private ArrayList<String> items;
     public static List<String> day_string;
-    public ArrayList<HighlightEvent>  date_collection_arr;
+    public ArrayList<ItemMeal>  add_item;
     private String gridvalue;
     private ListView listTeachers;
     private ArrayList<DialogNotifi> alCustom=new ArrayList<DialogNotifi>();
 
-    public Process(Activity context, GregorianCalendar monthCalendar, ArrayList<HighlightEvent> date_collection_arr) {
-        this.date_collection_arr=date_collection_arr;
+    public Process(Activity context, GregorianCalendar monthCalendar, ArrayList<ItemMeal> add_item) {
+        this.add_item=add_item;
         Process.day_string = new ArrayList<String>();
         Locale.setDefault(Locale.US);
         month = monthCalendar;
@@ -194,9 +188,9 @@ class Process extends BaseAdapter {
 
     public void setEventView(View v,int pos,TextView txt){
 
-        int len= HighlightEvent.date_collection_arr.size();
+        int len= ItemMeal.add_item.size();
         for (int i = 0; i < len; i++) {
-            HighlightEvent cal_obj= HighlightEvent.date_collection_arr.get(i);
+            ItemMeal cal_obj= ItemMeal.add_item.get(i);
             String date=cal_obj.date;
             int len1=day_string.size();
             if (len1>pos) {
@@ -217,16 +211,15 @@ class Process extends BaseAdapter {
 
     public void getPositionList(String date,final Activity act){
 
-        int len= HighlightEvent.date_collection_arr.size();
+        int len= ItemMeal.add_item.size();
         JSONArray jbarrays=new JSONArray();
         for (int j=0; j<len; j++){
-            if (HighlightEvent.date_collection_arr.get(j).date.equals(date) ){
-                //HighlightEvent.date_collection_arr.get(j).seen = true ;
+            if (ItemMeal.add_item.get(j).date.equals(date) ){
 
                 HashMap<String, String> maplist = new HashMap<String, String>();
-                maplist.put("hnames", HighlightEvent.date_collection_arr.get(j).name);
-                maplist.put("hsubject", HighlightEvent.date_collection_arr.get(j).subject);
-                maplist.put("descript", HighlightEvent.date_collection_arr.get(j).description);
+                HashMap<String, Integer> imagelist = new HashMap<String, Integer>();
+                maplist.put("hnames", ItemMeal.add_item.get(j).name);
+                maplist.put("image", String.valueOf(ItemMeal.add_item.get(j).image_src[0]));
                 JSONObject json1 = new JSONObject(maplist);
                 jbarrays.put(json1);
             }
@@ -256,11 +249,9 @@ class Process extends BaseAdapter {
                 DialogNotifi pojo = new DialogNotifi();
 
                 pojo.setTitles(jsonObject.optString("hnames"));
-                pojo.setSubjects(jsonObject.optString("hsubject"));
-                pojo.setDescripts(jsonObject.optString("descript"));
+                pojo.setImages(jsonObject.optInt("image"));
 
                 alCustom.add(pojo);
-
             }
 
 

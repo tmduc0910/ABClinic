@@ -10,29 +10,30 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="20dp"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/nameview"
-            android:textColor="#000"
-            android:textStyle="bold"
-            android:textSize="45dp"
-            android:text="Loại"
+            android:id="@+id/namepost"
+            android:background="#E91E63"
+            android:textColor="#fff"
+            android:text="Tên bài đăng"
+            android:textSize="25dp"
+            android:padding="20dp"
+            android:layout_gravity="top"
             android:gravity="center"/>
         <Button
-            android:layout_marginRight="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/open_chat"
+            android:layout_margin="20dp"
             android:padding="10dp"
             android:layout_gravity="right"
-            android:background="#2196F3"
+            android:background="@drawable/btn_open_chat"
             android:drawableEnd="@drawable/ic_mess"
             android:textColor="#fff"
-            android:text="Chat"/>
+            android:text="Trò chuyện  "/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -44,7 +45,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="Thời gian:"
+                android:text="Thời gian    :"
                 style="@style/MyEditTextStyle1" />
             <TextView
                 android:layout_width="0dp"
@@ -73,9 +74,9 @@
                 android:layout_width="0dp"
                 android:layout_weight="2"
                 android:layout_height="wrap_content"
-                android:text="bệnh nhân cần hạn chế ăn thức ăn chứa nhiều tinh bột"
+                android:text="bình luận"
                 style="@style/MyEditTextStyle1"
-                android:id="@+id/timeview" />
+                android:id="@+id/comment" />
 
         </LinearLayout>
 

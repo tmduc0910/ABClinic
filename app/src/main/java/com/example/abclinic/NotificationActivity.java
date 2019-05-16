@@ -35,18 +35,18 @@ public class NotificationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_notification);
 
         HighlightEvent.date_collection_arr=new ArrayList<HighlightEvent>();
-        HighlightEvent.date_collection_arr.add( new HighlightEvent("2019-04-14" ,"Dinh dưỡng","Holiday","this is holiday", false));
-        HighlightEvent.date_collection_arr.add( new HighlightEvent("2019-04-10" ,"Dinh dưỡng","Holiday","this is holiday", false));
-        HighlightEvent.date_collection_arr.add( new HighlightEvent("2019-04-08" ,"Khám bệnh","Holiday","this is holiday", false));
-        HighlightEvent.date_collection_arr.add( new HighlightEvent("2019-03-22" ,"Dinh dưỡng","Holiday","this is holiday", false));
-        HighlightEvent.date_collection_arr.add( new HighlightEvent("2019-03-21" ,"Khám bệnh","Holiday","this is holiday", false));
-        HighlightEvent.date_collection_arr.add( new HighlightEvent("2019-03-15" ,"Dinh dưỡng","Holiday","this is holiday", false));
-        HighlightEvent.date_collection_arr.add( new HighlightEvent("2019-03-02" ,"Khám bệnh","Holiday","this is holiday", false));
-        HighlightEvent.date_collection_arr.add( new HighlightEvent("2019-02-01" ,"Khám bệnh","Holiday","this is holiday", false));
-        HighlightEvent.date_collection_arr.add( new HighlightEvent("2019-02-25" ,"Khám bệnh","Holiday","this is holiday", false));
-        HighlightEvent.date_collection_arr.add( new HighlightEvent("2019-02-03" ,"Dinh dưỡng","Holiday","this is holiday", false));
-        HighlightEvent.date_collection_arr.add( new HighlightEvent("2019-01-14" ,"Dinh dưỡng","Holiday","this is holiday", false));
-        HighlightEvent.date_collection_arr.add( new HighlightEvent("2019-01-09" ,"Dinh dưỡng","Holiday","this is holiday", false));
+        HighlightEvent.date_collection_arr.add( new HighlightEvent("2019-04-14" ,"Dinh dưỡng","Bs.Hoa đã nhắn tin cho bạn", false));
+        HighlightEvent.date_collection_arr.add( new HighlightEvent("2019-04-10" ,"Dinh dưỡng","Bs.Hoa đã nhắn tin cho bạn", false));
+        HighlightEvent.date_collection_arr.add( new HighlightEvent("2019-04-08" ,"Khám bệnh","Bs.Hoa đã nhắn tin cho bạn", false));
+        HighlightEvent.date_collection_arr.add( new HighlightEvent("2019-03-22" ,"Dinh dưỡng","Bs.Tuyen đã nhắn tin cho bạn", false));
+        HighlightEvent.date_collection_arr.add( new HighlightEvent("2019-03-21" ,"Khám bệnh","Bs.Trung đã nhắn tin cho bạn", false));
+        HighlightEvent.date_collection_arr.add( new HighlightEvent("2019-03-15" ,"Dinh dưỡng","Bs.Hoa đã nhắn tin cho bạn", false));
+        HighlightEvent.date_collection_arr.add( new HighlightEvent("2019-03-02" ,"Khám bệnh","Bs.Tuyen đã nhắn tin cho bạn", false));
+        HighlightEvent.date_collection_arr.add( new HighlightEvent("2019-02-01" ,"Khám bệnh","Bs.Tuyen đã nhắn tin cho bạn", false));
+        HighlightEvent.date_collection_arr.add( new HighlightEvent("2019-02-25" ,"Khám bệnh","Bs.Tuyen đã nhắn tin cho bạn", false));
+        HighlightEvent.date_collection_arr.add( new HighlightEvent("2019-02-03" ,"Dinh dưỡng","Bs.Hoa đã nhắn tin cho bạn", false));
+        HighlightEvent.date_collection_arr.add( new HighlightEvent("2019-01-14" ,"Dinh dưỡng","Bs.Hoa đã nhắn tin cho bạn", false));
+        HighlightEvent.date_collection_arr.add( new HighlightEvent("2019-01-09" ,"Dinh dưỡng","Bs.Hoa đã nhắn tin cho bạn", false));
 
         //notification
         ListView listView = (ListView) this.findViewById(R.id.list_notifi);
@@ -55,8 +55,7 @@ public class NotificationActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent viewinfor = new Intent(NotificationActivity.this, Meal.class);
-                startActivity(viewinfor);
+                startActivity(new Intent(NotificationActivity.this, Meal.class));
             }
         });
 
@@ -71,8 +70,7 @@ public class NotificationActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.upload:
-                        Intent intent_home = new Intent(NotificationActivity.this, UpLoadActivity.class);
-                        startActivity(intent_home);
+                        startActivity(new Intent(NotificationActivity.this, UpLoadActivity.class));
                         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
 
                         break;
@@ -80,13 +78,11 @@ public class NotificationActivity extends AppCompatActivity {
 
                         break;
                     case R.id.history:
-                        Intent intent_acc = new Intent(NotificationActivity.this, HistoryActivity.class);
-                        startActivity(intent_acc);
+                        startActivity(new Intent(NotificationActivity.this, HistoryActivity.class));
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_feft);
                         break;
                     case R.id.profile:
-                        Intent intent_mess = new Intent(NotificationActivity.this, ProfileActivity.class);
-                        startActivity(intent_mess);
+                        startActivity(new Intent(NotificationActivity.this, ProfileActivity.class));
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_feft);
                         break;
                 }
@@ -118,7 +114,7 @@ public class NotificationActivity extends AppCompatActivity {
             TextView time = (TextView) view.findViewById(R.id.time_item);
             TextView des = (TextView) view.findViewById(R.id.item_des);
 
-            titile.setText(HighlightEvent.date_collection_arr.get(i).date.toString());
+            titile.setText(HighlightEvent.date_collection_arr.get(i).name.toString());
             time.setText(HighlightEvent.date_collection_arr.get(i).date.toString());
             des.setText(HighlightEvent.date_collection_arr.get(i).description.toString());
 
