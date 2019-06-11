@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
-        <activity android:name=".ChatBox"></activity>
+        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".ChatBox" />
         <activity android:name=".Meal" />
         <activity
             android:name=".MainActivity"

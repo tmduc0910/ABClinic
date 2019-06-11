@@ -3,11 +3,13 @@ package com.example.abclinic;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -25,6 +27,9 @@ import java.util.List;
 import java.util.Locale;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+
+import static android.support.v4.content.ContextCompat.startActivity;
+import static java.security.AccessController.getContext;
 
 class Process extends BaseAdapter {
     private Activity context;
@@ -218,7 +223,8 @@ class Process extends BaseAdapter {
 
                 HashMap<String, String> maplist = new HashMap<String, String>();
                 HashMap<String, Integer> imagelist = new HashMap<String, Integer>();
-                maplist.put("hnames", ItemMeal.add_item.get(j).name);
+                maplist.put("name", ItemMeal.add_item.get(j).name);
+                maplist.put("time", ItemMeal.add_item.get(j).hour);
                 maplist.put("image", String.valueOf(ItemMeal.add_item.get(j).image_src[0]));
                 JSONObject json1 = new JSONObject(maplist);
                 jbarrays.put(json1);
@@ -229,6 +235,7 @@ class Process extends BaseAdapter {
             dialogs.setContentView(R.layout.dialog_inform);
             listTeachers = (ListView) dialogs.findViewById(R.id.list_teachers);
             listTeachers.setAdapter(new DialogAdaptor(context, getMatchList(jbarrays + "")));
+
             dialogs.show();
 
         } else {
@@ -248,7 +255,8 @@ class Process extends BaseAdapter {
 
                 DialogNotifi pojo = new DialogNotifi();
 
-                pojo.setTitles(jsonObject.optString("hnames"));
+                pojo.setTitles(jsonObject.optString("name"));
+                pojo.setAttatchmentd(jsonObject.optString("time"));
                 pojo.setImages(jsonObject.optInt("image"));
 
                 alCustom.add(pojo);

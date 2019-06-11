@@ -55,9 +55,12 @@ class DialogAdaptor extends BaseAdapter {
         View listViewItem = inflater.inflate(R.layout.row_addapt, null, true);
 
         TextView name_history=(TextView)listViewItem.findViewById(R.id.name_history);
+        TextView time_history=(TextView)listViewItem.findViewById(R.id.hour_history);
+
         ImageView image_history=(ImageView) listViewItem.findViewById(R.id.image_history);
 
         name_history.setText(alCustom.get(position).getTitles());
+        time_history.setText(alCustom.get(position).getAttatchmentd());
         image_history.setImageResource(alCustom.get(position).getImages());
 
         return  listViewItem;

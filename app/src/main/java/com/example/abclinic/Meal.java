@@ -31,13 +31,12 @@ public class Meal extends AppCompatActivity {
         chat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent chat = new Intent(Meal.this, ChatBox.class);
-                startActivity(chat);
+                startActivity(new Intent(Meal.this, ChatBox.class));
             }
         });
 
         ItemMeal.add_item = new ArrayList<ItemMeal>();
-        ItemMeal.add_item.add(new ItemMeal("10:20 14/04/2019", "Dinh dưỡng", "bệnh nhân cần hạn chế ăn thức ăn chứa nhiều tinh bột", new int[]{R.drawable.meal01, R.drawable.meal02}));
+        ItemMeal.add_item.add(new ItemMeal("10:20 14/04/2019", "12:30","Dinh dưỡng", "bệnh nhân cần hạn chế ăn thức ăn chứa nhiều tinh bột", new int[]{R.drawable.meal01, R.drawable.meal02}));
 
         //name view
         nameview = (TextView) this.findViewById(R.id.namepost);

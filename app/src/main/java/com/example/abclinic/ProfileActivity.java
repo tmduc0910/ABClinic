@@ -66,7 +66,7 @@ public class ProfileActivity extends AppCompatActivity {
                 builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ProfileActivity.super.startActivity(new Intent(ProfileActivity.this, MainActivity.class));
+                        ProfileActivity.super.startActivity(new Intent(ProfileActivity.this, LoginActivity.class));
                     }
                 });
 

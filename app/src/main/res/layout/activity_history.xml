@@ -186,19 +186,20 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:textSize="15dp"
                 android:drawableLeft="@drawable/ic_cycle"
                 android:drawableTint="#E9967A"
-                android:text="Ngày hiện tại."/>
+                android:padding="10dp"
+                android:text="Ngày hiện tại."
+                android:textSize="15dp" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
                 android:drawableLeft="@drawable/ic_cycle"
                 android:drawableTint="#ff0000"
-                android:textSize="15dp"
-                android:text="Ngày có thông báo."/>
+                android:padding="10dp"
+                android:text="Ngày có thông báo."
+                android:textSize="15dp" />
 
         </LinearLayout>
 
