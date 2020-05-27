@@ -1,8 +1,6 @@
 package com.abclinic.utils.services;
 
-import android.util.Log;
-
-import com.abclinic.entity.Response;
+import com.abclinic.entity.deprecated.Response;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;

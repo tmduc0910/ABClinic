@@ -35,7 +35,7 @@ public class RequestHandlingService {
             in.close();
             return response.toString();
         } else {
-            System.out.println("GET Error!");
+            System.out.println(responseCode);
             throw new NullPointerException();
         }
     }
@@ -65,8 +65,8 @@ public class RequestHandlingService {
 
         int responseCode = connection.getResponseCode();
 
-        ////Lấy mã kết nối từ server, nếu mã là 201 thì kết nối thành công
-        if (responseCode == HttpURLConnection.HTTP_CREATED) {
+        ////Lấy mã kết nối từ server, nếu mã là 200 thì kết nối thành công
+        if (responseCode == HttpURLConnection.HTTP_OK) {
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String buffer;
             StringBuffer response = new StringBuffer();
@@ -75,7 +75,7 @@ public class RequestHandlingService {
             in.close();
             return response.toString();
         } else {
-            System.out.println("POST Error!");
+            System.out.println(responseCode);
             return null;
         }
     }

@@ -2,7 +2,7 @@ package com.example.abclinic;
 
 import java.util.ArrayList;
 
-class HighlightEvent {
+public class HighlightEvent {
     public String date="";
     public String name="";
     public String description="";

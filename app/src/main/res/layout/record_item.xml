@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:showIn="@layout/activity_meal">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/record_card"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        app:cardElevation="5dp"
+        app:cardUseCompatPadding="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/rec_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/flat_blue_1"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:text="Tên bác sĩ"
+                    android:textColor="@color/white"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tab"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:tabMode="fixed" />
+
+                <com.example.abclinic.CustomViewPager
+                    android:id="@+id/view_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <com.alespero.expandablecardview.ExpandableCardView
+                android:id="@+id/expandable_doc"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:visibility="visible"
+                app:expandOnClick="true"
+                app:inner_view="@layout/doctor_info"
+                app:startExpanded="false"
+                app:title="Thông tin bác sĩ" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

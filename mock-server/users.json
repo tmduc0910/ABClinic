@@ -4,14 +4,14 @@
       "id": 100,
       "uid": "MH370",
       "email": "email1@mail.com",
-      "password": "pass",
-      "name": "a b c ",
+      "password": "password",
+      "name": "Trần Mạnh A",
       "gender": 1,
       "birthday": "1997-10-09",
       "phone": "0123456667",
       "joinDate": "2019-03-01",
       "createdDate": "2019-04-01",
-      "address": "Somewhere"
+      "address": "Đâu đó gần đây"
     },
     {
       "id": 101,

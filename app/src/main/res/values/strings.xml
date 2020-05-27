@@ -1,4 +1,32 @@
 <resources>
     <string name="app_name">ABClinic</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">Tư vấn phòng khám</string>
+    <string name="txt_login_username">Tên đăng nhập</string>
+    <string name="txt_login_username_hint">Số điện thoại hoặc email</string>
+    <string name="txt_login_password">Mật khẩu</string>
+    <string name="btn_login">Đăng nhập</string>
+    <string name="avatar_title">Chọn hành động</string>
+    <string name="avatar_val_1">Xem ảnh</string>
+    <string name="avatar_val_2">Chụp ảnh đại diện mới</string>
+    <string name="avatar_val_3">Chọn ảnh từ bộ sưu tập</string>
+    <string name="error_login">Tài khoản hoặc mật khẩu không chính xác</string>
+    <string name="img_count">Đã chọn %1$d ảnh</string>
+    <string name="date_picker_hint"> ngày / tháng / năm</string>
+    <string name="time_picker_hint">giờ : phút</string>
+    <string name="radio_group">Lựa chọn (*):</string>
+    <string name="radio_spec">Khám bệnh</string>
+    <string name="radio_diet">Dinh dưỡng</string>
+    <string name="inq_desc">Mô tả (*):</string>
+    <string name="inq_datetime">Thời gian (*):</string>
+    <string name="confirm_inq_true">Đã gửi yêu cầu thành công!!</string>
+    <string name="confirm_inq_false">Bắt buộc điền các trường màu đỏ!!</string>
+    <string name="confirm_ava">Đã đổi ảnh đại diện thành công!!</string>
+
+    <!--    Message lỗi-->
+    <string name="login_failed_err">Tài khoản hoặc mật khẩu không chính xác</string>
+    <string name="inq_failed_queue_err">Yêu cầu trước của bạn đang được xử lý</string>
+    <string name="inq_failed_wrong_type_err">Loại yêu cầu không hợp lệ</string>
+    <string name="image_type_err">File không hợp lệ</string>
+    <string name="not_found_err">Không có %1$s nào</string>
+    <string name="internal_server_err">Lỗi máy chủ (500)</string>
 </resources>

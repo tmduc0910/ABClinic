@@ -3,16 +3,16 @@ package com.example.abclinic;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.example.abclinic.adapter.DialogAdaptor;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,10 +28,7 @@ import java.util.Locale;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-import static android.support.v4.content.ContextCompat.startActivity;
-import static java.security.AccessController.getContext;
-
-class Process extends BaseAdapter {
+public class Process extends BaseAdapter {
     private Activity context;
 
     private java.util.Calendar month;
@@ -99,7 +96,7 @@ class Process extends BaseAdapter {
         //thiet lap giao dien cua 1 item
 
         //v.setLayoutParams(new GridView.LayoutParams(GridView.AUTO_FIT, 140)); // chieu cao cua item
-        dayView = (TextView) v.findViewById(R.id.date);// giao dien cua so
+        dayView = v.findViewById(R.id.date);// giao dien cua so
         dayView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
         String[] separatedTime = day_string.get(position).split("-");
 
@@ -233,7 +230,7 @@ class Process extends BaseAdapter {
         if (jbarrays.length()!=0) {
             final Dialog dialogs = new Dialog(context);
             dialogs.setContentView(R.layout.dialog_inform);
-            listTeachers = (ListView) dialogs.findViewById(R.id.list_teachers);
+            listTeachers = dialogs.findViewById(R.id.list_teachers);
             listTeachers.setAdapter(new DialogAdaptor(context, getMatchList(jbarrays + "")));
 
             dialogs.show();

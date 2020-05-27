@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginEnd="10dp"
+            android:orientation="horizontal"
+            android:weightSum="7">
+
+            <TextView
+                style="@style/profile"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:drawableStart="@drawable/ic_book"
+                android:gravity="start|center"
+                android:text=" Chuyên môn: "
+                android:textStyle="bold" />
+
+            <TextView
+                style="@style/MyEditTextStyle1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:gravity="end"
+                android:text="Chuyên môn gì đó, kinh nghiệm gì đó" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginEnd="10dp"
+            android:orientation="horizontal"
+            android:weightSum="7">
+
+            <TextView
+                style="@style/profile"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:drawableStart="@drawable/ic_phone"
+                android:gravity="start|center"
+                android:text=" SĐT liên hệ: "
+                android:textStyle="bold" />
+
+            <TextView
+                style="@style/MyEditTextStyle1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:clickable="true"
+                android:gravity="end"
+                android:text="0123xxxxxx" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_marginEnd="10dp"
+            android:orientation="horizontal"
+            android:weightSum="7">
+
+            <TextView
+                style="@style/profile"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:drawableStart="@drawable/ic_email"
+                android:gravity="start|center"
+                android:text=" Email: "
+                android:textStyle="bold" />
+
+            <TextView
+                style="@style/MyEditTextStyle1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:clickable="true"
+                android:gravity="end"
+                android:text="someone@mail.com.vn" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_marginEnd="10dp"
+            android:orientation="horizontal"
+            android:weightSum="7">
+
+            <TextView
+                style="@style/profile"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:drawableStart="@drawable/ic_info"
+                android:gravity="start|center"
+                android:text=" Giới thiệu: "
+                android:textStyle="bold" />
+
+            <TextView
+                style="@style/MyEditTextStyle1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:clickable="true"
+                android:gravity="end"
+                android:text="Mô tả thông tin bác sĩ" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

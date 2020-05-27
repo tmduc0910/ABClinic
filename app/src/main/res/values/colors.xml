@@ -7,4 +7,5 @@
     <color name="blue">#3F51B5</color>
     <color name="whiteTrans">#aaaaaa</color>
     <color name="transparent">#00000000 </color>
+    <color name="expandableBackground">#F5E9BF</color>
 </resources>

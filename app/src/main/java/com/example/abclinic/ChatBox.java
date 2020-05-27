@@ -1,6 +1,5 @@
 package com.example.abclinic;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -8,7 +7,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.abclinic.R;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.abclinic.adapter.MessageAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,9 +40,9 @@ public class ChatBox extends AppCompatActivity {
         ChatBubbles.add(msg3);
         ChatBubbles.add(msg4);
 
-        listView = (ListView) findViewById(R.id.conversation);
+        listView = findViewById(R.id.conversation);
         btnSend = findViewById(R.id.send_message);
-        input_msg = (EditText) findViewById(R.id.input_message);
+        input_msg = findViewById(R.id.input_message);
 
         //set ListView adapter first
         adapter = new MessageAdapter(this, R.layout.right_chat, ChatBubbles);
