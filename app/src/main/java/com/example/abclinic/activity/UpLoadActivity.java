@@ -280,6 +280,7 @@ public class UpLoadActivity extends CustomActivity implements PopupMenu.OnMenuIt
             protected void processException(Response<Inquiry> response) {
                 if (response.code() == HttpStatus.FORBIDDEN) {
                     confirmTxt.setText(getMessage(response.code()));
+                    confirmTxt.setVisibility(View.VISIBLE);
                 } else super.processException(response);
             }
         }.handle(HttpStatus.FORBIDDEN, R.string.inq_failed_queue_err)
