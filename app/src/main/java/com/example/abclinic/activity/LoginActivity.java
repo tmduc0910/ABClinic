@@ -32,7 +32,7 @@ import retrofit2.Response;
 
 
 public class LoginActivity extends CustomActivity {
-    public static final boolean USE_SECURITY = false;
+    public static final boolean USE_SECURITY = true;
     public static final String DEFAULT_UID = "91200dd6-920b-48b4-86bb-674169a72458";
 
     Button loginBtn;
@@ -83,6 +83,8 @@ public class LoginActivity extends CustomActivity {
         String username = usernameEdt.getText().toString();
         String password = passwordEdt.getText().toString();
         Account account = new Account("pat01@mail.com", "123456");
+        if (USE_SECURITY)
+            account = new Account(username, password);
         LoginTask task = new LoginTask(LoginActivity.this,
                 StorageConstant.STORAGE_KEY_USER);
         task.setDelegate(new AsyncResponse<String>() {
