@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +28,10 @@ public class RecordFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.record_fragment, container, false);
         TextView detailTxt = root.findViewById(R.id.rc_detail);
+        detailTxt.setText(getArguments().getString(DETAIL));
+        detailTxt.setOnClickListener((v) -> {
+            Toast.makeText(getContext(), "Clicked!!!!", Toast.LENGTH_SHORT).show();
+        });
         detailTxt.setText(getArguments().getString(DETAIL));
         return root;
     }

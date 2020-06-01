@@ -8,7 +8,7 @@ import com.abclinic.entity.Account;
 import com.abclinic.exception.InternalServerErrorException;
 import com.abclinic.exception.WrongCredentialException;
 import com.abclinic.retrofit.RetrofitClient;
-import com.abclinic.retrofit.api.LoginMapper;
+import com.abclinic.retrofit.api.AuthMapper;
 import com.example.abclinic.R;
 
 import java.net.SocketTimeoutException;
@@ -31,9 +31,9 @@ public class LoginTask extends CustomAsyncTask<Account, Void, String> {
     @Override
     protected String doInBackground(Account... accounts) {
         Retrofit retrofit = RetrofitClient.getClient(null);
-        LoginMapper loginMapper = retrofit.create(LoginMapper.class);
+        AuthMapper authMapper = retrofit.create(AuthMapper.class);
         try {
-            Response<String> response = loginMapper.login(accounts[0]).execute();
+            Response<String> response = authMapper.login(accounts[0]).execute();
             if (response.isSuccessful()) {
                 uid = response.body();
                 storageService.saveCache(StorageConstant.KEY_UID, uid);

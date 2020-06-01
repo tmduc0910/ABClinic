@@ -33,6 +33,7 @@
                 android:padding="20dp"
                 android:text="Thông báo"
                 android:textColor="#fff"
+                android:textStyle="bold"
                 android:textSize="25sp" />
 
             <LinearLayout

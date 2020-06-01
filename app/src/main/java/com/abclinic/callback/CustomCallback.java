@@ -20,22 +20,23 @@ import retrofit2.Retrofit;
 
 public abstract class CustomCallback<T> implements Callback<T> {
     protected Context context;
-    protected LocalStorageService storageService;
     protected Retrofit retrofit;
     private Map<Integer, String> exceptions;
     private SweetAlertDialog progressDialog;
 
-    public CustomCallback(Context context, String key) {
+    public CustomCallback(Context context) {
         this.context = context;
-        this.progressDialog = new SweetAlertDialog(context, SweetAlertDialog.PROGRESS_TYPE);
-        this.storageService = new LocalStorageService(context, key);
+        LocalStorageService storageService = new LocalStorageService(context, null);
         retrofit = RetrofitClient.getClient(storageService.getUid());
         exceptions = new LinkedHashMap<>();
 
-        progressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-        progressDialog.setTitleText("Loading")
-                .setCancelable(false);
-        progressDialog.show();
+        if (useDialog()) {
+            this.progressDialog = new SweetAlertDialog(context, SweetAlertDialog.PROGRESS_TYPE);
+            progressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+            progressDialog.setTitleText("Loading")
+                    .setCancelable(false);
+            progressDialog.show();
+        }
         exceptions.put(HttpStatus.INTERNAL_SERVER, context.getResources().getString(R.string.internal_server_err));
     }
 
@@ -63,7 +64,9 @@ public abstract class CustomCallback<T> implements Callback<T> {
     }
 
     protected void onEndAnimation() {
-        progressDialog.dismissWithAnimation();
+        if (progressDialog != null) {
+            progressDialog.dismissWithAnimation();
+        }
     }
 
     public CustomCallback<T> handle(int code, int stringId) {
@@ -74,6 +77,10 @@ public abstract class CustomCallback<T> implements Callback<T> {
     public CustomCallback<T> handle(int code, int stringId, String... formats) {
         exceptions.put(code, context.getResources().getString(stringId, formats));
         return this;
+    }
+
+    protected boolean useDialog() {
+        return true;
     }
 
     public String getMessage(int code) {

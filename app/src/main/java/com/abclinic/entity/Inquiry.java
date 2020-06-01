@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -39,9 +40,9 @@ public class Inquiry {
     @JsonProperty("replies")
     private List<Reply> replies;
     @JsonProperty("medicalRecords")
-    private List<MedicalRecord> medicalRecords;
+    private List<Record> medicalRecords;
     @JsonProperty("dietRecords")
-    private List<DietRecord> dietRecords;
+    private List<Record> dietRecords;
     @JsonProperty("content")
     private String content;
     @JsonProperty("type")
@@ -91,19 +92,19 @@ public class Inquiry {
         this.replies = replies;
     }
 
-    public List<MedicalRecord> getMedicalRecords() {
+    public List<Record> getMedicalRecords() {
         return medicalRecords;
     }
 
-    public void setMedicalRecords(List<MedicalRecord> medicalRecords) {
+    public void setMedicalRecords(List<Record> medicalRecords) {
         this.medicalRecords = medicalRecords;
     }
 
-    public List<DietRecord> getDietRecords() {
+    public List<Record> getDietRecords() {
         return dietRecords;
     }
 
-    public void setDietRecords(List<DietRecord> dietRecords) {
+    public void setDietRecords(List<Record> dietRecords) {
         this.dietRecords = dietRecords;
     }
 
@@ -170,4 +171,16 @@ public class Inquiry {
         this.updatedAt = updatedAt;
     }
 
+
+    public Inquiry sort() {
+        medicalRecords = this.getMedicalRecords()
+                .stream()
+                .sorted((o1, o2) -> o2.getCreatedAt().compareTo(o1.getCreatedAt()))
+                .collect(Collectors.toList());
+        dietRecords = this.getDietRecords()
+                .stream()
+                .sorted((o1, o2) -> o2.getCreatedAt().compareTo(o1.getCreatedAt()))
+                .collect(Collectors.toList());
+        return this;
+    }
 }

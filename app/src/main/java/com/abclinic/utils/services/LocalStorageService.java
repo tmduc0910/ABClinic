@@ -64,6 +64,12 @@ public class LocalStorageService {
         editor.apply();
     }
 
+    public void saveCache(String tag, long value) {
+        editor = sharedPreferences.edit();
+        editor.putLong(tag, value);
+        editor.apply();
+    }
+
     public void saveCache(String tag, String value) {
         editor = sharedPreferences.edit();
         editor.putString(tag, value);

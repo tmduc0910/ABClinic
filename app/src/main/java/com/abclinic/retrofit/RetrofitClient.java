@@ -18,16 +18,22 @@ public class RetrofitClient {
     public static <T> Retrofit getClient(final String uid) {
         if (retrofit == null) {
             builder = new Retrofit.Builder()
-                    .baseUrl(LOCAL_URL_2)
+                    .baseUrl(getUrl())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create());
             builder.addConverterFactory(JacksonConverterFactory.create());
         }
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(CustomInterceptor.getInstance(uid))
-                .callTimeout(30, TimeUnit.SECONDS)
+                .connectTimeout(120, TimeUnit.SECONDS)
+                .callTimeout(120, TimeUnit.SECONDS)
+                .readTimeout(120, TimeUnit.SECONDS)
                 .build();
         return builder.client(client)
                 .build();
+    }
+
+    public static String getUrl() {
+        return LOCAL_URL_2;
     }
 
 //

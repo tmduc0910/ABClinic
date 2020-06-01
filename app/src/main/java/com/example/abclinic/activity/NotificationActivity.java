@@ -21,6 +21,7 @@ import com.abclinic.entity.Notification;
 import com.abclinic.entity.PageableEntity;
 import com.abclinic.retrofit.api.NotificationMapper;
 import com.abclinic.utils.services.LocalStorageService;
+import com.abclinic.utils.services.MyFirebaseService;
 import com.example.abclinic.NotificationIntent;
 import com.example.abclinic.PaginationListener;
 import com.example.abclinic.R;
@@ -125,6 +126,8 @@ public class NotificationActivity extends CustomActivity {
                 Toast.makeText(NotificationActivity.this, "Làm mới thành công", Toast.LENGTH_SHORT).show();
             }
         });
+        observer = push -> fetchNotification(true);
+        MyFirebaseService.subject.attach(observer);
         fetchNotification();
     }
 
@@ -134,7 +137,7 @@ public class NotificationActivity extends CustomActivity {
             final int pos = recyclerView.getChildLayoutPosition(v);
             Log.d(Constant.DEBUG_TAG, "Position: " + pos);
             Call<Notification> call = retrofit.create(NotificationMapper.class).getNotification(list.get(pos).getId());
-            call.enqueue(new CustomCallback<Notification>(this, StorageConstant.STORAGE_KEY_NOTI) {
+            call.enqueue(new CustomCallback<Notification>(this) {
                 @Override
                 protected void processResponse(Response<Notification> response) {
                     Notification n = response.body();
@@ -165,9 +168,9 @@ public class NotificationActivity extends CustomActivity {
         recyclerView.setAdapter(viewNotificationAdapter);
     }
 
-    private void fetchNotification() {
+    private void fetchNotification(boolean fromNoti) {
         Call<PageableEntity<Notification>> call = retrofit.create(NotificationMapper.class).getNotificationList(page, PAGE_SIZE);
-        call.enqueue(new CustomCallback<PageableEntity<Notification>>(this, StorageConstant.STORAGE_KEY_NOTI) {
+        call.enqueue(new CustomCallback<PageableEntity<Notification>>(this) {
             @Override
             protected void processResponse(Response<PageableEntity<Notification>> response) {
                 notifications = response.body();
@@ -175,7 +178,7 @@ public class NotificationActivity extends CustomActivity {
                 isLast = notifications.getTotalPages() <= page;
                 Log.d(Constant.DEBUG_TAG, "Loading = " + isLoading + ", Last = " + isLast);
 
-                list.addItems(false, notifications.getContent());
+                boolean isNew = list.addItems(false, notifications.getContent());
 
                 if (viewNotificationAdapter == null)
                     initAdapter();
@@ -185,6 +188,15 @@ public class NotificationActivity extends CustomActivity {
                 isLoading = false;
                 page++;
             }
+
+            @Override
+            protected boolean useDialog() {
+                return !fromNoti;
+            }
         });
+    }
+
+    private void fetchNotification() {
+        fetchNotification(false);
     }
 }

@@ -2,14 +2,20 @@ package com.abclinic.utils;
 
 import com.abclinic.constant.Constant;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 public class DateTimeUtils {
     public static LocalDateTime parseDateTime(int[] arr) {
-        return LocalDateTime.of(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5]);
+        if (arr != null)
+            return LocalDateTime.of(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5]);
+        return null;
     }
 
     public static LocalDateTime parseDateTime(List<Integer> list) {
@@ -22,7 +28,9 @@ public class DateTimeUtils {
     }
 
     public static LocalDate parseDate(int[] arr) {
-        return LocalDate.of(arr[0], arr[1], arr[2]);
+        if (arr != null)
+            return LocalDate.of(arr[0], arr[1], arr[2]);
+        return null;
     }
 
     public static LocalDate parseDate(List<Integer> list) {
@@ -30,13 +38,17 @@ public class DateTimeUtils {
     }
 
     public static LocalDateTime parseDateTime(String dateTime) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Constant.DATE_TIME_FORMAT);
-        return LocalDateTime.parse(dateTime, formatter);
+        if (dateTime != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Constant.DATE_TIME_FORMAT);
+            return LocalDateTime.parse(dateTime, formatter);
+        } else return null;
     }
 
     public static LocalDate parseDate(String date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Constant.DATE_FORMAT);
-        return LocalDate.parse(date, formatter);
+        if (date != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Constant.DATE_FORMAT);
+            return LocalDate.parse(date, formatter);
+        } else return null;
     }
 
     public static String toString(LocalDateTime time) {
@@ -53,5 +65,14 @@ public class DateTimeUtils {
 
     public static String toUrlString(LocalDateTime time) {
         return time.format(DateTimeFormatter.ofPattern(Constant.SENSITIVE_DATETIME_FORMAT));
+    }
+
+    public static long toMilli(LocalDateTime time) {
+        return time.toInstant(ZoneOffset.UTC).toEpochMilli();
+    }
+
+    public static Date toDate(LocalDateTime dateTime) {
+        Instant instant = dateTime.atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime().toInstant(ZoneOffset.UTC);
+        return Date.from(instant);
     }
 }

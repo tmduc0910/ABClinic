@@ -1,6 +1,8 @@
 
 package com.abclinic.entity;
 
+import androidx.annotation.Nullable;
+
 import com.abclinic.utils.DateTimeUtils;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -13,28 +15,37 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "id",
+        "inquiry",
+        "doctor",
+        "recordType",
         "status",
         "note",
         "prescription",
         "createdAt",
-        "specialist",
+        "disease",
         "diagnose"
 })
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MedicalRecord {
+public class Record {
 
     @JsonProperty("id")
     private long id;
+    @JsonProperty("inquiry")
+    private Inquiry inquiry;
     @JsonProperty("status")
     private int status;
+    @JsonProperty("doctor")
+    private UserInfo doctor;
+    @JsonProperty("recordType")
+    private int type;
     @JsonProperty("note")
     private String note;
     @JsonProperty("prescription")
     private String prescription;
     @JsonProperty("createdAt")
     private List<Integer> createdAt;
-    @JsonProperty("specialist")
-    private UserInfo specialist;
+    @JsonProperty("disease")
+    private Disease disease;
     @JsonProperty("diagnose")
     private String diagnose;
 
@@ -44,8 +55,32 @@ public class MedicalRecord {
     }
 
     @JsonProperty("id")
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
+    }
+
+    public Inquiry getInquiry() {
+        return inquiry;
+    }
+
+    public void setInquiry(Inquiry inquiry) {
+        this.inquiry = inquiry;
+    }
+
+    public UserInfo getDoctor() {
+        return doctor;
+    }
+
+    public void setDoctor(UserInfo doctor) {
+        this.doctor = doctor;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     @JsonProperty("status")
@@ -88,14 +123,14 @@ public class MedicalRecord {
         this.createdAt = createdAt;
     }
 
-    @JsonProperty("specialist")
-    public UserInfo getSpecialist() {
-        return specialist;
+    @JsonProperty("disease")
+    public Disease getDisease() {
+        return disease;
     }
 
-    @JsonProperty("specialist")
-    public void setSpecialist(UserInfo specialist) {
-        this.specialist = specialist;
+    @JsonProperty("disease")
+    public void setDisease(Disease disease) {
+        this.disease = disease;
     }
 
     @JsonProperty("diagnose")
@@ -106,5 +141,12 @@ public class MedicalRecord {
     @JsonProperty("diagnose")
     public void setDiagnose(String diagnose) {
         this.diagnose = diagnose;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj instanceof Record)
+            return this.id == ((Record) obj).getId();
+        return false;
     }
 }

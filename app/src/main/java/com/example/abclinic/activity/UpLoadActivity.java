@@ -52,6 +52,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -107,9 +108,19 @@ public class UpLoadActivity extends CustomActivity implements PopupMenu.OnMenuIt
         deletePicBtn = findViewById(R.id.delete_pic_btn);
 
         deletePicBtn.setOnClickListener((v) -> {
-            images.clear();
-            countTxt.setText(getString(R.string.img_count, 0));
-            viewImageAdapter.notifyDataSetChanged();
+            if (!images.isEmpty()) {
+                SweetAlertDialog dialog = new SweetAlertDialog(UpLoadActivity.this, SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("Xác nhận")
+                        .setContentText("Bạn có chắc chắn muốn xóa toàn bộ ảnh đã chọn không?");
+                dialog.setConfirmButton("Có", d -> {
+                    images.clear();
+                    countTxt.setText(getString(R.string.img_count, 0));
+                    viewImageAdapter.notifyDataSetChanged();
+                    d.cancel();
+                });
+                dialog.setCancelButton("Không", SweetAlertDialog::cancel);
+                dialog.show();
+            }
         });
 
         //bottomnavigationbar
@@ -228,7 +239,7 @@ public class UpLoadActivity extends CustomActivity implements PopupMenu.OnMenuIt
                                 .collect(Collectors.toList())
                                 .toArray(new MultipartBody.Part[0]);
                         Call<ResponseAlbumDto> call = retrofit.create(ImageMapper.class).uploadImages(files);
-                        call.enqueue(new CustomCallback<ResponseAlbumDto>(UpLoadActivity.this, StorageConstant.STORAGE_KEY_INQUIRY) {
+                        call.enqueue(new CustomCallback<ResponseAlbumDto>(UpLoadActivity.this) {
                             @Override
                             protected void processResponse(Response<ResponseAlbumDto> response) {
                                 album = response.body();
@@ -246,7 +257,7 @@ public class UpLoadActivity extends CustomActivity implements PopupMenu.OnMenuIt
 
     private void createInquiry(RequestCreateInquiryDto requestCreateInquiryDto) {
         Call<Inquiry> createCall = retrofit.create(InquiryMapper.class).createInquiry(requestCreateInquiryDto);
-        createCall.enqueue(new CustomCallback<Inquiry>(this, StorageConstant.STORAGE_KEY_INQUIRY) {
+        createCall.enqueue(new CustomCallback<Inquiry>(this) {
             @Override
             protected void processResponse(Response<Inquiry> response) {
                 storageService.deleteInquiryCache();

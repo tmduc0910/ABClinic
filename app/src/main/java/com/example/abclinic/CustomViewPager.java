@@ -35,4 +35,6 @@ public class CustomViewPager extends ViewPager {
         mCurrentView = currentView;
         requestLayout();
     }
+
+
 }

@@ -5,6 +5,7 @@
     android:layout_height="match_parent">
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_inquiry"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -83,7 +84,34 @@
                     android:text="Thời gian gửi:" />
 
                 <TextView
-                    android:id="@+id/timeview"
+                    android:id="@+id/createview"
+                    style="@style/MyEditTextStyle1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="15/4/2019" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingStart="5dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="5dp"
+                android:paddingBottom="5dp"
+                android:weightSum="3">
+
+                <TextView
+                    style="@style/MyEditTextStyle1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Thời điểm thực hiện:" />
+
+                <TextView
+                    android:id="@+id/dateview"
                     style="@style/MyEditTextStyle1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -158,4 +186,18 @@
                 android:nestedScrollingEnabled="false" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/float_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="@color/flat_blue_1"
+        android:src="@drawable/ic_mess"
+        app:layout_anchor="@id/scroll_inquiry"
+        app:layout_anchorGravity="end|top"
+        app:rippleColor="@color/flat_red_1" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

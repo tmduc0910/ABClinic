@@ -24,14 +24,14 @@
 //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_meal);
+//        setContentView(R.layout.activity_inquiry);
 //
 //        //open chat
 //        chat = (Button) this.findViewById(R.id.open_chat);
 //        chat.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                startActivity(new Intent(Meal.this, ChatBox.class));
+//                startActivity(new Intent(Meal.this, ReplyActivity.class));
 //            }
 //        });
 //

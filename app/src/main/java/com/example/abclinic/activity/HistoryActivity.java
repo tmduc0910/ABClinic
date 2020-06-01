@@ -51,7 +51,7 @@ public class HistoryActivity extends AppCompatActivity {
         previous.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (cal_month.get(GregorianCalendar.MONTH) == 12&&cal_month.get(GregorianCalendar.YEAR)==2018) {
+                if (cal_month.get(GregorianCalendar.MONTH) == 12 && cal_month.get(GregorianCalendar.YEAR) == 2018) {
                     //cal_month.set((cal_month.get(GregorianCalendar.YEAR) - 1), cal_month.getActualMaximum(GregorianCalendar.MONTH), 1);
                     Toast.makeText(HistoryActivity.this, "Không có thông báo trong quá khứ.", Toast.LENGTH_SHORT).show();
                 }

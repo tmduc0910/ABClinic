@@ -16,16 +16,19 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.PopupMenu;
 
+import com.abclinic.asynctask.GetUserInfoTask;
 import com.abclinic.callback.CustomCallback;
+import com.abclinic.constant.Constant;
 import com.abclinic.constant.StorageConstant;
 import com.abclinic.dto.MediaDto;
+import com.abclinic.dto.RequestUpdateInfoDto;
 import com.abclinic.entity.UserInfo;
 import com.abclinic.retrofit.RetrofitClient;
+import com.abclinic.retrofit.api.AuthMapper;
 import com.abclinic.retrofit.api.ImageMapper;
 import com.abclinic.retrofit.api.UserInfoMapper;
 import com.abclinic.utils.DateTimeUtils;
 import com.abclinic.utils.FileUtils;
-import com.abclinic.utils.services.LocalStorageService;
 import com.abclinic.utils.services.MediaService;
 import com.abclinic.utils.services.PermissionUtils;
 import com.example.abclinic.R;
@@ -101,7 +104,15 @@ public class ProfileActivity extends CustomActivity implements PopupMenu.OnMenuI
                 builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ProfileActivity.super.startActivity(new Intent(ProfileActivity.this, LoginActivity.class));
+                        Call<Void> call = retrofit.create(AuthMapper.class).logout();
+                        call.enqueue(new CustomCallback<Void>(ProfileActivity.this) {
+                            @Override
+                            protected void processResponse(Response<Void> response) {
+                                Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
+                                intent.putExtra(Constant.IS_LOGOUT, true);
+                                startActivityForResult(intent, CODE_LOGOUT);
+                            }
+                        });
                     }
                 });
 
@@ -136,24 +147,35 @@ public class ProfileActivity extends CustomActivity implements PopupMenu.OnMenuI
                 acceptBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (!phoneNumberEdt.getText().toString().isEmpty() && !emailEdt.getText().toString().isEmpty()
-                                && !addressEdt.getText().toString().isEmpty()) {
-                            phoneNumberTxt.setText(phoneNumberEdt.getText().toString());
-                            emailTxt.setText(emailEdt.getText().toString());
-                            addressTxt.setText(addressEdt.getText().toString());
+                        String phone = phoneNumberEdt.getText().toString();
+                        String email = emailEdt.getText().toString();
+                        String address = addressEdt.getText().toString();
 
-                            new SweetAlertDialog(ProfileActivity.this, SweetAlertDialog.SUCCESS_TYPE)
-                                    .setTitleText("Thành công!")
-                                    .show();
-                            dialog.dismiss();
+                        if (!phone.isEmpty() && !email.isEmpty() && !address.isEmpty()) {
+//                            phoneNumberTxt.setText(phoneNumberEdt.getText().toString());
+//                            emailTxt.setText(emailEdt.getText().toString());
+//                            addressTxt.setText(addressEdt.getText().toString());
 
+                            RequestUpdateInfoDto requestUpdateInfoDto = new RequestUpdateInfoDto(address, email, phone);
+                            Call<UserInfo> call = retrofit.create(UserInfoMapper.class).changeInfo(requestUpdateInfoDto);
+                            call.enqueue(new CustomCallback<UserInfo>(ProfileActivity.this) {
+                                @Override
+                                protected void processResponse(Response<UserInfo> response) {
+                                    userInfo = response.body();
+                                    updateInfo();
+                                    new SweetAlertDialog(ProfileActivity.this, SweetAlertDialog.SUCCESS_TYPE)
+                                            .setTitleText("Thành công!")
+                                            .setContentText("Đã cập nhật thông tin!")
+                                            .show();
+                                    dialog.dismiss();
+                                }
+                            });
                         } else {
                             new SweetAlertDialog(ProfileActivity.this, SweetAlertDialog.ERROR_TYPE)
                                     .setTitleText("Oops...")
                                     .setContentText("Đề nghị điền đầy đủ thông tin!")
                                     .show();
                         }
-
                     }
                 });
 
@@ -200,41 +222,6 @@ public class ProfileActivity extends CustomActivity implements PopupMenu.OnMenuI
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //edit profile
-        storageService = new LocalStorageService(ProfileActivity.this, StorageConstant.STORAGE_KEY_USER);
-        try {
-//            userInfo = new GetUserInfoTask(ProfileActivity.this,
-//                    StorageConstant.STORAGE_KEY_USER,
-//                    new AsyncResponse<UserInfo>() {
-//                        @Override
-//                        public void processResponse(UserInfo res) {
-//                            Log.d(Constant.DEBUG_TAG, res.toString());
-//                        }
-//
-//                        @Override
-//                        public void handleException(CustomRuntimeException e) {
-//                            Toast.makeText(ProfileActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-//                        }
-//                    }).execute(storageService.getUid()).get();
-
-            Call<UserInfo> call = retrofit.create(UserInfoMapper.class).getInfo();
-            call.enqueue(new CustomCallback<UserInfo>(this, StorageConstant.STORAGE_KEY_USER) {
-                @Override
-                protected void processResponse(Response<UserInfo> response) {
-                    userInfo = response.body();
-                    storageService.saveCache(StorageConstant.KEY_USER, userInfo.toString());
-                    updateInfo(userInfo);
-                }
-            });
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public void showPopup(View v) {
         PopupMenu popup = new PopupMenu(ProfileActivity.this, v);
         popup.setOnMenuItemClickListener(ProfileActivity.this);
@@ -247,8 +234,10 @@ public class ProfileActivity extends CustomActivity implements PopupMenu.OnMenuI
         switch (menuItem.getItemId()) {
             case R.id.view_ava:
                 userInfo = storageService.getUserInfo();
-                new ImageViewer.Builder<>(this, Collections.singletonList(userInfo.getAvatar()))
-                        .show();
+                if (userInfo.getAvatar() != null) {
+                    new ImageViewer.Builder<>(this, Collections.singletonList(userInfo.getAvatar()))
+                            .show();
+                } else Toast.makeText(this, "Bạn chưa có ảnh đại diện!!", Toast.LENGTH_LONG).show();
                 break;
             case R.id.upload_ava_cam:
                 permissionUtils = new PermissionUtils(this::startCamera);
@@ -285,26 +274,15 @@ public class ProfileActivity extends CustomActivity implements PopupMenu.OnMenuI
         }
 
         if (file != null) {
-//            new UploadAvatarTask(this, StorageConstant.STORAGE_KEY_USER, new AsyncResponse<String>() {
-//                @Override
-//                public void processResponse(String res) {
-//                    avatarImg.setImageURI(res);
-//                    Toast.makeText(ProfileActivity.this, getResources().getText(R.string.confirm_ava), Toast.LENGTH_LONG).show();
-//                }
-//
-//                @Override
-//                public void handleException(CustomRuntimeException e) {
-//                    Toast.makeText(ProfileActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-//                }
-//            }).execute(file);
-
             String uid = storageService.getUid();
             Retrofit retrofit = RetrofitClient.getClient(uid);
             Call<String> call = retrofit.create(ImageMapper.class).uploadAvatar(file);
-            call.enqueue(new CustomCallback<String>(this, StorageConstant.STORAGE_KEY_USER) {
+            call.enqueue(new CustomCallback<String>(this) {
                 @Override
                 protected void processResponse(Response<String> response) {
                     avatarImg.setImageURI(response.body());
+                    userInfo.setAvatar(response.body());
+                    saveInfo();
                     Toast.makeText(ProfileActivity.this, getResources().getText(R.string.confirm_ava), Toast.LENGTH_LONG).show();
                 }
             });
@@ -324,21 +302,21 @@ public class ProfileActivity extends CustomActivity implements PopupMenu.OnMenuI
     protected void onResume() {
         super.onResume();
         userInfo = storageService.getUserInfo();
-        if (userInfo != null)
-            updateInfo(userInfo);
+        updateInfo();
+
+        //edit profile
         avatarImg.setOnClickListener(this::showPopup);
     }
 
-    private void updateInfo(UserInfo res) {
-        avatarImg.setImageURI(res.getAvatar());
-        nameTxt.setText(res.getName());
-        genderTxt.setText(res.getGender());
-        phoneNumberTxt.setText(res.getPhoneNumber());
-        emailTxt.setText(res.getEmail());
-        dobTxt.setText(DateTimeUtils.toString(res.getDateOfBirth()));
-        addressTxt.setText(res.getAddress());
-        joinDateTxt.setText(String.format("Bắt đầu khám từ: %s", DateTimeUtils.toString(res.getCreatedAt())));
-
+    private void updateInfo() {
+        avatarImg.setImageURI(userInfo.getAvatar());
+        nameTxt.setText(userInfo.getName());
+        genderTxt.setText(userInfo.getGenderString());
+        phoneNumberTxt.setText(userInfo.getPhoneNumber());
+        emailTxt.setText(userInfo.getEmail());
+        dobTxt.setText(DateTimeUtils.toString(userInfo.getDateOfBirth()));
+        addressTxt.setText(userInfo.getAddress());
+        joinDateTxt.setText(String.format("Bắt đầu khám từ: %s", DateTimeUtils.toString(userInfo.getCreatedAt())));
     }
 
     private void startCamera() {
@@ -350,6 +328,13 @@ public class ProfileActivity extends CustomActivity implements PopupMenu.OnMenuI
         media = new MediaDto();
         media.setIntent(MediaService.getGalleryIntent("Chọn ảnh đại diện"));
         startActivityForResult(media.getIntent(), 2);
+    }
+
+    private void saveInfo() {
+        new GetUserInfoTask(appDatabase, ProfileActivity.this, StorageConstant.STORAGE_KEY_USER, null)
+                .execute(userInfo);
+        storageService.saveCache(StorageConstant.KEY_USER, userInfo.toString());
+        updateInfo();
     }
 }
 

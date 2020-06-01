@@ -6,21 +6,23 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.abclinic.constant.NotificationType;
 import com.abclinic.retrofit.RetrofitClient;
+import com.abclinic.room.utils.AppDatabase;
 import com.abclinic.utils.services.LocalStorageService;
+import com.abclinic.utils.services.MyFirebaseService;
 import com.abclinic.utils.services.PermissionUtils;
+import com.abclinic.websocket.observer.IObserver;
 
 import retrofit2.Retrofit;
 
 public abstract class CustomActivity extends AppCompatActivity {
-    public static final String INQUIRY = "yêu cầu tư vấn";
-    public static final String RECORD = "tư vấn";
-    public static final String DISOWN = "hủy quyền tư vấn";
-    public static final String SCHEDULE = "lịch gửi thông số";
+    protected static final int CODE_LOGOUT = 100;
+
     protected LocalStorageService storageService;
     protected Retrofit retrofit;
     protected PermissionUtils permissionUtils;
+    protected AppDatabase appDatabase;
+    protected IObserver observer;
     private long pressBack;
 
     @Override
@@ -28,6 +30,14 @@ public abstract class CustomActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         storageService = new LocalStorageService(this, getKey());
         retrofit = RetrofitClient.getClient(storageService.getUid());
+        appDatabase = AppDatabase.getInstance(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (observer != null)
+            MyFirebaseService.subject.detach(observer);
     }
 
     @Override
@@ -42,21 +52,4 @@ public abstract class CustomActivity extends AppCompatActivity {
     }
 
     public abstract String getKey();
-
-    protected String getType(int type) {
-        NotificationType t = NotificationType.getType(type);
-        switch (t) {
-            case ADVICE:
-                return RECORD;
-            case REPLY:
-                return INQUIRY;
-            case REMOVE_ASSIGN:
-                return DISOWN;
-            case SCHEDULE:
-            case SCHEDULE_REMINDER:
-                return SCHEDULE;
-            default:
-                return null;
-        }
-    }
 }

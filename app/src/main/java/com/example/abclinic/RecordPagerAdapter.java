@@ -1,60 +1,48 @@
 package com.example.abclinic;
 
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.recyclerview.widget.RecyclerView;
 
-public class RecordPagerAdapter extends FragmentPagerAdapter {
+public class RecordPagerAdapter extends RecyclerView.Adapter<RecordPagerAdapter.ViewHolder> {
+    private Context context;
     private String[] datas;
-    private int currentPosition = -1;
 
-    public RecordPagerAdapter(@NonNull FragmentManager fm, String... datas) {
-        super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+    public RecordPagerAdapter(Context context, String... datas) {
+        this.context = context;
         this.datas = datas;
     }
 
     @NonNull
     @Override
-    public Fragment getItem(int position) {
-        return RecordFragment.getInstance(datas[position]);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View notiView = inflater.inflate(R.layout.record_fragment, parent, false);
+        return new RecordPagerAdapter.ViewHolder(notiView);
     }
 
     @Override
-    public int getCount() {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        String data = datas[position];
+        holder.textView.setText(data);
+    }
+
+    @Override
+    public int getItemCount() {
         return datas.length;
     }
 
-    @Nullable
-    @Override
-    public CharSequence getPageTitle(int position) {
-        switch (position) {
-            case 0:
-                return "Ghi chú";
-            case 1:
-                return "Chẩn đoán";
-            case 2:
-                return "Kê đơn";
-            default:
-                return null;
-        }
-    }
+    class ViewHolder extends RecyclerView.ViewHolder {
+        TextView textView;
 
-    @Override
-    public void setPrimaryItem(ViewGroup container, int position, Object object) {
-        super.setPrimaryItem(container, position, object);
-
-        if (position != currentPosition && container instanceof CustomViewPager) {
-            Fragment fragment = (Fragment) object;
-            CustomViewPager pager = (CustomViewPager) container;
-
-            if (fragment != null && fragment.getView() != null) {
-                currentPosition = position;
-                pager.measureCurrentView(fragment.getView());
-            }
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            textView = itemView.findViewById(R.id.rc_detail);
         }
     }
 }

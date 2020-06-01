@@ -1,35 +1,39 @@
 package com.abclinic.entity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.abclinic.constant.Gender;
 import com.abclinic.utils.DateTimeUtils;
 import com.abclinic.utils.services.JsonService;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-        "id",
-        "role",
-        "name",
-        "email",
-        "gender",
-        "dateOfBirth",
-        "age",
-        "phoneNumber",
-        "avatar",
-        "createdAt",
-        "address",
-        "practitioner",
-        "dietitians",
-        "specialists"
-})
+//@JsonPropertyOrder({
+//        "id",
+//        "role",
+//        "name",
+//        "email",
+//        "gender",
+//        "dateOfBirth",
+//        "age",
+//        "phoneNumber",
+//        "avatar",
+//        "createdAt",
+//        "address",
+//        "practitioner",
+//        "dietitians",
+//        "specialists"
+//})
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserInfo {
 
     @JsonProperty("id")
@@ -43,6 +47,7 @@ public class UserInfo {
     @JsonProperty("gender")
     private int gender;
     @JsonProperty("dateOfBirth")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private String dateOfBirth;
     @JsonProperty("age")
     private int age;
@@ -55,11 +60,17 @@ public class UserInfo {
     @JsonProperty("address")
     private String address;
     @JsonProperty("practitioner")
-    private Practitioner practitioner;
+    private UserInfo practitioner;
     @JsonProperty("dietitians")
     private List<Dietitian> dietitians = null;
     @JsonProperty("specialists")
     private List<Specialist> specialists = null;
+    @JsonProperty("specialties")
+    private List<Specialty> specialties = null;
+    @JsonProperty("specialty")
+    private Specialty specialty;
+    @JsonProperty("description")
+    private String description;
 
     @JsonProperty("id")
     public long getId() {
@@ -67,7 +78,7 @@ public class UserInfo {
     }
 
     @JsonProperty("id")
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -102,8 +113,17 @@ public class UserInfo {
     }
 
     @JsonProperty("gender")
-    public String getGender() {
-        return Gender.toGender(gender).toString();
+    public int getGender() {
+        return gender;
+    }
+
+    @JsonIgnore
+    public String getGenderString() {
+        try {
+            return Gender.toGender(gender).toString();
+        } catch (NullPointerException e) {
+            return null;
+        }
     }
 
     @JsonProperty("gender")
@@ -172,12 +192,12 @@ public class UserInfo {
     }
 
     @JsonProperty("practitioner")
-    public Practitioner getPractitioner() {
+    public UserInfo getPractitioner() {
         return practitioner;
     }
 
     @JsonProperty("practitioner")
-    public void setPractitioner(Practitioner practitioner) {
+    public void setPractitioner(UserInfo practitioner) {
         this.practitioner = practitioner;
     }
 
@@ -205,5 +225,36 @@ public class UserInfo {
     @Override
     public String toString() {
         return JsonService.toString(this);
+    }
+
+    public List<Specialty> getSpecialties() {
+        return specialties;
+    }
+
+    public void setSpecialties(List<Specialty> specialties) {
+        this.specialties = specialties;
+    }
+
+    public Specialty getSpecialty() {
+        return specialty;
+    }
+
+    public void setSpecialty(Specialty specialty) {
+        this.specialty = specialty;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj instanceof UserInfo)
+            return id == ((UserInfo) obj).getId();
+        return false;
     }
 }

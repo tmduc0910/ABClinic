@@ -1,5 +1,7 @@
 package com.abclinic.entity;
 
+import androidx.annotation.Nullable;
+
 import com.abclinic.utils.DateTimeUtils;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -12,7 +14,6 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "id",
-        "inquiry",
         "user",
         "content",
         "createdAt",
@@ -23,8 +24,6 @@ public class Reply {
 
     @JsonProperty("id")
     private long id;
-    @JsonProperty("inquiry")
-    private Inquiry inquiry;
     @JsonProperty("user")
     private UserInfo user;
     @JsonProperty("content")
@@ -42,16 +41,6 @@ public class Reply {
     @JsonProperty("id")
     public void setId(long id) {
         this.id = id;
-    }
-
-    @JsonProperty("inquiry")
-    public Inquiry getInquiry() {
-        return inquiry;
-    }
-
-    @JsonProperty("inquiry")
-    public void setInquiry(Inquiry inquiry) {
-        this.inquiry = inquiry;
     }
 
     @JsonProperty("user")
@@ -94,4 +83,10 @@ public class Reply {
         this.updatedAt = updatedAt;
     }
 
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj instanceof Reply)
+            return this.id == ((Reply) obj).getId();
+        return false;
+    }
 }

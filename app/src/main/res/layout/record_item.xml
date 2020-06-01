@@ -5,13 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:showIn="@layout/activity_meal">
+    tools:showIn="@layout/activity_inquiry">
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/record_card"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="20dp"
+        android:focusable="true"
         app:cardElevation="5dp"
         app:cardUseCompatPadding="true">
 
@@ -43,7 +44,7 @@
                     android:layout_height="wrap_content"
                     app:tabMode="fixed" />
 
-                <com.example.abclinic.CustomViewPager
+                <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/view_pager"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
@@ -60,6 +61,6 @@
                 app:startExpanded="false"
                 app:title="Thông tin bác sĩ" />
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
 </LinearLayout>

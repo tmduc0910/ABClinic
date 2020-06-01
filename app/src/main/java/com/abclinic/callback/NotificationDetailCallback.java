@@ -13,7 +13,7 @@ public class NotificationDetailCallback<T> extends CustomCallback<T> {
     private Notification notification;
 
     public NotificationDetailCallback(Context context, String key, long notificationId) {
-        super(context, key);
+        super(context);
         this.notificationId = notificationId;
     }
 

@@ -27,6 +27,8 @@
     <string name="inq_failed_queue_err">Yêu cầu trước của bạn đang được xử lý</string>
     <string name="inq_failed_wrong_type_err">Loại yêu cầu không hợp lệ</string>
     <string name="image_type_err">File không hợp lệ</string>
+    <string name="reply_bad_request">Mã ID của yêu cầu tư vấn không tồn tại</string>
+    <string name="reply_forbidden">Bạn không có quyền trả lời cho yêu cầu tư vấn này</string>
     <string name="not_found_err">Không có %1$s nào</string>
     <string name="internal_server_err">Lỗi máy chủ (500)</string>
 </resources>
