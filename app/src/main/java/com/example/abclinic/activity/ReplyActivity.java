@@ -64,7 +64,7 @@ public class ReplyActivity extends CustomActivity {
         messagesList.setAdapter(replyListAdapter);
 
         if (observer == null) {
-            observer = new IObserver() {
+            observer = new IObserver<PushNotificationDto>() {
                 @Override
                 public void process(PushNotificationDto notificationDto) {
                     if (notificationDto.getType() == NotificationType.REPLY.getValue()) {

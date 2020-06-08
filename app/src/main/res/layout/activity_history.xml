@@ -1,186 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:design="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/container"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".activity.HistoryActivity">
 
-    <LinearLayout
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#343434"
-        android:id="@+id/ll_calendar"
-        android:orientation="vertical"
-        android:layout_marginBottom="50dp">
+        android:layout_gravity="top"
+        android:background="@color/blue"
+        android:gravity="center"
+        android:padding="20dp"
+        android:text="Lịch biểu"
+        android:textColor="#fff"
+        android:textSize="25sp"
+        android:textStyle="bold" />
 
-        <LinearLayout
-            android:id="@+id/header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#3F51B5"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="20dp" >
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-            <FrameLayout
-                android:layout_width="45dp"
-                android:layout_height="45dp" >
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/ib_prev"
-                    android:background="@drawable/ic_back"/>
-
-            </FrameLayout>
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" >
-
-                <TextView
-                    android:id="@+id/tv_month"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="January"
-                    android:textColor="#fff"
-                    android:textSize="30dip"
-                    android:textStyle="bold"
-                    android:padding="5dp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_month"
-                    android:text="Bấm vào để xem thông báo"
-                    android:layout_centerHorizontal="true"
-                    android:textColor="#fff"
-                    android:textSize="12dp"
-                    android:textStyle="normal" />
-            </RelativeLayout>
-
-            <FrameLayout
-                android:layout_width="45dp"
-                android:layout_height="45dp" >
-
-                <Button
-                    android:id="@+id/Ib_next"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/ic_next" />
-
-            </FrameLayout>
-        </LinearLayout>
-
-        <TableRow
-            android:id="@+id/tableRow1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#FFE91E63">
-
-            <TextView
-                android:id="@+id/sunday"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="S"
-                android:textSize="20dp"
-                android:background="@drawable/tablerow"
-                android:textColor="#fff" />
-
-            <TextView
-                android:id="@+id/monday"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="M"
-                android:textSize="20dp"
-                android:background="@drawable/tablerow"
-                android:textColor="#fff" />
-
-            <TextView
-                android:id="@+id/tuesday"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="T"
-                android:textSize="20dp"
-                android:background="@drawable/tablerow"
-                android:textColor="#fff" />
-
-            <TextView
-                android:id="@+id/wednesday"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="W"
-                android:textSize="20dp"
-                android:background="@drawable/tablerow"
-                android:textColor="#fff" />
-
-            <TextView
-                android:id="@+id/thursday"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="T"
-                android:textSize="20dp"
-                android:background="@drawable/tablerow"
-                android:textColor="#fff" />
-
-            <TextView
-                android:id="@+id/friday"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="F"
-                android:textSize="20dp"
-                android:background="@drawable/tablerow"
-                android:textColor="#fff" />
-
-            <TextView
-                android:id="@+id/saturday"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="S"
-                android:textSize="20dp"
-                android:background="@drawable/tablerow"
-                android:textColor="#fff" />
-
-        </TableRow>
-
-        <GridView
-            android:id="@+id/gv_calendar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#ffffff"
-            android:cacheColorHint="#ffffff"
-            android:gravity="center"
-            android:listSelector="@android:color/transparent"
-            android:numColumns="7"
-            android:stretchMode="columnWidth"
-            android:textAlignment="gravity"
-            android:verticalSpacing="5dp"
-            android:horizontalSpacing="10dp">
-        </GridView>
+        <com.applandeo.materialcalendarview.CalendarView
+            android:id="@+id/calendarView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:headerColor="@color/colorPrimary"
+            app:layout_constraintBottom_toTopOf="@+id/cal_group"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cal_group"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/bottomNav"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/calendarView">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -190,23 +51,49 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_cycle"
-                    android:drawableTint="#E9967A"
-                    android:padding="10dp"
-                    android:text="Ngày hiện tại."
-                    android:textSize="15dp" />
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_dot_green"
+                        android:padding="10dp"
+                        android:text="Có yêu cầu"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_dot_blue"
+                        android:padding="10dp"
+                        android:text="Có tư vấn"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_cycle"
-                    android:drawableTint="#ff0000"
-                    android:padding="10dp"
-                    android:text="Ngày có thông báo."
-                    android:textSize="15dp" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_dot_purple"
+                        android:padding="10dp"
+                        android:text="Có giải đáp"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_schedule_red"
+                        android:padding="10dp"
+                        android:text="Lịch nhắc nhở"
+                        android:textSize="15sp" />
+                </LinearLayout>
             </LinearLayout>
 
             <Button
@@ -228,24 +115,24 @@
                 app:rippleColor="@android:color/holo_blue_bright" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom">
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
+        <LinearLayout
+            android:id="@+id/bottomNav"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:background="#fff"
-            android:id="@+id/navigation"
-            design:menu="@menu/menu_navigation"
-            design:itemIconTint="@color/color_nav"
-            design:itemTextColor="@color/color_nav" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
-    </LinearLayout>
-
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/navigation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="#fff"
+                design:itemIconTint="@color/color_nav"
+                design:itemTextColor="@color/color_nav"
+                design:menu="@menu/menu_navigation" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

@@ -29,6 +29,35 @@
     <string name="image_type_err">File không hợp lệ</string>
     <string name="reply_bad_request">Mã ID của yêu cầu tư vấn không tồn tại</string>
     <string name="reply_forbidden">Bạn không có quyền trả lời cho yêu cầu tư vấn này</string>
+    <string name="result_forbidden">Số lượng giá trị không hợp lệ</string>
     <string name="not_found_err">Không có %1$s nào</string>
     <string name="internal_server_err">Lỗi máy chủ (500)</string>
+
+    <!--    Calendar-->
+    <string name="material_calendar_monday">Th2</string>
+    <string name="material_calendar_tuesday">Th3</string>
+    <string name="material_calendar_wednesday">Th4</string>
+    <string name="material_calendar_thursday">Th5</string>
+    <string name="material_calendar_friday">Th6</string>
+    <string name="material_calendar_saturday">Th7</string>
+    <string name="material_calendar_sunday">CN</string>
+
+    <array name="material_calendar_months_array">
+        <item>Tháng Một</item>
+        <item>Tháng Hai</item>
+        <item>Tháng Ba</item>
+        <item>Tháng Tư</item>
+        <item>Tháng Năm</item>
+        <item>Tháng Sáu</item>
+        <item>Tháng Bảy</item>
+        <item>Tháng Tám</item>
+        <item>Tháng Chín</item>
+        <item>Tháng Mười</item>
+        <item>Tháng Mười Một</item>
+        <item>Tháng Mười Hai</item>
+    </array>
+
+    <string name="material_calendar_today_button">Today</string>
+    <string name="material_calendar_positive_button">OK</string>
+    <string name="material_calendar_negative_button">Cancel</string>
 </resources>

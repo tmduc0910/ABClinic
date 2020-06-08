@@ -6,6 +6,7 @@ public class StorageConstant {
     public static final String STORAGE_KEY_NOTI = "notification";
     public static final String STORAGE_KEY_INQUIRY_RESULT = "inquiry";
     public static final String STORAGE_KEY_REPLY = "reply";
+    public static final String STORAGE_KEY_UPLOAD_RESULT = "uploadResult";
 
     public static final String KEY_UID = "uid";
     public static final String KEY_USER = "userInfo";
@@ -16,4 +17,5 @@ public class StorageConstant {
     public static final String KEY_TIME = "time";
     public static final String KEY_NOTIFICATION = "notifications";
     public static final String KEY_ID = "id";
+    public static final String KEY_INQUIRY = "inquiries";
 }

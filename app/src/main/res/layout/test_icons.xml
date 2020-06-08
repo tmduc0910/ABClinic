@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <item>
+
+        <bitmap
+            android:gravity="start"
+            android:src="@drawable/ic_dot"
+            android:tint="@android:color/holo_green_dark" />
+    </item>
+
+    <item android:left="20dp">
+
+        <bitmap
+            android:gravity="end"
+            android:src="@drawable/ic_dot"
+            android:tint="@android:color/holo_red_dark" />
+    </item>
+
+    <!--    <item android:left="40dp">-->
+    <!--        <bitmap-->
+    <!--            android:gravity="right"-->
+    <!--            android:tint="@android:color/holo_blue_dark"-->
+    <!--            android:src="@drawable/ic_dot"/>-->
+    <!--    </item>-->
+</layer-list>

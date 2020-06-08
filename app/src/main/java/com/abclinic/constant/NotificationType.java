@@ -2,7 +2,7 @@ package com.abclinic.constant;
 
 public enum NotificationType {
     INQUIRY(0),
-    ADVICE(1),
+    MED_ADVICE(1),
     REPLY(2),
     ASSIGN(3),
     ACCEPT_ASSIGN(4),
@@ -12,7 +12,7 @@ public enum NotificationType {
     SEND_INDEX(8),
     SCHEDULE_REMINDER(9),
     DEACTIVATED(10),
-    UPDATE_ADVICE(11);
+    DIET_ADVICE(11);
 
     private int value;
 

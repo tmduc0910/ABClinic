@@ -157,7 +157,8 @@ public class InquiryActivity extends CustomActivity {
             case INQUIRY:
                 getInquiry(id);
                 break;
-            case ADVICE:
+            case MED_ADVICE:
+            case DIET_ADVICE:
                 getRecord(id);
                 break;
         }
@@ -203,7 +204,7 @@ public class InquiryActivity extends CustomActivity {
     }
 
     private void getRecord(long id) {
-        Call<Record> call = retrofit.create(RecordMapper.class).getRecord(id);
+        Call<Record> call = retrofit.create(RecordMapper.class).getRecord(id, type == NotificationType.MED_ADVICE.getValue() ? 0 : 1);
         call.enqueue(new CustomCallback<Record>(this) {
             @Override
             protected void processResponse(Response<Record> response) {

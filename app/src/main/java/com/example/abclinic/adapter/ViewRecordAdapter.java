@@ -103,7 +103,7 @@ public class ViewRecordAdapter extends RecyclerView.Adapter<ViewRecordAdapter.Vi
             holder.expandableCardView.setTitle("Thông tin bác sĩ " + r.getDoctor().getName());
             RecordPagerAdapter recordPagerAdapter = new RecordPagerAdapter(context,
                     r.getNote(),
-                    r.getDiagnose());
+                    r.getPrescription());
             holder.viewPager.setAdapter(recordPagerAdapter);
             new TabLayoutMediator(holder.tabLayout, holder.viewPager, true, (t, p) -> {
                 switch (p) {
@@ -111,7 +111,7 @@ public class ViewRecordAdapter extends RecyclerView.Adapter<ViewRecordAdapter.Vi
                         t.setText("Kết luận");
                         break;
                     case 1:
-                        t.setText("Chẩn đoán");
+                        t.setText("Kê đơn");
                         break;
                 }
             }).attach();
@@ -122,10 +122,13 @@ public class ViewRecordAdapter extends RecyclerView.Adapter<ViewRecordAdapter.Vi
         TextView docEmail = getField(holder.expandableCardView, R.id.doc_mail);
         TextView docDesc = getField(holder.expandableCardView, R.id.doc_desc);
 
-        docSpecialty.setText(doctor.getSpecialties()
-                .stream()
-                .map(Specialty::getName)
-                .collect(Collectors.joining()));
+        if (doctor.getSpecialties() != null)
+            docSpecialty.setText(doctor.getSpecialties()
+                    .stream()
+                    .map(Specialty::getName)
+                    .collect(Collectors.joining()));
+        else if (doctor.getSpecialty() != null)
+            docSpecialty.setText(doctor.getSpecialty().getName());
         docEmail.setText(doctor.getEmail());
         docPhone.setText(doctor.getPhoneNumber());
         docDesc.setText(doctor.getDescription());

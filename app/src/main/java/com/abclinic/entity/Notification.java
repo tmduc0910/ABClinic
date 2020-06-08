@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,14 +23,15 @@ import java.util.List;
         "isRead",
         "createdAt"
 })
-public class Notification {
+public class Notification implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @JsonProperty("id")
     private long id;
     @JsonProperty("sender")
-    private UserInfo sender;
+    private transient UserInfo sender;
     @JsonProperty("receiver")
-    private UserInfo receiver;
+    private transient UserInfo receiver;
     @JsonProperty("payloadId")
     private long payloadId;
     @JsonProperty("message")
@@ -37,7 +39,7 @@ public class Notification {
     @JsonProperty("type")
     private int type;
     @JsonProperty("isRead")
-    private Boolean isRead;
+    private boolean isRead;
     @JsonProperty("createdAt")
     private List<Integer> createdAt = null;
 
@@ -130,6 +132,11 @@ public class Notification {
         } catch (IndexOutOfBoundsException e) {
             return message;
         }
+    }
+
+    @JsonIgnore
+    public ISaveable getData() {
+        return new SaveableImpl(payloadId, type, getCreatedAt(), id);
     }
 
     @Override

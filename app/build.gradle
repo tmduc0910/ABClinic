@@ -67,4 +67,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:17.4.2'
     implementation 'com.google.firebase:firebase-messaging:20.2.0'
     implementation 'com.applandeo:material-calendar-view:1.7.0'
+
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
 }

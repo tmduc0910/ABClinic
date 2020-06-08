@@ -18,14 +18,9 @@ import retrofit2.Retrofit;
 
 public class LoginTask extends CustomAsyncTask<Account, Void, String> {
     private String uid = null;
-    private boolean isSuccess = false;
 
     public LoginTask(Context context, String storageKey) {
         super(context, storageKey);
-    }
-
-    public boolean isSuccess() {
-        return isSuccess;
     }
 
     @Override
@@ -37,7 +32,6 @@ public class LoginTask extends CustomAsyncTask<Account, Void, String> {
             if (response.isSuccessful()) {
                 uid = response.body();
                 storageService.saveCache(StorageConstant.KEY_UID, uid);
-                isSuccess = true;
                 return uid;
             } else {
                 switch (response.code()) {
@@ -55,5 +49,10 @@ public class LoginTask extends CustomAsyncTask<Account, Void, String> {
             e.printStackTrace();
         }
         return uid;
+    }
+
+    @Override
+    protected boolean useDialog() {
+        return false;
     }
 }

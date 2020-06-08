@@ -1,9 +1,13 @@
 
 package com.abclinic.entity;
 
+import android.os.Parcel;
+
 import androidx.annotation.Nullable;
 
+import com.abclinic.constant.NotificationType;
 import com.abclinic.utils.DateTimeUtils;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -26,7 +30,18 @@ import java.util.List;
         "diagnose"
 })
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Record {
+public class Record implements ISaveable {
+    public static final Creator<Record> CREATOR = new Creator<Record>() {
+        @Override
+        public Record createFromParcel(Parcel source) {
+            return new Record(source);
+        }
+
+        @Override
+        public Record[] newArray(int size) {
+            return new Record[size];
+        }
+    };
 
     @JsonProperty("id")
     private long id;
@@ -48,6 +63,15 @@ public class Record {
     private Disease disease;
     @JsonProperty("diagnose")
     private String diagnose;
+
+    public Record() {
+    }
+
+    public Record(Parcel in) {
+        this.id = in.readLong();
+        in.readInt();
+        this.createdAt = DateTimeUtils.toList(in.readString());
+    }
 
     @JsonProperty("id")
     public long getId() {
@@ -148,5 +172,11 @@ public class Record {
         if (obj instanceof Record)
             return this.id == ((Record) obj).getId();
         return false;
+    }
+
+    @JsonIgnore
+    @Override
+    public int getDataType() {
+        return NotificationType.MED_ADVICE.getValue();
     }
 }

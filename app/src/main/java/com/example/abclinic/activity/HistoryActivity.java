@@ -2,92 +2,64 @@ package com.example.abclinic.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.GridView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.Nullable;
 
-import com.example.abclinic.ItemMeal;
+import com.abclinic.constant.NotificationType;
+import com.abclinic.dto.NotificationListDto;
+import com.abclinic.entity.Notification;
+import com.abclinic.entity.UserInfo;
+import com.abclinic.room.entity.DataEntity;
+import com.abclinic.utils.DateTimeUtils;
+import com.abclinic.utils.services.intent.job.GetNotificationJob;
+import com.abclinic.utils.services.intent.job.Receiver;
+import com.abclinic.utils.services.intent.job.ServiceResultReceiver;
+import com.applandeo.materialcalendarview.CalendarView;
+import com.example.abclinic.CustomEventDay;
 import com.example.abclinic.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
+import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 
-public class HistoryActivity extends AppCompatActivity {
-
-    public GregorianCalendar cal_month, cal_month_copy;
-    private com.example.abclinic.Process hwAdapter;
-    private TextView tv_month;
-    private long pressback;
+public class HistoryActivity extends CustomActivity implements Receiver {
+    private static int month, year;
+    CalendarView calendarView;
+    Button resultSubmit;
+    private HashMap<String, List<DataEntity>> map = new HashMap<>();
+    private UserInfo userInfo;
+    private Map<Integer, CustomEventDay.Builder> events = new TreeMap<>();
+    private ServiceResultReceiver resultReceiver;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public String getKey() {
+        return null;
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
+        calendarView = findViewById(R.id.calendarView);
+        resultSubmit = findViewById(R.id.resultSubmit);
+        userInfo = storageService.getUserInfo();
 
-        ItemMeal.add_item=new ArrayList<ItemMeal>();
-        ItemMeal.add_item.add(new ItemMeal("2019-05-05", "11:30", "Dinh dưỡng", "bệnh nhân cần hạn chế ăn thức ăn chứa nhiều tinh bột", new int[]{R.drawable.meal01, R.drawable.meal02}));
-        ItemMeal.add_item.add(new ItemMeal("2019-05-05", "11:20", "Khám bệnh", "bệnh nhân cần hạn chế ăn thức ăn chứa nhiều tinh bột", new int[]{R.drawable.meal01, R.drawable.meal02}));
-        ItemMeal.add_item.add(new ItemMeal("2019-05-02", "18:45", "Khám bệnh", "bệnh nhân cần hạn chế ăn thức ăn chứa nhiều tinh bột", new int[]{R.drawable.meal01, R.drawable.meal02}));
-
-        cal_month = (GregorianCalendar) GregorianCalendar.getInstance();
-        cal_month_copy = (GregorianCalendar) cal_month.clone();
-        hwAdapter = new com.example.abclinic.Process(this, cal_month, ItemMeal.add_item);
-
-        tv_month = findViewById(R.id.tv_month);
-        tv_month.setText(android.text.format.DateFormat.format("MMMM yyyy", cal_month));
-
-
-        Button previous = findViewById(R.id.ib_prev);
-        previous.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (cal_month.get(GregorianCalendar.MONTH) == 12 && cal_month.get(GregorianCalendar.YEAR) == 2018) {
-                    //cal_month.set((cal_month.get(GregorianCalendar.YEAR) - 1), cal_month.getActualMaximum(GregorianCalendar.MONTH), 1);
-                    Toast.makeText(HistoryActivity.this, "Không có thông báo trong quá khứ.", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    setPreviousMonth();
-                    refreshCalendar();
-                }
-
-
-            }
-        });
-        Button next = findViewById(R.id.Ib_next);
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (cal_month.get(GregorianCalendar.MONTH) == 5&&cal_month.get(GregorianCalendar.YEAR)==2030) {
-                    //cal_month.set((cal_month.get(GregorianCalendar.YEAR) + 1), cal_month.getActualMinimum(GregorianCalendar.MONTH), 1);
-                    Toast.makeText(HistoryActivity.this, "Không có thông báo.", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    setNextMonth();
-                    refreshCalendar();
-                }
-            }
-        });
-        GridView gridview = findViewById(R.id.gv_calendar);
-        gridview.setAdapter(hwAdapter);
-        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                String selectedGridDate = com.example.abclinic.Process.day_string.get(position);
-                ((com.example.abclinic.Process) parent.getAdapter()).getPositionList(selectedGridDate, HistoryActivity.this);
-                parent.getAdapter().getView(position, v, parent);
-            }
-
-        });
+        month = LocalDateTime.now().getMonthValue();
+        year = LocalDateTime.now().getYear();
+        requireData();
 
         //bottomnavigationbar
         BottomNavigationView bottomNav = findViewById(R.id.navigation);
@@ -121,46 +93,128 @@ public class HistoryActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-
-    }
-
-    protected void setNextMonth() {
-        if (cal_month.get(GregorianCalendar.MONTH) == cal_month.getActualMaximum(GregorianCalendar.MONTH)) {
-            cal_month.set((cal_month.get(GregorianCalendar.YEAR) + 1), cal_month.getActualMinimum(GregorianCalendar.MONTH), 1);
-        } else {
-            cal_month.set(GregorianCalendar.MONTH,
-                    cal_month.get(GregorianCalendar.MONTH) + 1);
-        }
-    }
-
-    protected void setPreviousMonth() {
-        if (cal_month.get(GregorianCalendar.MONTH) == cal_month.getActualMinimum(GregorianCalendar.MONTH)) {
-            cal_month.set((cal_month.get(GregorianCalendar.YEAR) - 1), cal_month.getActualMaximum(GregorianCalendar.MONTH), 1);
-        } else {
-            cal_month.set(GregorianCalendar.MONTH, cal_month.get(GregorianCalendar.MONTH) - 1);
-        }
-
-
-    }
-
-    public void refreshCalendar() {
-        hwAdapter.refreshDays();
-        hwAdapter.notifyDataSetChanged();
-        tv_month.setText(android.text.format.DateFormat.format("MMMM yyyy", cal_month));
     }
 
     @Override
-    public void onBackPressed() {
-        if (pressback +2000> System.currentTimeMillis()){
-            moveTaskToBack(true);
-            return;
-        } else {
-            Toast.makeText(this, "Nhấn thoát lại lần nữa", Toast.LENGTH_SHORT).show();
-        }
+    protected void onResume() {
+        super.onResume();
+        updateCalendar(month, year);
 
-        pressback = System.currentTimeMillis();
+        calendarView.setOnForwardPageChangeListener(() -> {
+            if (month == 12) {
+                month = 1;
+                year++;
+            } else month++;
+            updateCalendar(month, year);
+        });
 
+        calendarView.setOnPreviousPageChangeListener(() -> {
+            if (month == 1) {
+                month = 12;
+                year--;
+            } else month--;
+            updateCalendar(month, year);
+        });
+
+        calendarView.setOnDayClickListener(eventDay -> {
+            if (eventDay instanceof CustomEventDay) {
+                CustomEventDay ev = (CustomEventDay) eventDay;
+                if (ev.containsIcon(CustomEventDay.IconType.SCHEDULE)) {
+                    startActivity(new Intent(HistoryActivity.this, UploadHealthResultActivity.class));
+                }
+            } else {
+                SweetAlertDialog dialog = new SweetAlertDialog(HistoryActivity.this, SweetAlertDialog.SUCCESS_TYPE)
+                        .setTitleText("Thông báo")
+                        .setContentText("Không có thông báo nào");
+                dialog.show();
+            }
+        });
+
+        resultSubmit.setOnClickListener((v) -> {
+            startActivity(new Intent(HistoryActivity.this, UploadHealthResultActivity.class));
+        });
     }
 
+    private String getKey(int month, int year) {
+        return String.format("%s%s", month, year);
+    }
+
+    private void updateCalendar(int month, int year) {
+        getInquiries(month, year);
+        if (map.get(getKey(month, year)) == null) {
+            requireData();
+            appDatabase.getDataDao().getDatas(userInfo.getId(), month, year)
+                    .observe(this, list -> {
+                        map.put(getKey(month, year), list);
+                        map.get(getKey(month, year)).forEach(v -> {
+                            NotificationType type = NotificationType.getType(v.getType());
+                            CustomEventDay.IconType iconType = null;
+                            switch (type) {
+                                case INQUIRY:
+                                    iconType = CustomEventDay.IconType.INQUIRY;
+                                    break;
+                                case MED_ADVICE:
+                                    iconType = CustomEventDay.IconType.RECORD;
+                                    break;
+                                case REPLY:
+                                    iconType = CustomEventDay.IconType.REPLY;
+                                    break;
+                            }
+                            putIcon(iconType, DateTimeUtils.toCalendar(v.getDate()));
+                        });
+                        calendarView.setEvents(events.values()
+                                .stream()
+                                .map(CustomEventDay.Builder::build)
+                                .collect(Collectors.toList()));
+                    });
+
+            appDatabase.getScheduleDao().getAvailableSchedules(userInfo.getId())
+                    .observe(this, list -> {
+                        list.forEach(s -> {
+                            if (s.getEndedAt().isAfter(LocalDateTime.now()))
+                                putIcon(CustomEventDay.IconType.SCHEDULE, DateTimeUtils.toCalendar(s.getEndedAt()));
+                        });
+                        calendarView.setEvents(events.values()
+                                .stream()
+                                .map(CustomEventDay.Builder::build)
+                                .collect(Collectors.toList()));
+                    });
+        } else {
+            calendarView.setEvents(events.values()
+                    .stream()
+                    .map(CustomEventDay.Builder::build)
+                    .collect(Collectors.toList()));
+        }
+    }
+
+    private void putIcon(CustomEventDay.IconType iconType, Calendar c) {
+        if (iconType != null) {
+            CustomEventDay.Builder builder = events.get(c.get(Calendar.DAY_OF_MONTH));
+            if (builder == null) {
+                builder = new CustomEventDay.Builder(this)
+                        .setCalendar(c);
+            }
+            builder = builder.display(iconType);
+            events.put(c.get(Calendar.DAY_OF_MONTH), builder);
+        }
+    }
+
+    private void requireData() {
+        resultReceiver = new ServiceResultReceiver(new Handler());
+        resultReceiver.setReceiver(this);
+        GetNotificationJob.enqueueWork(this, resultReceiver);
+    }
+
+    @Override
+    public void onReceiveResult(int resultCode, Bundle resultData) {
+        List<Notification> list = ((NotificationListDto) resultData.getSerializable("notifications")).getList();
+        list.stream()
+                .min((o1, o2) -> o1.getCreatedAt().compareTo(o2.getCreatedAt()))
+                .ifPresent((last) -> {
+                    if (last.getCreatedAt().isAfter(LocalDateTime.of(year, month, 1, 0, 0, 0)) &&
+                            !GetNotificationJob.isLast) {
+                        requireData();
+                    }
+                });
+    }
 }

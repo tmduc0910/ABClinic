@@ -1,8 +1,12 @@
 package com.abclinic.entity;
 
+import android.os.Parcel;
+
 import androidx.annotation.Nullable;
 
+import com.abclinic.constant.NotificationType;
 import com.abclinic.utils.DateTimeUtils;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -20,7 +24,18 @@ import java.util.List;
         "updatedAt"
 })
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Reply {
+public class Reply implements ISaveable {
+    public static final Creator<Reply> CREATOR = new Creator<Reply>() {
+        @Override
+        public Reply createFromParcel(Parcel source) {
+            return new Reply(source);
+        }
+
+        @Override
+        public Reply[] newArray(int size) {
+            return new Reply[size];
+        }
+    };
 
     @JsonProperty("id")
     private long id;
@@ -32,6 +47,15 @@ public class Reply {
     private List<Integer> createdAt = null;
     @JsonProperty("updatedAt")
     private List<Integer> updatedAt = null;
+
+    public Reply() {
+    }
+
+    public Reply(Parcel in) {
+        id = in.readLong();
+        in.readInt();
+        createdAt = DateTimeUtils.toList(in.readString());
+    }
 
     @JsonProperty("id")
     public long getId() {
@@ -88,5 +112,11 @@ public class Reply {
         if (obj instanceof Reply)
             return this.id == ((Reply) obj).getId();
         return false;
+    }
+
+    @JsonIgnore
+    @Override
+    public int getDataType() {
+        return NotificationType.REPLY.getValue();
     }
 }

@@ -21,6 +21,7 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.abclinic.asynctask.SaveDataTask;
 import com.abclinic.asynctask.SaveInquiryCacheTask;
 import com.abclinic.callback.CustomCallback;
 import com.abclinic.constant.Constant;
@@ -32,6 +33,7 @@ import com.abclinic.dto.RecyclerImageDto;
 import com.abclinic.dto.RequestCreateInquiryDto;
 import com.abclinic.dto.ResponseAlbumDto;
 import com.abclinic.entity.Inquiry;
+import com.abclinic.entity.UserInfo;
 import com.abclinic.retrofit.RetrofitClient;
 import com.abclinic.retrofit.api.ImageMapper;
 import com.abclinic.retrofit.api.InquiryMapper;
@@ -274,6 +276,9 @@ public class UpLoadActivity extends CustomActivity implements PopupMenu.OnMenuIt
                 showDateTxt.setEnabled(false);
                 showTimeTxt.setEnabled(false);
                 pickTime.setEnabled(false);
+
+                UserInfo userInfo = storageService.getUserInfo();
+                new SaveDataTask(UpLoadActivity.this, userInfo.getId(), appDatabase).execute(response.body());
             }
 
             @Override

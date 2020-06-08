@@ -1,13 +1,18 @@
 package com.example.abclinic.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -18,10 +23,12 @@ import com.abclinic.constant.NotificationType;
 import com.abclinic.constant.StorageConstant;
 import com.abclinic.dto.NotificationListDto;
 import com.abclinic.entity.Notification;
-import com.abclinic.entity.PageableEntity;
 import com.abclinic.retrofit.api.NotificationMapper;
 import com.abclinic.utils.services.LocalStorageService;
 import com.abclinic.utils.services.MyFirebaseService;
+import com.abclinic.utils.services.intent.job.GetNotificationJob;
+import com.abclinic.utils.services.intent.job.Receiver;
+import com.abclinic.utils.services.intent.job.ServiceResultReceiver;
 import com.example.abclinic.NotificationIntent;
 import com.example.abclinic.PaginationListener;
 import com.example.abclinic.R;
@@ -31,7 +38,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import retrofit2.Call;
 import retrofit2.Response;
 
-public class NotificationActivity extends CustomActivity {
+public class NotificationActivity extends CustomActivity implements Receiver {
     private static final int PAGE_SIZE = 20;
 
     RecyclerView recyclerView;
@@ -39,11 +46,10 @@ public class NotificationActivity extends CustomActivity {
     ViewNotificationAdapter viewNotificationAdapter;
 
     private LinearLayoutManager layoutManager;
-    private PageableEntity<Notification> notifications;
     private NotificationListDto list = new NotificationListDto();
     private boolean isLoading = false;
-    private boolean isLast = false;
-    private int page = PaginationListener.PAGE_START;
+    private boolean isInit = false;
+    private BroadcastReceiver receiver;
 
     @Override
     public String getKey() {
@@ -53,8 +59,28 @@ public class NotificationActivity extends CustomActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notification);
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            isInit = extras.getBoolean("isInit");
+            if (isInit) {
+                setTheme(android.R.style.Theme_NoDisplay);
+                receiver = new BroadcastReceiver() {
+                    @Override
+                    public void onReceive(Context context, Intent intent) {
+                        fetchNotification(true);
+                    }
+                };
+                IntentFilter filter = new IntentFilter(FETCH_HISTORY);
+                LocalBroadcastManager.getInstance(this).registerReceiver(receiver, filter);
+                Intent data = new Intent();
+                data.putExtra("caller", "notification");
+                data.putExtra("isLast", GetNotificationJob.isLast);
+                setResult(RESULT_OK, data);
+                finish();
+            }
+        }
 
+        setContentView(R.layout.activity_notification);
         storageService = new LocalStorageService(this, StorageConstant.STORAGE_KEY_NOTI);
         recyclerView = findViewById(R.id.recycler_noti);
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -89,6 +115,9 @@ public class NotificationActivity extends CustomActivity {
                 return false;
             }
         });
+
+        GetNotificationJob.page = PaginationListener.PAGE_START;
+        GetNotificationJob.isLast = false;
     }
 
     @Override
@@ -104,7 +133,7 @@ public class NotificationActivity extends CustomActivity {
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-                if (!isLoading && !isLast) {
+                if (!isLoading && !GetNotificationJob.isLast) {
                     if (layoutManager != null && layoutManager.findLastCompletelyVisibleItemPosition() == list.size() - 1) {
                         if (layoutManager.findLastCompletelyVisibleItemPosition() == list.size() - 1) {
                             Log.d(Constant.DEBUG_TAG, "Log: " + layoutManager.findLastCompletelyVisibleItemPosition());
@@ -118,7 +147,8 @@ public class NotificationActivity extends CustomActivity {
         refreshLayout.setOnRefreshListener(() -> {
             try {
                 list = new NotificationListDto();
-                page = PaginationListener.PAGE_START;
+                GetNotificationJob.page = PaginationListener.PAGE_START;
+                GetNotificationJob.isLast = false;
                 viewNotificationAdapter = null;
                 fetchNotification();
             } finally {
@@ -144,17 +174,18 @@ public class NotificationActivity extends CustomActivity {
                     list.get(pos).setIsRead(true);
                     viewNotificationAdapter.notifyDataSetChanged();
 
-                    Class c = null;
+                    Class c;
                     switch (NotificationType.getType(n.getType())) {
                         case INQUIRY:
                         case REPLY:
-                        case ADVICE:
-                        case UPDATE_ADVICE:
+                        case MED_ADVICE:
+                        case DIET_ADVICE:
                             c = InquiryActivity.class;
                             break;
                         case SCHEDULE_REMINDER:
                         case SCHEDULE:
-                            return;
+                            c = UploadHealthResultActivity.class;
+                            break;
                         default:
                             return;
                     }
@@ -169,31 +200,59 @@ public class NotificationActivity extends CustomActivity {
     }
 
     private void fetchNotification(boolean fromNoti) {
-        Call<PageableEntity<Notification>> call = retrofit.create(NotificationMapper.class).getNotificationList(page, PAGE_SIZE);
-        call.enqueue(new CustomCallback<PageableEntity<Notification>>(this) {
-            @Override
-            protected void processResponse(Response<PageableEntity<Notification>> response) {
-                notifications = response.body();
-                storageService.saveCache(StorageConstant.KEY_NOTIFICATION, notifications.toString());
-                isLast = notifications.getTotalPages() <= page;
-                Log.d(Constant.DEBUG_TAG, "Loading = " + isLoading + ", Last = " + isLast);
+//        Call<PageableEntity<Notification>> call = retrofit.create(NotificationMapper.class).getNotificationList(page, PAGE_SIZE);
+//        call.enqueue(new CustomCallback<PageableEntity<Notification>>(this) {
+//            @Override
+//            protected void processResponse(Response<PageableEntity<Notification>> response) {
+//                notifications = response.body();
+//                isLast = notifications.isLast();
+//                list.addItems(false, notifications.getContent());
+//
+//                Intent intent = new Intent(NotificationActivity.this, SaveDataJob.class);
+//                intent.putExtra("userId", userInfo.getId());
+//                intent.putExtra("notifications", new NotificationListDto(new LinkedList<>(notifications.getContent())));
+//                SaveDataJob.enqueueWork(NotificationActivity.this, intent);
+//                if (!isInit) {
+//                    if (viewNotificationAdapter == null)
+//                        initAdapter();
+//                    else {
+//                        viewNotificationAdapter.notifyDataSetChanged();
+//                    }
+//                }
+//                isLoading = false;
+//                page++;
+//            }
+//
+//            @Override
+//            protected boolean useDialog() {
+//                return !fromNoti;
+//            }
+//        });
 
-                boolean isNew = list.addItems(false, notifications.getContent());
+        if (!GetNotificationJob.isLast) {
+            ServiceResultReceiver receiver = new ServiceResultReceiver(new Handler());
+            receiver.setReceiver(this);
+            GetNotificationJob.enqueueWork(this, receiver);
+        }
+    }
 
-                if (viewNotificationAdapter == null)
-                    initAdapter();
-                else {
-                    viewNotificationAdapter.notifyDataSetChanged();
-                }
-                isLoading = false;
-                page++;
+    @Override
+    public void onReceiveResult(int resultCode, Bundle resultData) {
+        list.addItems(false, ((NotificationListDto) resultData.getSerializable("notifications")).getList());
+        if (!isInit) {
+            if (viewNotificationAdapter == null)
+                initAdapter();
+            else {
+                viewNotificationAdapter.notifyDataSetChanged();
             }
+            isLoading = false;
+        }
+    }
 
-            @Override
-            protected boolean useDialog() {
-                return !fromNoti;
-            }
-        });
+    @Override
+    protected void onDestroy() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
+        super.onDestroy();
     }
 
     private void fetchNotification() {

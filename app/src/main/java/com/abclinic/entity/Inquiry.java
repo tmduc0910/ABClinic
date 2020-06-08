@@ -1,6 +1,12 @@
 package com.abclinic.entity;
 
+import android.os.Parcel;
+
+import androidx.annotation.Nullable;
+
+import com.abclinic.constant.NotificationType;
 import com.abclinic.constant.PayloadStatus;
+import com.abclinic.room.entity.DataEntity;
 import com.abclinic.utils.DateTimeUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -29,7 +35,18 @@ import java.util.stream.Collectors;
 })
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Inquiry {
+public class Inquiry implements ISaveable {
+    public static final Creator<Inquiry> CREATOR = new Creator<Inquiry>() {
+        @Override
+        public Inquiry createFromParcel(Parcel source) {
+            return new Inquiry(source);
+        }
+
+        @Override
+        public Inquiry[] newArray(int size) {
+            return new Inquiry[size];
+        }
+    };
 
     @JsonProperty("id")
     private long id;
@@ -55,6 +72,15 @@ public class Inquiry {
     private List<Integer> createdAt = null;
     @JsonProperty("updatedAt")
     private List<Integer> updatedAt = null;
+
+    public Inquiry() {
+    }
+
+    protected Inquiry(Parcel in) {
+        id = in.readLong();
+        in.readInt();
+        createdAt = DateTimeUtils.toList(in.readString());
+    }
 
     @JsonProperty("id")
     public long getId() {
@@ -182,5 +208,20 @@ public class Inquiry {
                 .sorted((o1, o2) -> o2.getCreatedAt().compareTo(o1.getCreatedAt()))
                 .collect(Collectors.toList());
         return this;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj instanceof Inquiry)
+            return this.getId() == ((Inquiry) obj).id;
+        else if (obj instanceof DataEntity)
+            return this.getId() == ((DataEntity) obj).getPayloadId();
+        return false;
+    }
+
+    @JsonIgnore
+    @Override
+    public int getDataType() {
+        return NotificationType.INQUIRY.getValue();
     }
 }

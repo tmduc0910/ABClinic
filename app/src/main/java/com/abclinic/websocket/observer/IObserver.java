@@ -1,7 +1,5 @@
 package com.abclinic.websocket.observer;
 
-import com.abclinic.dto.PushNotificationDto;
-
-public interface IObserver {
-    void process(PushNotificationDto notificationDto);
+public interface IObserver<T> {
+    void process(T obj);
 }

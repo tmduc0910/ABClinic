@@ -4,12 +4,20 @@ import androidx.annotation.Nullable;
 
 import com.abclinic.entity.Notification;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-public class NotificationListDto {
+public class NotificationListDto implements Serializable {
     private List<Notification> list = new LinkedList<>();
+
+    public NotificationListDto() {
+    }
+
+    public NotificationListDto(List<Notification> list) {
+        this.list = list;
+    }
 
     public boolean addItems(boolean toFirst, Collection<Notification> c) {
         boolean isNew = false;
@@ -22,6 +30,10 @@ public class NotificationListDto {
             } else break;
         }
         return isNew;
+    }
+
+    public List<Notification> getList() {
+        return list;
     }
 
     public Notification get(int i) {

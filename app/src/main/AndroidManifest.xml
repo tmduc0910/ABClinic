@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <!--    <uses-feature android:name="android.hardware.Camera2" android:required="true"/>-->
 
@@ -41,6 +42,9 @@
         <activity android:name=".activity.NotificationActivity" />
         <activity android:name=".activity.HistoryActivity" />
         <activity android:name=".activity.ProfileActivity" />
+        <activity
+            android:name=".activity.UploadHealthResultActivity"
+            android:launchMode="singleTask" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -60,6 +64,30 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <service
+            android:name="com.abclinic.utils.services.intent.SaveDataService"
+            android:exported="false" />
+
+        <service
+            android:name="com.abclinic.utils.services.intent.job.SaveDataJob"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <service
+            android:name="com.abclinic.utils.services.intent.job.SaveScheduleJob"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <service
+            android:name="com.abclinic.utils.services.intent.job.GetNotificationJob"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <service
+            android:name="com.abclinic.utils.services.intent.job.GetScheduleJob"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 
 </manifest>

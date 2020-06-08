@@ -7,11 +7,13 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import com.abclinic.room.dao.DataDao;
+import com.abclinic.room.dao.ScheduleDao;
 import com.abclinic.room.dao.UserDao;
 import com.abclinic.room.entity.DataEntity;
+import com.abclinic.room.entity.ScheduleEntity;
 import com.abclinic.room.entity.UserEntity;
 
-@Database(entities = {UserEntity.class, DataEntity.class}, version = 1, exportSchema = false)
+@Database(entities = {UserEntity.class, DataEntity.class, ScheduleEntity.class}, version = 9, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     private static final String DB_NAME = "abclinic";
     private static AppDatabase instance;
@@ -27,4 +29,6 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract UserDao getUserDao();
 
     public abstract DataDao getDataDao();
+
+    public abstract ScheduleDao getScheduleDao();
 }

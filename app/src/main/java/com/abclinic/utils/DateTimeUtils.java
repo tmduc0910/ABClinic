@@ -8,6 +8,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -51,6 +53,21 @@ public class DateTimeUtils {
         } else return null;
     }
 
+    public static LocalDateTime parseDateTimeSqlite(String dateTime) {
+        if (dateTime != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Constant.ROOM_DATE_TIME_FORMAT);
+            return LocalDateTime.parse(dateTime, formatter);
+        } else return null;
+    }
+
+    public static LocalDate parseDateSqlite(String dateTime) {
+        if (dateTime != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Constant.ROOM_DATE_FORMAT);
+            return LocalDate.parse(dateTime, formatter);
+        } else return null;
+    }
+
+
     public static String toString(LocalDateTime time) {
         if (time == null)
             return null;
@@ -67,6 +84,15 @@ public class DateTimeUtils {
         return time.format(DateTimeFormatter.ofPattern(Constant.SENSITIVE_DATETIME_FORMAT));
     }
 
+    public static String toSqliteString(LocalDateTime time) {
+        return time.format(DateTimeFormatter.ofPattern(Constant.ROOM_DATE_TIME_FORMAT));
+    }
+
+    public static String toSqliteString(LocalDate date) {
+        return date.format(DateTimeFormatter.ofPattern(Constant.ROOM_DATE_FORMAT));
+    }
+
+
     public static long toMilli(LocalDateTime time) {
         return time.toInstant(ZoneOffset.UTC).toEpochMilli();
     }
@@ -74,5 +100,24 @@ public class DateTimeUtils {
     public static Date toDate(LocalDateTime dateTime) {
         Instant instant = dateTime.atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime().toInstant(ZoneOffset.UTC);
         return Date.from(instant);
+    }
+
+    public static Calendar toCalendar(LocalDateTime dateTime) {
+        Date date = toDate(dateTime);
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        return c;
+    }
+
+    public static List<Integer> toList(String dateTime) {
+        LocalDateTime dt = parseDateTime(dateTime);
+        List<Integer> list = new ArrayList<>();
+        list.add(dt.getYear());
+        list.add(dt.getMonthValue());
+        list.add(dt.getDayOfMonth());
+        list.add(dt.getHour());
+        list.add(dt.getMinute());
+        list.add(dt.getSecond());
+        return list;
     }
 }

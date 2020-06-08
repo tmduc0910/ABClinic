@@ -17,22 +17,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-//@JsonPropertyOrder({
-//        "id",
-//        "role",
-//        "name",
-//        "email",
-//        "gender",
-//        "dateOfBirth",
-//        "age",
-//        "phoneNumber",
-//        "avatar",
-//        "createdAt",
-//        "address",
-//        "practitioner",
-//        "dietitians",
-//        "specialists"
-//})
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserInfo {
 
@@ -71,6 +55,12 @@ public class UserInfo {
     private Specialty specialty;
     @JsonProperty("description")
     private String description;
+    @JsonProperty("diseases")
+    private List<Disease> diseases;
+    @JsonIgnore
+    private String password;
+    @JsonIgnore
+    private boolean isLogon;
 
     @JsonProperty("id")
     public long getId() {
@@ -219,6 +209,30 @@ public class UserInfo {
     @JsonProperty("specialists")
     public void setSpecialists(List<Specialist> specialists) {
         this.specialists = specialists;
+    }
+
+    public List<Disease> getDiseases() {
+        return diseases;
+    }
+
+    public void setDiseases(List<Disease> diseases) {
+        this.diseases = diseases;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public boolean isLogon() {
+        return isLogon;
+    }
+
+    public void setLogon(boolean logon) {
+        isLogon = logon;
     }
 
     @NonNull

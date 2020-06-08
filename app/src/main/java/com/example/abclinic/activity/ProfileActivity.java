@@ -2,6 +2,7 @@ package com.example.abclinic.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,7 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.PopupMenu;
 
-import com.abclinic.asynctask.GetUserInfoTask;
+import com.abclinic.asynctask.UpdateUserInfoTask;
 import com.abclinic.callback.CustomCallback;
 import com.abclinic.constant.Constant;
 import com.abclinic.constant.StorageConstant;
@@ -27,10 +28,12 @@ import com.abclinic.retrofit.RetrofitClient;
 import com.abclinic.retrofit.api.AuthMapper;
 import com.abclinic.retrofit.api.ImageMapper;
 import com.abclinic.retrofit.api.UserInfoMapper;
+import com.abclinic.room.entity.UserEntity;
 import com.abclinic.utils.DateTimeUtils;
 import com.abclinic.utils.FileUtils;
 import com.abclinic.utils.services.MediaService;
 import com.abclinic.utils.services.PermissionUtils;
+import com.abclinic.utils.services.intent.job.GetScheduleJob;
 import com.example.abclinic.R;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -108,6 +111,12 @@ public class ProfileActivity extends CustomActivity implements PopupMenu.OnMenuI
                         call.enqueue(new CustomCallback<Void>(ProfileActivity.this) {
                             @Override
                             protected void processResponse(Response<Void> response) {
+                                AsyncTask.execute(() -> {
+                                    UserEntity userEntity = appDatabase.getUserDao().getUser(userInfo.getId());
+                                    userEntity.setLogon(false);
+                                    appDatabase.getUserDao().addUser(userEntity);
+                                });
+
                                 Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
                                 intent.putExtra(Constant.IS_LOGOUT, true);
                                 startActivityForResult(intent, CODE_LOGOUT);
@@ -220,6 +229,7 @@ public class ProfileActivity extends CustomActivity implements PopupMenu.OnMenuI
             }
         });
 
+        GetScheduleJob.enqueueWork(this, null);
     }
 
     public void showPopup(View v) {
@@ -331,7 +341,7 @@ public class ProfileActivity extends CustomActivity implements PopupMenu.OnMenuI
     }
 
     private void saveInfo() {
-        new GetUserInfoTask(appDatabase, ProfileActivity.this, StorageConstant.STORAGE_KEY_USER, null)
+        new UpdateUserInfoTask(appDatabase, ProfileActivity.this, StorageConstant.STORAGE_KEY_USER, null)
                 .execute(userInfo);
         storageService.saveCache(StorageConstant.KEY_USER, userInfo.toString());
         updateInfo();
