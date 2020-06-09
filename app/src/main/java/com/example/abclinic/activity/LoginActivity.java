@@ -35,7 +35,7 @@ import retrofit2.Response;
 
 
 public class LoginActivity extends CustomActivity {
-    public static final boolean USE_SECURITY = false;
+    public static final boolean USE_SECURITY = true;
     public static final String DEFAULT_UID = "91200dd6-920b-48b4-86bb-674169a72458";
 
     Button loginBtn;

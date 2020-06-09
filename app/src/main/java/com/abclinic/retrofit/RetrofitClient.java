@@ -33,7 +33,7 @@ public class RetrofitClient {
     }
 
     public static String getUrl() {
-        return LOCAL_URL_2;
+        return REMOTE_URL;
     }
 
 //
