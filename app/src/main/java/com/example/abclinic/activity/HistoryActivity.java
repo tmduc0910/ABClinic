@@ -1,6 +1,8 @@
 package com.example.abclinic.activity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -15,16 +17,20 @@ import com.abclinic.dto.NotificationListDto;
 import com.abclinic.entity.Notification;
 import com.abclinic.entity.UserInfo;
 import com.abclinic.room.entity.DataEntity;
+import com.abclinic.room.entity.ScheduleEntity;
 import com.abclinic.utils.DateTimeUtils;
 import com.abclinic.utils.services.intent.job.GetNotificationJob;
 import com.abclinic.utils.services.intent.job.Receiver;
 import com.abclinic.utils.services.intent.job.ServiceResultReceiver;
 import com.applandeo.materialcalendarview.CalendarView;
 import com.example.abclinic.CustomEventDay;
+import com.example.abclinic.NotificationIntent;
 import com.example.abclinic.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -87,7 +93,7 @@ public class HistoryActivity extends CustomActivity implements Receiver {
                     case R.id.profile:
                         Intent intent_home = new Intent(HistoryActivity.this, ProfileActivity.class);
                         startActivity(intent_home);
-                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_feft);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         break;
                 }
                 return false;
@@ -119,9 +125,7 @@ public class HistoryActivity extends CustomActivity implements Receiver {
         calendarView.setOnDayClickListener(eventDay -> {
             if (eventDay instanceof CustomEventDay) {
                 CustomEventDay ev = (CustomEventDay) eventDay;
-                if (ev.containsIcon(CustomEventDay.IconType.SCHEDULE)) {
-                    startActivity(new Intent(HistoryActivity.this, UploadHealthResultActivity.class));
-                }
+                makeHistoryDialog(ev);
             } else {
                 SweetAlertDialog dialog = new SweetAlertDialog(HistoryActivity.this, SweetAlertDialog.SUCCESS_TYPE)
                         .setTitleText("Thông báo")
@@ -154,7 +158,10 @@ public class HistoryActivity extends CustomActivity implements Receiver {
                                     iconType = CustomEventDay.IconType.INQUIRY;
                                     break;
                                 case MED_ADVICE:
-                                    iconType = CustomEventDay.IconType.RECORD;
+                                    iconType = CustomEventDay.IconType.MED_RECORD;
+                                    break;
+                                case DIET_ADVICE:
+                                    iconType = CustomEventDay.IconType.DIET_RECORD;
                                     break;
                                 case REPLY:
                                     iconType = CustomEventDay.IconType.REPLY;
@@ -216,5 +223,97 @@ public class HistoryActivity extends CustomActivity implements Receiver {
                         requireData();
                     }
                 });
+    }
+
+    private void makeHistoryDialog(CustomEventDay eventDay) {
+        int[] pos = new int[1];
+        String[] items = eventDay.getIcons().stream()
+                .map(CustomEventDay.IconType::getMeaning)
+                .toArray(String[]::new);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Thông báo trong ngày")
+                .setPositiveButton("Tiếp", (d, which) -> {
+                    d.cancel();
+                    List<String> detailItems = new ArrayList<>();
+                    SweetAlertDialog dialog = new SweetAlertDialog(HistoryActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+                    dialog.setCancelable(false);
+                    dialog.show();
+
+                    LocalDate date = DateTimeUtils.parseDate(eventDay.getCalendar());
+                    AsyncTask.execute(() -> {
+                        if (eventDay.getIcons().get(pos[0]).getType() == NotificationType.SCHEDULE_REMINDER.getValue()) {
+                            List<ScheduleEntity> list = appDatabase.getScheduleDao().getStaticAvailableSchedules(userInfo.getId());
+                            list.stream()
+                                    .filter(s -> s.getEndedAt().toLocalDate().equals(date))
+                                    .forEach(s -> {
+                                        detailItems.add(String.format("Lịch nhắc nhở gửi chỉ số %s", s.getIndexName()));
+                                    });
+                            dialog.dismissWithAnimation();
+                            makeDetailDialog(eventDay, "Lịch nhắc nhở", detailItems, NotificationType.SCHEDULE_REMINDER.getValue(), null);
+
+                        } else {
+                            List<DataEntity> datas = appDatabase.getDataDao().getDatas(userInfo.getId(),
+                                    eventDay.getIcons().get(pos[0]).getType(),
+                                    date.getDayOfMonth(),
+                                    date.getMonthValue(),
+                                    date.getYear());
+                            String[] s = new String[1];
+                            if (datas.get(0).getType() == NotificationType.INQUIRY.getValue())
+                                s[0] = "Yêu cầu xin tư vấn";
+                            else if (datas.get(0).getType() == NotificationType.MED_ADVICE.getValue())
+                                s[0] = "Tư vấn khám bệnh";
+                            else if (datas.get(0).getType() == NotificationType.DIET_ADVICE.getValue())
+                                s[0] = "Tư vấn dinh dưỡng";
+                            else if (datas.get(0).getType() == NotificationType.REPLY.getValue())
+                                s[0] = "Trả lời từ bác sĩ";
+                            datas.forEach(data -> detailItems.add(String.format("%s lúc %s", s[0], data.getDate().toLocalTime().toString())));
+                            dialog.dismissWithAnimation();
+                            makeDetailDialog(eventDay,
+                                    s[0],
+                                    detailItems,
+                                    datas.get(0).getType(),
+                                    datas.stream()
+                                            .map(DataEntity::getPayloadId)
+                                            .collect(Collectors.toList()));
+                        }
+                    });
+                })
+                .setNegativeButton("Hủy", (d, which) -> d.cancel())
+                .setSingleChoiceItems(items, 0, (d, which) -> {
+                    pos[0] = which;
+                });
+        final AlertDialog alertDialog = builder.create();
+        if (alertDialog.getWindow() != null)
+            alertDialog.getWindow().getAttributes().windowAnimations = R.style.SlidingDialogInAnimation;
+        alertDialog.show();
+    }
+
+    private void makeDetailDialog(CustomEventDay eventDay, String title, List<String> contents, int type, List<Long> payloadIds) {
+        int[] pos = new int[1];
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(String.format("%s ngày %s", title, DateTimeUtils.toString(eventDay.getDate())))
+                .setPositiveButton("Chọn", (d, which) -> {
+                    d.cancel();
+                    if (type == NotificationType.SCHEDULE_REMINDER.getValue()) {
+                        startActivity(new Intent(HistoryActivity.this, UploadHealthResultActivity.class));
+                    } else {
+                        long id = payloadIds.get(pos[0]);
+                        startActivity(new NotificationIntent(HistoryActivity.this, InquiryActivity.class, type, id));
+                    }
+                })
+                .setNegativeButton("Quay lại", (d, which) -> {
+                    d.cancel();
+                    makeHistoryDialog(eventDay);
+                })
+                .setSingleChoiceItems(contents.toArray(new String[0]), 0, (d, which) -> {
+                    pos[0] = which;
+                });
+
+        runOnUiThread(() -> {
+            AlertDialog alertDialog = builder.create();
+            if (alertDialog.getWindow() != null)
+                alertDialog.getWindow().getAttributes().windowAnimations = R.style.SlidingDialogOutAnimation;
+            alertDialog.show();
+        });
     }
 }

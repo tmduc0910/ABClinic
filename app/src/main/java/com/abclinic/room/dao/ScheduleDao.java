@@ -18,6 +18,9 @@ public interface ScheduleDao {
     @Query("select * from schedule where user_id = :id and status = 0")
     LiveData<List<ScheduleEntity>> getAvailableSchedules(long id);
 
+    @Query("select * from schedule where user_id = :id and status = 0")
+    List<ScheduleEntity> getStaticAvailableSchedules(long id);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void save(ScheduleEntity... scheduleEntity);
 }

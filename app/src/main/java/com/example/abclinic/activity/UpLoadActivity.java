@@ -140,15 +140,15 @@ public class UpLoadActivity extends CustomActivity implements PopupMenu.OnMenuIt
                         break;
                     case R.id.notifi:
                         startActivity(new Intent(UpLoadActivity.this, NotificationActivity.class));
-                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_feft);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         break;
                     case R.id.history:
                         startActivity(new Intent(UpLoadActivity.this, HistoryActivity.class));
-                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_feft);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         break;
                     case R.id.profile:
                         startActivity(new Intent(UpLoadActivity.this, ProfileActivity.class));
-                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_feft);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         break;
                 }
                 return false;

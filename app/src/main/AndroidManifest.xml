@@ -66,10 +66,6 @@
         </service>
 
         <service
-            android:name="com.abclinic.utils.services.intent.SaveDataService"
-            android:exported="false" />
-
-        <service
             android:name="com.abclinic.utils.services.intent.job.SaveDataJob"
             android:exported="false"
             android:permission="android.permission.BIND_JOB_SERVICE" />

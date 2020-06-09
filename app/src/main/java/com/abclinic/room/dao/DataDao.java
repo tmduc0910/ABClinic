@@ -27,6 +27,9 @@ public interface DataDao {
     @Query("select * from data d where d.user_id = :userId and d.m_date = :month and d.y_date = :year")
     LiveData<List<DataEntity>> getDatas(long userId, int month, int year);
 
+    @Query("select * from data d where d.user_id = :userId and type = :type and d.d_date = :day and d.m_date = :month and d.y_date = :year")
+    List<DataEntity> getDatas(long userId, int type, int day, int month, int year);
+
     @Query("select * from data d where d.user_id = :userId limit :from, :to")
     LiveData<List<DataEntity>> getPagedDatas(long userId, int from, int to);
 

@@ -67,7 +67,7 @@ public class NotificationActivity extends CustomActivity implements Receiver {
                 receiver = new BroadcastReceiver() {
                     @Override
                     public void onReceive(Context context, Intent intent) {
-                        fetchNotification(true);
+                        fetchNotification();
                     }
                 };
                 IntentFilter filter = new IntentFilter(FETCH_HISTORY);
@@ -105,11 +105,11 @@ public class NotificationActivity extends CustomActivity implements Receiver {
                         break;
                     case R.id.history:
                         startActivity(new Intent(NotificationActivity.this, HistoryActivity.class));
-                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_feft);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         break;
                     case R.id.profile:
                         startActivity(new Intent(NotificationActivity.this, ProfileActivity.class));
-                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_feft);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         break;
                 }
                 return false;
@@ -156,7 +156,7 @@ public class NotificationActivity extends CustomActivity implements Receiver {
                 Toast.makeText(NotificationActivity.this, "Làm mới thành công", Toast.LENGTH_SHORT).show();
             }
         });
-        observer = push -> fetchNotification(true);
+        observer = push -> fetchNotification();
         MyFirebaseService.subject.attach(observer);
         fetchNotification();
     }
@@ -199,40 +199,13 @@ public class NotificationActivity extends CustomActivity implements Receiver {
         recyclerView.setAdapter(viewNotificationAdapter);
     }
 
-    private void fetchNotification(boolean fromNoti) {
-//        Call<PageableEntity<Notification>> call = retrofit.create(NotificationMapper.class).getNotificationList(page, PAGE_SIZE);
-//        call.enqueue(new CustomCallback<PageableEntity<Notification>>(this) {
-//            @Override
-//            protected void processResponse(Response<PageableEntity<Notification>> response) {
-//                notifications = response.body();
-//                isLast = notifications.isLast();
-//                list.addItems(false, notifications.getContent());
-//
-//                Intent intent = new Intent(NotificationActivity.this, SaveDataJob.class);
-//                intent.putExtra("userId", userInfo.getId());
-//                intent.putExtra("notifications", new NotificationListDto(new LinkedList<>(notifications.getContent())));
-//                SaveDataJob.enqueueWork(NotificationActivity.this, intent);
-//                if (!isInit) {
-//                    if (viewNotificationAdapter == null)
-//                        initAdapter();
-//                    else {
-//                        viewNotificationAdapter.notifyDataSetChanged();
-//                    }
-//                }
-//                isLoading = false;
-//                page++;
-//            }
-//
-//            @Override
-//            protected boolean useDialog() {
-//                return !fromNoti;
-//            }
-//        });
-
+    private void fetchNotification() {
         if (!GetNotificationJob.isLast) {
-            ServiceResultReceiver receiver = new ServiceResultReceiver(new Handler());
-            receiver.setReceiver(this);
-            GetNotificationJob.enqueueWork(this, receiver);
+            runOnUiThread(() -> {
+                ServiceResultReceiver receiver = new ServiceResultReceiver(new Handler());
+                receiver.setReceiver(this);
+                GetNotificationJob.enqueueWork(this, receiver);
+            });
         }
     }
 
@@ -253,9 +226,5 @@ public class NotificationActivity extends CustomActivity implements Receiver {
     protected void onDestroy() {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
         super.onDestroy();
-    }
-
-    private void fetchNotification() {
-        fetchNotification(false);
     }
 }

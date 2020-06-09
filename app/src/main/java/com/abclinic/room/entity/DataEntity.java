@@ -26,7 +26,7 @@ public class DataEntity {
     @TypeConverters({DateConverter.class})
     @ColumnInfo(name = "date")
     private LocalDateTime date;
-    @ColumnInfo(name = "m_day")
+    @ColumnInfo(name = "d_date")
     private int day;
     @ColumnInfo(name = "m_date")
     private int month;

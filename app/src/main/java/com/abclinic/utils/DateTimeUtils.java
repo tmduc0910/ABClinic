@@ -2,6 +2,8 @@ package com.abclinic.utils;
 
 import com.abclinic.constant.Constant;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -12,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class DateTimeUtils {
     public static LocalDateTime parseDateTime(int[] arr) {
@@ -53,6 +56,10 @@ public class DateTimeUtils {
         } else return null;
     }
 
+    public static LocalDate parseDate(Calendar calendar) {
+        return LocalDateTime.ofInstant(calendar.toInstant(), calendar.getTimeZone().toZoneId()).toLocalDate();
+    }
+
     public static LocalDateTime parseDateTimeSqlite(String dateTime) {
         if (dateTime != null) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Constant.ROOM_DATE_TIME_FORMAT);
@@ -78,6 +85,11 @@ public class DateTimeUtils {
         if (date == null)
             return null;
         return date.format(DateTimeFormatter.ofPattern(Constant.DATE_FORMAT));
+    }
+
+    public static String toString(Date date) {
+        DateFormat df = new SimpleDateFormat(Constant.DATE_FORMAT, Locale.getDefault());
+        return df.format(date);
     }
 
     public static String toUrlString(LocalDateTime time) {
