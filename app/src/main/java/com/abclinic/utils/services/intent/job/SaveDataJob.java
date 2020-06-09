@@ -18,6 +18,9 @@ import java.util.stream.Collectors;
 public class SaveDataJob extends CustomJobIntentService {
     private static int jobId = 0;
 
+    public SaveDataJob() {
+    }
+
     public static void enqueueWork(Context context, NotificationListDto notifications) {
         ArrayList<ISaveable> datas = (ArrayList<ISaveable>) notifications.getList().stream()
                 .map(Notification::getData)

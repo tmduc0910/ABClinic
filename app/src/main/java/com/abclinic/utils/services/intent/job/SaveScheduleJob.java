@@ -15,6 +15,9 @@ import java.util.Arrays;
 public class SaveScheduleJob extends CustomJobIntentService {
     private static int jobId = 0;
 
+    public SaveScheduleJob() {
+    }
+
     public static void enqueueWork(Context context, ScheduleListDto schedules) {
         if (jobId == 0)
             jobId = getJobId(SaveDataJob.class);

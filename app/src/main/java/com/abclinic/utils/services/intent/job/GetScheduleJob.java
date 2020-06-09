@@ -27,6 +27,9 @@ public class GetScheduleJob extends CustomJobIntentService {
     public static boolean isLast = false;
     private static int jobId = 0;
 
+    public GetScheduleJob() {
+    }
+
     public static void enqueueWork(Context context, ServiceResultReceiver receiver) {
         if (jobId == 0)
             jobId = getJobId(GetScheduleJob.class);
