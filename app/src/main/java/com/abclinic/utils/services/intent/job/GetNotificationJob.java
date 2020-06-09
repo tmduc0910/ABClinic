@@ -26,9 +26,6 @@ public class GetNotificationJob extends CustomJobIntentService {
     public static boolean isLast = false;
     private static int jobId = 0;
 
-    public GetNotificationJob() {
-    }
-
     public static void enqueueWork(Context context, ServiceResultReceiver receiver) {
         if (jobId == 0)
             jobId = getJobId(GetNotificationJob.class);
