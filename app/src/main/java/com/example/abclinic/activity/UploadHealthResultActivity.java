@@ -97,40 +97,47 @@ public class UploadHealthResultActivity extends CustomActivity implements Receiv
         });
 
         submitBtn.setOnClickListener(v -> {
-            SweetAlertDialog confirmDialog = new SweetAlertDialog(UploadHealthResultActivity.this, SweetAlertDialog.WARNING_TYPE)
-                    .setTitleText("Xác nhận")
-                    .setContentText("Bạn chắc chắn muốn gửi chưa?")
-                    .setConfirmButton("Có", d -> {
-                        d.dismissWithAnimation();
-                        int pos = getSelectedPosition();
-                        HealthIndexSchedule s = list.get(pos);
-                        List<IndexResultRequestDto> dtos = s.getIndex().getFields().stream()
-                                .filter(f -> cacheResults.keySet().contains(f.getId()))
-                                .map(f -> new IndexResultRequestDto(f.getId(), cacheResults.get(f.getId())))
-                                .collect(Collectors.toList());
+            if (list != null && !list.isEmpty()) {
+                SweetAlertDialog confirmDialog = new SweetAlertDialog(UploadHealthResultActivity.this, SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("Xác nhận")
+                        .setContentText("Bạn chắc chắn muốn gửi chưa?")
+                        .setConfirmButton("Có", d -> {
+                            d.dismissWithAnimation();
+                            int pos = getSelectedPosition();
+                            HealthIndexSchedule s = list.get(pos);
+                            List<IndexResultRequestDto> dtos = s.getIndex().getFields().stream()
+                                    .filter(f -> cacheResults.keySet().contains(f.getId()))
+                                    .map(f -> new IndexResultRequestDto(f.getId(), cacheResults.get(f.getId())))
+                                    .collect(Collectors.toList());
 
-                        if (dtos.size() == s.getIndex().getFields().size()) {
-                            Call<Void> call = retrofit.create(HealthIndexMapper.class)
-                                    .uploadResult(new RequestCreateResultDto(s.getId(), dtos));
-                            call.enqueue(new CustomCallback<Void>(UploadHealthResultActivity.this) {
-                                @Override
-                                protected void processResponse(Response<Void> response) {
-                                    SweetAlertDialog dialog = new SweetAlertDialog(UploadHealthResultActivity.this, SweetAlertDialog.SUCCESS_TYPE)
-                                            .setTitleText("Thông báo")
-                                            .setContentText("Gửi kết quả thành công!!");
-                                    dialog.show();
-                                    dialog.setConfirmButton("OK", d -> {
-                                        d.dismissWithAnimation();
-                                        finish();
-                                    });
-                                }
-                            }.handle(HttpStatus.NOT_FOUND, R.string.not_found_err, "lịch nhắc")
-                                    .handle(HttpStatus.BAD_REQUEST, R.string.result_forbidden));
-                        } else
-                            Snackbar.make(recyclerView, "Bạn phải nhập toàn bộ các trường kết quả!!!", Snackbar.LENGTH_LONG).show();
-                    })
-                    .setCancelButton("Không", SweetAlertDialog::dismissWithAnimation);
-            confirmDialog.show();
+                            if (dtos.size() == s.getIndex().getFields().size()) {
+                                Call<Void> call = retrofit.create(HealthIndexMapper.class)
+                                        .uploadResult(new RequestCreateResultDto(s.getId(), dtos));
+                                call.enqueue(new CustomCallback<Void>(UploadHealthResultActivity.this) {
+                                    @Override
+                                    protected void processResponse(Response<Void> response) {
+                                        SweetAlertDialog dialog = new SweetAlertDialog(UploadHealthResultActivity.this, SweetAlertDialog.SUCCESS_TYPE)
+                                                .setTitleText("Thông báo")
+                                                .setContentText("Gửi kết quả thành công!!");
+                                        dialog.show();
+                                        dialog.setConfirmButton("OK", d -> {
+                                            d.dismissWithAnimation();
+                                            finish();
+                                        });
+                                    }
+                                }.handle(HttpStatus.NOT_FOUND, R.string.not_found_err, "lịch nhắc")
+                                        .handle(HttpStatus.BAD_REQUEST, R.string.result_forbidden));
+                            } else
+                                Snackbar.make(recyclerView, "Bạn phải nhập toàn bộ các trường kết quả!!!", Snackbar.LENGTH_LONG).show();
+                        })
+                        .setCancelButton("Không", SweetAlertDialog::dismissWithAnimation);
+                confirmDialog.show();
+            } else {
+                SweetAlertDialog dialog = new SweetAlertDialog(UploadHealthResultActivity.this, SweetAlertDialog.ERROR_TYPE);
+                dialog.setTitleText("Lỗi")
+                        .setContentText("Bạn chưa có lịch nhắc nhở!")
+                        .show();
+            }
         });
     }
 
