@@ -7,25 +7,20 @@
     android:layout_marginTop="10dp"
     android:layout_marginEnd="10dp"
     android:background="@drawable/border"
-    android:orientation="horizontal"
-    android:padding="10dp">
-
-    <TextView
-        android:id="@+id/noti_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone" />
+    android:paddingStart="5dp"
+    android:paddingTop="5dp"
+    android:paddingEnd="5dp">
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/noti_img"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginBottom="5dp"
         android:background="@drawable/profile_image" />
-
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="75dp"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="5dp">
 
@@ -40,19 +35,25 @@
                 android:layout_height="wrap_content"
                 android:text="Title"
                 android:textColor="#000000"
-                android:textSize="21sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
+                app:autoSizeMaxTextSize="100sp"
                 app:layout_constraintStart_toStartOf="parent"
+                app:autoSizeMinTextSize="12sp"
+                app:autoSizeStepGranularity="2sp"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintEnd_toStartOf="@id/noti_time"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/noti_time"
-                android:layout_width="75sp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="top|end"
                 android:text="Time"
                 android:textColor="#000"
-                android:textSize="12sp"
+                android:maxWidth="50dp"
+                android:textSize="8sp"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -69,9 +70,12 @@
                 android:layout_height="match_parent"
                 android:text="description"
                 android:textColor="#000"
-                android:textSize="15sp"
                 app:layout_constraintEnd_toStartOf="@+id/noti_read"
                 app:layout_constraintStart_toStartOf="parent"
+                app:autoSizeMaxTextSize="15sp"
+                app:autoSizeMinTextSize="12sp"
+                app:autoSizeStepGranularity="2sp"
+                app:autoSizeTextType="uniform"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView

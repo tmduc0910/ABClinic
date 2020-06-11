@@ -1,8 +1,8 @@
 package com.abclinic.entity;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 
+import com.abclinic.constant.NotificationType;
 import com.abclinic.utils.DateTimeUtils;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -25,7 +25,7 @@ import java.util.List;
         "endedAt"
 })
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class HealthIndexSchedule implements Parcelable {
+public class HealthIndexSchedule implements ISaveable {
 
     public static final Creator<HealthIndexSchedule> CREATOR = new Creator<HealthIndexSchedule>() {
         @Override
@@ -73,6 +73,11 @@ public class HealthIndexSchedule implements Parcelable {
     @JsonProperty("id")
     public long getId() {
         return id;
+    }
+
+    @Override
+    public int getDataType() {
+        return NotificationType.SCHEDULE_REMINDER.getValue();
     }
 
     @JsonProperty("id")

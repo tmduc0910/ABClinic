@@ -5,12 +5,13 @@ android {
     compileSdkVersion 29
     defaultConfig {
         applicationId "com.example.abclinic"
-        minSdkVersion 26
+        minSdkVersion 23
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -19,8 +20,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = 1.8
-        targetCompatibility = 1.8
+        // Flag to enable support for the new language APIs
+        coreLibraryDesugaringEnabled true
+        // Sets Java compatibility to Java 8
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -67,6 +71,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:17.4.2'
     implementation 'com.google.firebase:firebase-messaging:20.2.0'
     implementation 'com.applandeo:material-calendar-view:1.7.0'
+
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.0.5'
 
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
 }

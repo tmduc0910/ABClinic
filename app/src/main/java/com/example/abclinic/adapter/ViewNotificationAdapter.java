@@ -48,8 +48,7 @@ public class ViewNotificationAdapter extends RecyclerView.Adapter<ViewNotificati
         if (sender.getAvatar() != null)
             viewHolder.imgView.setImageURI(Uri.parse(sender.getAvatar()));
         else viewHolder.imgView.setImageDrawable(null);
-        viewHolder.idTxt.setText(String.valueOf(n.getId()));
-        viewHolder.titleTxt.setText(sender.getName());
+        viewHolder.titleTxt.setText(String.format("BS. %s", sender.getName()));
         viewHolder.descTxt.setText(n.getActivity());
         viewHolder.dateTxt.setText(DateTimeUtils.toString(n.getCreatedAt()));
         viewHolder.readTxt.setVisibility(n.isRead() ? View.INVISIBLE : View.VISIBLE);
@@ -62,11 +61,10 @@ public class ViewNotificationAdapter extends RecyclerView.Adapter<ViewNotificati
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView imgView;
-        private TextView idTxt, titleTxt, descTxt, dateTxt, readTxt;
+        private TextView titleTxt, descTxt, dateTxt, readTxt;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            this.idTxt = itemView.findViewById(R.id.noti_id);
             this.imgView = itemView.findViewById(R.id.noti_img);
             this.titleTxt = itemView.findViewById(R.id.noti_title);
             this.descTxt = itemView.findViewById(R.id.noti_desc);

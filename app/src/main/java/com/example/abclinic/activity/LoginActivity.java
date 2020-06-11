@@ -78,7 +78,9 @@ public class LoginActivity extends CustomActivity {
         AsyncTask.execute(() -> {
             UserEntity accountLogon = appDatabase.getUserDao().getLogonUser();
             if (accountLogon != null) {
-                rememberMeChk.setChecked(true);
+                runOnUiThread(() -> {
+                    rememberMeChk.setChecked(true);
+                });
                 doLogin(accountLogon.getEmail(), accountLogon.getPassword());
             }
         });

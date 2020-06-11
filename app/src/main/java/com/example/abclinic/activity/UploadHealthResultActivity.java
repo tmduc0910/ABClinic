@@ -2,6 +2,7 @@ package com.example.abclinic.activity;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -106,7 +107,7 @@ public class UploadHealthResultActivity extends CustomActivity implements Receiv
                             int pos = getSelectedPosition();
                             HealthIndexSchedule s = list.get(pos);
                             List<IndexResultRequestDto> dtos = s.getIndex().getFields().stream()
-                                    .filter(f -> cacheResults.keySet().contains(f.getId()))
+                                    .filter(f -> cacheResults.containsKey(f.getId()))
                                     .map(f -> new IndexResultRequestDto(f.getId(), cacheResults.get(f.getId())))
                                     .collect(Collectors.toList());
 
@@ -144,7 +145,10 @@ public class UploadHealthResultActivity extends CustomActivity implements Receiv
     @Override
     public void onReceiveResult(int resultCode, Bundle resultData) {
         list = resultData.getParcelableArrayList("schedules");
-        list.forEach(s -> {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+        for (HealthIndexSchedule s : list) {
             RadioButton btn = new RadioButton(this);
             TimeDto timeDto = AbstractTimeCalculator.getCalculator().execute(LocalDateTime.now(), s.getEndedAt());
             StringJoiner stringJoiner = new StringJoiner("\n");
@@ -155,13 +159,13 @@ public class UploadHealthResultActivity extends CustomActivity implements Receiv
             btn.setTextSize(18);
             int viewId = View.generateViewId();
             btn.setId(viewId);
-            btn.setPadding(0, 50, 500, 0);
+            btn.setPadding(0, 50, 0, 0);
             radioParams = new RadioGroup.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             schedulesRadio.addView(btn, radioParams);
 
             if (s.getId() == defaultScheduleId)
                 schedulesRadio.check(viewId);
-        });
+        }
     }
 
     private int getSelectedPosition() {

@@ -1,5 +1,7 @@
 package com.abclinic.utils;
 
+import android.os.Build;
+
 import com.abclinic.constant.Constant;
 
 import java.text.DateFormat;
@@ -57,7 +59,11 @@ public class DateTimeUtils {
     }
 
     public static LocalDate parseDate(Calendar calendar) {
-        return LocalDateTime.ofInstant(calendar.toInstant(), calendar.getTimeZone().toZoneId()).toLocalDate();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return LocalDateTime.ofInstant(calendar.toInstant(), calendar.getTimeZone().toZoneId()).toLocalDate();
+        } else {
+            return calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        }
     }
 
     public static LocalDateTime parseDateTimeSqlite(String dateTime) {
