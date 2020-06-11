@@ -35,6 +35,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
@@ -150,7 +151,7 @@ public class HistoryActivity extends CustomActivity implements Receiver {
             appDatabase.getDataDao().getDatas(userInfo.getId(), month, year)
                     .observe(this, list -> {
                         map.put(getKey(month, year), list);
-                        map.get(getKey(month, year)).forEach(v -> {
+                        for (DataEntity v : Objects.requireNonNull(map.get(getKey(month, year)))) {
                             NotificationType type = NotificationType.getType(v.getType());
                             CustomEventDay.IconType iconType = null;
                             switch (type) {
@@ -168,7 +169,7 @@ public class HistoryActivity extends CustomActivity implements Receiver {
                                     break;
                             }
                             putIcon(iconType, DateTimeUtils.toCalendar(v.getDate()));
-                        });
+                        }
                         calendarView.setEvents(events.values()
                                 .stream()
                                 .map(CustomEventDay.Builder::build)
@@ -177,10 +178,10 @@ public class HistoryActivity extends CustomActivity implements Receiver {
 
             appDatabase.getScheduleDao().getAvailableSchedules(userInfo.getId())
                     .observe(this, list -> {
-                        list.forEach(s -> {
+                        for (ScheduleEntity s : list) {
                             if (s.getEndedAt().isAfter(LocalDateTime.now()))
                                 putIcon(CustomEventDay.IconType.SCHEDULE, DateTimeUtils.toCalendar(s.getEndedAt()));
-                        });
+                        }
                         calendarView.setEvents(events.values()
                                 .stream()
                                 .map(CustomEventDay.Builder::build)
@@ -266,7 +267,9 @@ public class HistoryActivity extends CustomActivity implements Receiver {
                                 s[0] = "Tư vấn dinh dưỡng";
                             else if (datas.get(0).getType() == NotificationType.REPLY.getValue())
                                 s[0] = "Trả lời từ bác sĩ";
-                            datas.forEach(data -> detailItems.add(String.format("%s lúc %s", s[0], data.getDate().toLocalTime().toString())));
+                            for (DataEntity data : datas) {
+                                detailItems.add(String.format("%s lúc %s", s[0], data.getDate().toLocalTime().toString()));
+                            }
                             dialog.dismissWithAnimation();
                             makeDetailDialog(eventDay,
                                     s[0],
