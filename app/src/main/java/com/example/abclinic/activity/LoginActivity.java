@@ -1,6 +1,7 @@
 package com.example.abclinic.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,18 +31,20 @@ import com.example.abclinic.R;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 import retrofit2.Response;
 
 
 public class LoginActivity extends CustomActivity {
     public static final boolean USE_SECURITY = true;
-    public static final String DEFAULT_UID = "91200dd6-920b-48b4-86bb-674169a72458";
 
     Button loginBtn;
     EditText usernameEdt, passwordEdt;
     TextView statusTxt, errorTxt;
     CheckBox rememberMeChk;
+
+    private SweetAlertDialog progressDialog;
 
     @Override
     public String getKey() {
@@ -60,6 +63,8 @@ public class LoginActivity extends CustomActivity {
         errorTxt = findViewById(R.id.error_txt);
         rememberMeChk = findViewById(R.id.remember_me);
 
+        progressDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+
         Bundle data = getIntent().getExtras();
         if (data != null) {
             boolean isLogout = data.getBoolean(Constant.IS_LOGOUT);
@@ -75,6 +80,10 @@ public class LoginActivity extends CustomActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        progressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        progressDialog.setTitleText("Loading")
+                .setCancelable(false);
+        progressDialog.show();
         AsyncTask.execute(() -> {
             UserEntity accountLogon = appDatabase.getUserDao().getLogonUser();
             if (accountLogon != null) {
@@ -123,6 +132,7 @@ public class LoginActivity extends CustomActivity {
                     e.printStackTrace();
                     Toast.makeText(LoginActivity.this, "Lỗi máy chủ (500)", Toast.LENGTH_LONG).show();
                 }
+                progressDialog.dismissWithAnimation();
             }
         });
         task.execute(account);
@@ -147,7 +157,13 @@ public class LoginActivity extends CustomActivity {
                         .addOnCompleteListener((task) -> {
                             Log.d(Constant.DEBUG_TAG, "Subscribe to topic users-" + userInfo.getId());
                         });
+                progressDialog.dismissWithAnimation();
                 startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
+            }
+
+            @Override
+            protected boolean useDialog() {
+                return false;
             }
         });
     }

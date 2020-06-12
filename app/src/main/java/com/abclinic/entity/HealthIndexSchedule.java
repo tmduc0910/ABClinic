@@ -18,6 +18,7 @@ import java.util.List;
         "patient",
         "doctor",
         "index",
+        "description",
         "scheduledTime",
         "status",
         "createdAt",
@@ -38,6 +39,7 @@ public class HealthIndexSchedule implements ISaveable {
             return new HealthIndexSchedule[size];
         }
     };
+
     @JsonProperty("id")
     private long id;
     @JsonProperty("patient")
@@ -46,6 +48,8 @@ public class HealthIndexSchedule implements ISaveable {
     private UserInfo doctor;
     @JsonProperty("index")
     private HealthIndex index;
+    @JsonProperty("description")
+    private String description;
     @JsonProperty("scheduledTime")
     private int scheduledTime;
     @JsonProperty("status")
@@ -64,6 +68,7 @@ public class HealthIndexSchedule implements ISaveable {
     protected HealthIndexSchedule(Parcel in) {
         this.id = in.readLong();
         this.index = in.readParcelable(HealthIndex.class.getClassLoader());
+        this.description = in.readString();
         this.scheduledTime = in.readInt();
         this.status = in.readInt();
         this.startedAt = DateTimeUtils.toList(in.readString());
@@ -113,6 +118,14 @@ public class HealthIndexSchedule implements ISaveable {
     @JsonProperty("index")
     public void setIndex(HealthIndex index) {
         this.index = index;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @JsonProperty("scheduledTime")
@@ -174,6 +187,7 @@ public class HealthIndexSchedule implements ISaveable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(this.id);
         dest.writeParcelable(this.index, flags);
+        dest.writeString(description);
         dest.writeInt(this.scheduledTime);
         dest.writeInt(this.status);
         dest.writeString(DateTimeUtils.toString(getStartedAt()));

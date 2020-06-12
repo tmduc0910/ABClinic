@@ -53,7 +53,7 @@ public class UploadHealthResultActivity extends CustomActivity implements Receiv
     private List<HealthIndexSchedule> list;
     private IObserver<TextValueDto> textObserver;
     private Map<Long, String> cacheResults = new TreeMap<>();
-    private long defaultScheduleId = -1;
+    private long defaultScheduleId;
 
     @Override
     public String getKey() {
@@ -68,6 +68,7 @@ public class UploadHealthResultActivity extends CustomActivity implements Receiv
         recyclerView = findViewById(R.id.recycler_fields);
         submitBtn = findViewById(R.id.result_upload);
         schedulesRadio.setOrientation(LinearLayout.VERTICAL);
+        defaultScheduleId = getIntent().getLongExtra("defaultId", -1);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(UploadHealthResultActivity.this, LinearLayoutManager.VERTICAL, false) {
             @Override
@@ -98,7 +99,7 @@ public class UploadHealthResultActivity extends CustomActivity implements Receiv
         });
 
         submitBtn.setOnClickListener(v -> {
-            if (list != null && !list.isEmpty()) {
+            if (list != null && !list.isEmpty() && getSelectedPosition() != -1) {
                 SweetAlertDialog confirmDialog = new SweetAlertDialog(UploadHealthResultActivity.this, SweetAlertDialog.WARNING_TYPE)
                         .setTitleText("Xác nhận")
                         .setContentText("Bạn chắc chắn muốn gửi chưa?")
@@ -136,7 +137,7 @@ public class UploadHealthResultActivity extends CustomActivity implements Receiv
             } else {
                 SweetAlertDialog dialog = new SweetAlertDialog(UploadHealthResultActivity.this, SweetAlertDialog.ERROR_TYPE);
                 dialog.setTitleText("Lỗi")
-                        .setContentText("Bạn chưa có lịch nhắc nhở!")
+                        .setContentText("Bạn chưa có hoặc chưa chọn lịch nhắc nhở!")
                         .show();
             }
         });
@@ -153,7 +154,7 @@ public class UploadHealthResultActivity extends CustomActivity implements Receiv
             TimeDto timeDto = AbstractTimeCalculator.getCalculator().execute(LocalDateTime.now(), s.getEndedAt());
             StringJoiner stringJoiner = new StringJoiner("\n");
             stringJoiner.add(s.getIndex().getName());
-            stringJoiner.add(s.getIndex().getDescription());
+            stringJoiner.add(s.getDescription() != null ? s.getDescription() : "");
             stringJoiner.add(String.format(Locale.getDefault(), "Còn %d %s nữa", timeDto.getValue(), timeDto.getTimeUnit()));
             btn.setText(stringJoiner.toString());
             btn.setTextSize(18);

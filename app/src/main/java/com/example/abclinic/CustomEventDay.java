@@ -58,8 +58,8 @@ public class CustomEventDay extends EventDay {
 
     public enum IconType {
         INQUIRY(R.drawable.ic_dot_green, 0, "Yêu cầu xin tư vấn", NotificationType.INQUIRY.getValue()),
-        MED_RECORD(R.drawable.ic_dot_blue, 1, "Tư vấn khám bệnh của bác sĩ", NotificationType.MED_ADVICE.getValue()),
-        DIET_RECORD(R.drawable.ic_dot_blue, 2, "Tư vấn dinh dưỡng của bác sĩ", NotificationType.DIET_ADVICE.getValue()),
+        MED_RECORD(R.drawable.ic_dot_blue, 1, "Tư vấn khám bệnh từ bác sĩ", NotificationType.MED_ADVICE.getValue()),
+        DIET_RECORD(R.drawable.ic_dot_blue, 2, "Tư vấn dinh dưỡng từ bác sĩ", NotificationType.DIET_ADVICE.getValue()),
         REPLY(R.drawable.ic_dot_purple, 3, "Trả lời từ bác sĩ", NotificationType.REPLY.getValue()),
         SCHEDULE(R.drawable.ic_schedule_red, 4, "Lịch nhắc nhở", NotificationType.SCHEDULE_REMINDER.getValue());
 

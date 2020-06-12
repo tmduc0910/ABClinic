@@ -247,10 +247,17 @@ public class HistoryActivity extends CustomActivity implements Receiver {
                             list.stream()
                                     .filter(s -> s.getEndedAt().toLocalDate().equals(date))
                                     .forEach(s -> {
-                                        detailItems.add(String.format("Lịch nhắc nhở gửi chỉ số %s", s.getIndexName()));
+                                        detailItems.add(String.format("Cần gửi chỉ số %s", s.getIndexName()));
                                     });
                             dialog.dismissWithAnimation();
-                            makeDetailDialog(eventDay, "Lịch nhắc nhở", detailItems, NotificationType.SCHEDULE_REMINDER.getValue(), null);
+                            makeDetailDialog(eventDay,
+                                    "Lịch nhắc nhở",
+                                    detailItems,
+                                    NotificationType.SCHEDULE_REMINDER.getValue(),
+                                    list.stream()
+                                            .filter(s -> s.getEndedAt().toLocalDate().equals(date))
+                                            .map(ScheduleEntity::getScheduleId)
+                                            .collect(Collectors.toList()));
 
                         } else {
                             List<DataEntity> datas = appDatabase.getDataDao().getDatas(userInfo.getId(),
@@ -260,19 +267,14 @@ public class HistoryActivity extends CustomActivity implements Receiver {
                                     date.getYear());
                             String[] s = new String[1];
                             if (datas.get(0).getType() == NotificationType.INQUIRY.getValue())
-                                s[0] = "Yêu cầu xin tư vấn";
-                            else if (datas.get(0).getType() == NotificationType.MED_ADVICE.getValue())
-                                s[0] = "Tư vấn khám bệnh";
-                            else if (datas.get(0).getType() == NotificationType.DIET_ADVICE.getValue())
-                                s[0] = "Tư vấn dinh dưỡng";
-                            else if (datas.get(0).getType() == NotificationType.REPLY.getValue())
-                                s[0] = "Trả lời từ bác sĩ";
+                                s[0] = "Đã gửi";
+                            else s[0] = "Đã nhận";
                             for (DataEntity data : datas) {
                                 detailItems.add(String.format("%s lúc %s", s[0], data.getDate().toLocalTime().toString()));
                             }
                             dialog.dismissWithAnimation();
                             makeDetailDialog(eventDay,
-                                    s[0],
+                                    eventDay.getIcons().get(pos[0]).getMeaning(),
                                     detailItems,
                                     datas.get(0).getType(),
                                     datas.stream()
@@ -298,7 +300,9 @@ public class HistoryActivity extends CustomActivity implements Receiver {
                 .setPositiveButton("Chọn", (d, which) -> {
                     d.cancel();
                     if (type == NotificationType.SCHEDULE_REMINDER.getValue()) {
-                        startActivity(new Intent(HistoryActivity.this, UploadHealthResultActivity.class));
+                        Intent intent = new Intent(HistoryActivity.this, UploadHealthResultActivity.class);
+                        intent.putExtra("defaultId", payloadIds.get(pos[0]));
+                        startActivity(intent);
                     } else {
                         long id = payloadIds.get(pos[0]);
                         startActivity(new NotificationIntent(HistoryActivity.this, InquiryActivity.class, type, id));

@@ -14,6 +14,7 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.ConcurrentModificationException;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -31,7 +32,11 @@ public class DateTimeUtils {
             list.add(0);
             size++;
         }
-        return parseDateTime(list.stream().mapToInt(i -> i).toArray());
+        try {
+            return parseDateTime(list.stream().mapToInt(i -> i).toArray());
+        } catch (ConcurrentModificationException e) {
+            return parseDateTime(list);
+        }
     }
 
     public static LocalDate parseDate(int[] arr) {
