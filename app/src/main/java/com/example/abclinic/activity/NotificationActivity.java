@@ -22,6 +22,7 @@ import com.abclinic.constant.Constant;
 import com.abclinic.constant.NotificationType;
 import com.abclinic.constant.StorageConstant;
 import com.abclinic.dto.NotificationListDto;
+import com.abclinic.dto.PushNotificationDto;
 import com.abclinic.entity.Notification;
 import com.abclinic.retrofit.api.NotificationMapper;
 import com.abclinic.utils.services.LocalStorageService;
@@ -29,10 +30,12 @@ import com.abclinic.utils.services.MyFirebaseService;
 import com.abclinic.utils.services.intent.job.GetNotificationJob;
 import com.abclinic.utils.services.intent.job.Receiver;
 import com.abclinic.utils.services.intent.job.ServiceResultReceiver;
+import com.abclinic.websocket.observer.IObserver;
 import com.example.abclinic.NotificationIntent;
 import com.example.abclinic.PaginationListener;
 import com.example.abclinic.R;
 import com.example.abclinic.adapter.ViewNotificationAdapter;
+import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import retrofit2.Call;
@@ -44,6 +47,7 @@ public class NotificationActivity extends CustomActivity implements Receiver {
     RecyclerView recyclerView;
     SwipeRefreshLayout refreshLayout;
     ViewNotificationAdapter viewNotificationAdapter;
+    BottomNavigationView bottomNav;
 
     private LinearLayoutManager layoutManager;
     private NotificationListDto list = new NotificationListDto();
@@ -88,10 +92,17 @@ public class NotificationActivity extends CustomActivity implements Receiver {
         refreshLayout = findViewById(R.id.swipe_refresh);
 
         //bottomnavigationbar
-        BottomNavigationView bottomNav = findViewById(R.id.navigation);
+        bottomNav = findViewById(R.id.navigation);
         Menu menu = bottomNav.getMenu();
         MenuItem menuItem = menu.getItem(1);
         menuItem.setChecked(true);
+
+        IObserver<PushNotificationDto> notiObserver = obj -> {
+            BadgeDrawable badge = bottomNav.getOrCreateBadge(R.id.notifi);
+            badge.setVisible(true);
+            hasNewNoti = true;
+        };
+        MyFirebaseService.subject.attach(notiObserver);
 
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -123,6 +134,9 @@ public class NotificationActivity extends CustomActivity implements Receiver {
     @Override
     protected void onResume() {
         super.onResume();
+        if (hasNewNoti)
+            bottomNav.getOrCreateBadge(R.id.notifi).setVisible(true);
+
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -200,6 +214,7 @@ public class NotificationActivity extends CustomActivity implements Receiver {
     }
 
     private void fetchNotification() {
+        hasNewNoti = false;
         if (!GetNotificationJob.isLast) {
             runOnUiThread(() -> {
                 ServiceResultReceiver receiver = new ServiceResultReceiver(new Handler());

@@ -14,18 +14,22 @@ import androidx.annotation.Nullable;
 
 import com.abclinic.constant.NotificationType;
 import com.abclinic.dto.NotificationListDto;
+import com.abclinic.dto.PushNotificationDto;
 import com.abclinic.entity.Notification;
 import com.abclinic.entity.UserInfo;
 import com.abclinic.room.entity.DataEntity;
 import com.abclinic.room.entity.ScheduleEntity;
 import com.abclinic.utils.DateTimeUtils;
+import com.abclinic.utils.services.MyFirebaseService;
 import com.abclinic.utils.services.intent.job.GetNotificationJob;
 import com.abclinic.utils.services.intent.job.Receiver;
 import com.abclinic.utils.services.intent.job.ServiceResultReceiver;
+import com.abclinic.websocket.observer.IObserver;
 import com.applandeo.materialcalendarview.CalendarView;
 import com.example.abclinic.CustomEventDay;
 import com.example.abclinic.NotificationIntent;
 import com.example.abclinic.R;
+import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.time.LocalDate;
@@ -46,6 +50,8 @@ public class HistoryActivity extends CustomActivity implements Receiver {
     private static int month, year;
     CalendarView calendarView;
     Button resultSubmit;
+    BottomNavigationView bottomNav;
+
     private HashMap<String, List<DataEntity>> map = new HashMap<>();
     private UserInfo userInfo;
     private Map<Integer, CustomEventDay.Builder> events = new TreeMap<>();
@@ -69,10 +75,17 @@ public class HistoryActivity extends CustomActivity implements Receiver {
         requireData();
 
         //bottomnavigationbar
-        BottomNavigationView bottomNav = findViewById(R.id.navigation);
+        bottomNav = findViewById(R.id.navigation);
         Menu menu = bottomNav.getMenu();
         MenuItem menuItem = menu.getItem(2);
         menuItem.setChecked(true);
+
+        IObserver<PushNotificationDto> notiObserver = obj -> {
+            BadgeDrawable badge = bottomNav.getOrCreateBadge(R.id.notifi);
+            badge.setVisible(true);
+            hasNewNoti = true;
+        };
+        MyFirebaseService.subject.attach(notiObserver);
 
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -87,6 +100,13 @@ public class HistoryActivity extends CustomActivity implements Receiver {
                         Intent intent_mess = new Intent(HistoryActivity.this, NotificationActivity.class);
                         startActivity(intent_mess);
                         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+
+                        BottomNavigationView bottomNav = findViewById(R.id.navigation);
+                        BadgeDrawable badge = bottomNav.getBadge(R.id.notifi);
+                        if (badge != null) {
+                            badge.clearNumber();
+                            hasNewNoti = false;
+                        }
                         break;
                     case R.id.history:
 
@@ -105,6 +125,9 @@ public class HistoryActivity extends CustomActivity implements Receiver {
     @Override
     protected void onResume() {
         super.onResume();
+
+        if (hasNewNoti)
+            bottomNav.getOrCreateBadge(R.id.notifi).setVisible(true);
         updateCalendar(month, year);
 
         calendarView.setOnForwardPageChangeListener(() -> {

@@ -22,6 +22,7 @@ import com.abclinic.callback.CustomCallback;
 import com.abclinic.constant.Constant;
 import com.abclinic.constant.StorageConstant;
 import com.abclinic.dto.MediaDto;
+import com.abclinic.dto.PushNotificationDto;
 import com.abclinic.dto.RequestUpdateInfoDto;
 import com.abclinic.entity.UserInfo;
 import com.abclinic.retrofit.RetrofitClient;
@@ -32,10 +33,13 @@ import com.abclinic.room.entity.UserEntity;
 import com.abclinic.utils.DateTimeUtils;
 import com.abclinic.utils.FileUtils;
 import com.abclinic.utils.services.MediaService;
+import com.abclinic.utils.services.MyFirebaseService;
 import com.abclinic.utils.services.PermissionUtils;
 import com.abclinic.utils.services.intent.job.GetScheduleJob;
+import com.abclinic.websocket.observer.IObserver;
 import com.example.abclinic.R;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.stfalcon.frescoimageviewer.ImageViewer;
 
@@ -52,6 +56,7 @@ public class ProfileActivity extends CustomActivity implements PopupMenu.OnMenuI
     EditText phoneNumberEdt, emailEdt, addressEdt;
     TextView nameTxt, phoneNumberTxt, dobTxt, emailTxt, addressTxt, joinDateTxt, genderTxt;
     SimpleDraweeView avatarImg;
+    BottomNavigationView bottomNav;
 
     private UserInfo userInfo;
     private MediaDto media;
@@ -198,10 +203,17 @@ public class ProfileActivity extends CustomActivity implements PopupMenu.OnMenuI
         });
 
         //bottomnavigationbar
-        BottomNavigationView bottomNav = findViewById(R.id.navigation);
+        bottomNav = findViewById(R.id.navigation);
         Menu menu = bottomNav.getMenu();
         MenuItem menuItem = menu.getItem(3);
         menuItem.setChecked(true);
+
+        IObserver<PushNotificationDto> notiObserver = obj -> {
+            BadgeDrawable badge = bottomNav.getOrCreateBadge(R.id.notifi);
+            badge.setVisible(true);
+            hasNewNoti = true;
+        };
+        MyFirebaseService.subject.attach(notiObserver);
 
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -216,6 +228,13 @@ public class ProfileActivity extends CustomActivity implements PopupMenu.OnMenuI
                         Intent messIntent = new Intent(ProfileActivity.this, NotificationActivity.class);
                         startActivity(messIntent);
                         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+
+                        BottomNavigationView bottomNav = findViewById(R.id.navigation);
+                        BadgeDrawable badge = bottomNav.getBadge(R.id.notifi);
+                        if (badge != null) {
+                            badge.clearNumber();
+                            hasNewNoti = false;
+                        }
                         break;
                     case R.id.history:
                         Intent historyIntent = new Intent(ProfileActivity.this, HistoryActivity.class);
@@ -311,6 +330,9 @@ public class ProfileActivity extends CustomActivity implements PopupMenu.OnMenuI
     @Override
     protected void onResume() {
         super.onResume();
+        if (hasNewNoti)
+            bottomNav.getOrCreateBadge(R.id.notifi).setVisible(true);
+
         userInfo = storageService.getUserInfo();
         updateInfo();
 

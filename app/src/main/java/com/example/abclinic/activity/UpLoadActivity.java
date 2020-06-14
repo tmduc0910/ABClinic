@@ -29,6 +29,7 @@ import com.abclinic.constant.HttpStatus;
 import com.abclinic.constant.StorageConstant;
 import com.abclinic.dto.InquiryCacheDto;
 import com.abclinic.dto.MediaDto;
+import com.abclinic.dto.PushNotificationDto;
 import com.abclinic.dto.RecyclerImageDto;
 import com.abclinic.dto.RequestCreateInquiryDto;
 import com.abclinic.dto.ResponseAlbumDto;
@@ -41,9 +42,12 @@ import com.abclinic.utils.DateTimeUtils;
 import com.abclinic.utils.FileUtils;
 import com.abclinic.utils.services.LocalStorageService;
 import com.abclinic.utils.services.MediaService;
+import com.abclinic.utils.services.MyFirebaseService;
 import com.abclinic.utils.services.PermissionUtils;
+import com.abclinic.websocket.observer.IObserver;
 import com.example.abclinic.R;
 import com.example.abclinic.adapter.ViewImageAdapter;
+import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.math.RoundingMode;
@@ -73,6 +77,8 @@ public class UpLoadActivity extends CustomActivity implements PopupMenu.OnMenuIt
     Button pickTime, pickDateBtn, choosePicBtn, deletePicBtn, btnSubmit;
     LinearLayoutManager layoutManager;
     TimePicker timePicker;
+    BottomNavigationView bottomNav;
+
     private ViewImageAdapter viewImageAdapter;
     private List<RecyclerImageDto> images;
     private String uri;
@@ -126,14 +132,22 @@ public class UpLoadActivity extends CustomActivity implements PopupMenu.OnMenuIt
         });
 
         //bottomnavigationbar
-        BottomNavigationView bottomNav = findViewById(R.id.navigation);
+        bottomNav = findViewById(R.id.navigation);
         Menu menu = bottomNav.getMenu();
         MenuItem menuItem = menu.getItem(0);
         menuItem.setChecked(true);
 
+        IObserver<PushNotificationDto> notiObserver = obj -> {
+            BadgeDrawable badge = bottomNav.getOrCreateBadge(R.id.notifi);
+            badge.setVisible(true);
+            hasNewNoti = true;
+        };
+        MyFirebaseService.subject.attach(notiObserver);
+
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
                 switch (item.getItemId()) {
                     case R.id.upload:
 
@@ -141,6 +155,12 @@ public class UpLoadActivity extends CustomActivity implements PopupMenu.OnMenuIt
                     case R.id.notifi:
                         startActivity(new Intent(UpLoadActivity.this, NotificationActivity.class));
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+
+                        BadgeDrawable badge = bottomNav.getBadge(R.id.notifi);
+                        if (badge != null) {
+                            bottomNav.removeBadge(R.id.notifi);
+                            hasNewNoti = false;
+                        }
                         break;
                     case R.id.history:
                         startActivity(new Intent(UpLoadActivity.this, HistoryActivity.class));
@@ -313,6 +333,9 @@ public class UpLoadActivity extends CustomActivity implements PopupMenu.OnMenuIt
     @Override
     protected void onResume() {
         super.onResume();
+        if (hasNewNoti)
+            bottomNav.getOrCreateBadge(R.id.notifi).setVisible(true);
+
         InquiryCacheDto cacheDto = storageService.getInquiryCache();
         updateCache(cacheDto);
         dto = new RecyclerImageDto();
