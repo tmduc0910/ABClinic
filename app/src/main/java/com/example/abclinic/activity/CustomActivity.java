@@ -31,6 +31,7 @@ public abstract class CustomActivity extends AppCompatActivity {
     protected static final int CODE_LOGOUT = 100;
     protected static final String FETCH_HISTORY = "fetchHistory";
     protected static final int CODE_FETCH_HISTORY = 333;
+    protected static boolean hasNewNoti = false;
 
     protected LocalStorageService storageService;
     protected Retrofit retrofit;
@@ -48,7 +49,6 @@ public abstract class CustomActivity extends AppCompatActivity {
         appDatabase = AppDatabase.getInstance(this);
         if (!(this instanceof LoginActivity))
             userInfo = storageService.getUserInfo();
-
     }
 
     @Override
@@ -95,5 +95,6 @@ public abstract class CustomActivity extends AppCompatActivity {
             }
         });
     }
+
     public abstract String getKey();
 }
