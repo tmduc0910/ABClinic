@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.abclinic.callback.CustomCallback;
+import com.abclinic.constant.Constant;
 import com.abclinic.constant.HttpStatus;
 import com.abclinic.constant.StorageConstant;
 import com.abclinic.cor.AbstractTimeCalculator;
@@ -68,7 +69,7 @@ public class UploadHealthResultActivity extends CustomActivity implements Receiv
         recyclerView = findViewById(R.id.recycler_fields);
         submitBtn = findViewById(R.id.result_upload);
         schedulesRadio.setOrientation(LinearLayout.VERTICAL);
-        defaultScheduleId = getIntent().getLongExtra("defaultId", -1);
+        defaultScheduleId = getIntent().getLongExtra(Constant.PAYLOAD_ID, -1);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(UploadHealthResultActivity.this, LinearLayoutManager.VERTICAL, false) {
             @Override
