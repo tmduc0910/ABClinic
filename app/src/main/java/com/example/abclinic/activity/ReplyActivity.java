@@ -20,7 +20,6 @@ import com.abclinic.retrofit.api.ReplyMapper;
 import com.abclinic.utils.services.JsonService;
 import com.abclinic.utils.services.MyFirebaseService;
 import com.abclinic.websocket.observer.IObserver;
-import com.bumptech.glide.Glide;
 import com.example.abclinic.R;
 import com.example.abclinic.adapter.ReplyListAdapter;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -55,12 +54,7 @@ public class ReplyActivity extends CustomActivity {
         messageInput = findViewById(R.id.input);
 
         userInfo = storageService.getUserInfo();
-        replyListAdapter = new ReplyListAdapter(String.valueOf(userInfo.getId()),
-                (view, url, obj) -> {
-                    Glide.with(ReplyActivity.this)
-                            .load(url)
-                            .into(view);
-                });
+        replyListAdapter = new ReplyListAdapter(String.valueOf(userInfo.getId()), null);
         messagesList.setAdapter(replyListAdapter);
 
         if (observer == null) {

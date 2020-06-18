@@ -12,6 +12,7 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.abclinic.constant.Constant;
 import com.abclinic.constant.NotificationType;
 import com.abclinic.dto.NotificationListDto;
 import com.abclinic.dto.PushNotificationDto;
@@ -324,7 +325,7 @@ public class HistoryActivity extends CustomActivity implements Receiver {
                     d.cancel();
                     if (type == NotificationType.SCHEDULE_REMINDER.getValue()) {
                         Intent intent = new Intent(HistoryActivity.this, UploadHealthResultActivity.class);
-                        intent.putExtra("defaultId", payloadIds.get(pos[0]));
+                        intent.putExtra(Constant.PAYLOAD_ID, payloadIds.get(pos[0]));
                         startActivity(intent);
                     } else {
                         long id = payloadIds.get(pos[0]);
