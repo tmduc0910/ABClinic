@@ -40,6 +40,7 @@ public class ReplyActivity extends CustomActivity {
     private UserInfo userInfo;
     private ReplyListAdapter replyListAdapter;
     private List<Reply> replies;
+    private String temp;
 
     @Override
     public String getKey() {
@@ -108,9 +109,38 @@ public class ReplyActivity extends CustomActivity {
                     }
                 }.handle(HttpStatus.BAD_REQUEST, R.string.reply_bad_request)
                         .handle(HttpStatus.FORBIDDEN, R.string.reply_forbidden));
+//                storageService.saveCache(StorageConstant.KEY_REPLY, "");
+                storageService.getSharedPreferences().edit().remove(StorageConstant.KEY_REPLY).apply();
+                temp = null;
             }
             return true;
         });
+
+        temp = storageService.getSharedPreferences().getString(StorageConstant.KEY_REPLY, "");
+        messageInput.getInputEditText().setText(temp);
+        messageInput.setTypingListener(new MessageInput.TypingListener() {
+            @Override
+            public void onStartTyping() {
+
+            }
+
+            @Override
+            public void onStopTyping() {
+                temp = messageInput.getInputEditText().getText().toString();
+            }
+        });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        storageService.saveCache(StorageConstant.KEY_REPLY, temp);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        storageService.saveCache(StorageConstant.KEY_REPLY, temp);
     }
 
     @Override

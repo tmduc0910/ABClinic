@@ -18,4 +18,5 @@ public class StorageConstant {
     public static final String KEY_NOTIFICATION = "notifications";
     public static final String KEY_ID = "id";
     public static final String KEY_INQUIRY = "inquiries";
+    public static final String KEY_REPLY = "reply";
 }
