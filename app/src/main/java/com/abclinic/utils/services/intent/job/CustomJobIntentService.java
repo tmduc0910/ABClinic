@@ -18,7 +18,7 @@ public abstract class CustomJobIntentService extends JobIntentService {
 
     protected AppDatabase appDatabase;
 
-    protected static int getJobId(Class c) {
+    protected synchronized static int getJobId(Class c) {
         try {
             return map.get(c.getName());
         } catch (NullPointerException e) {

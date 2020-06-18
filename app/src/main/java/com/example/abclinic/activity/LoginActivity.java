@@ -91,7 +91,7 @@ public class LoginActivity extends CustomActivity {
                     rememberMeChk.setChecked(true);
                 });
                 doLogin(accountLogon.getEmail(), accountLogon.getPassword());
-            }
+            } else runOnUiThread(() -> progressDialog.dismissWithAnimation());
         });
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
@@ -106,6 +106,13 @@ public class LoginActivity extends CustomActivity {
     }
 
     private void doLogin(String username, String password) {
+        if (!progressDialog.isShowing()) {
+            progressDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+            progressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+            progressDialog.setTitleText("Loading")
+                    .setCancelable(false);
+            progressDialog.show();
+        }
         if (!USE_SECURITY) {
             username = "pat01@mail.com";
             password = "123456";
