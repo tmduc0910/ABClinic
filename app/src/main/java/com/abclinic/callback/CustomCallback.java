@@ -1,6 +1,5 @@
 package com.abclinic.callback;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.widget.Toast;
 
@@ -8,6 +7,7 @@ import com.abclinic.constant.HttpStatus;
 import com.abclinic.retrofit.RetrofitClient;
 import com.abclinic.utils.services.LocalStorageService;
 import com.example.abclinic.R;
+import com.example.abclinic.activity.CustomActivity;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -19,35 +19,39 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public abstract class CustomCallback<T> implements Callback<T> {
-    protected Context context;
+    protected CustomActivity context;
     protected Retrofit retrofit;
     private Map<Integer, String> exceptions;
     private SweetAlertDialog progressDialog;
 
-    public CustomCallback(Context context) {
+    public CustomCallback(CustomActivity context) {
         this.context = context;
         LocalStorageService storageService = new LocalStorageService(context, null);
         retrofit = RetrofitClient.getClient(storageService.getUid());
         exceptions = new LinkedHashMap<>();
 
         if (useDialog()) {
-            this.progressDialog = new SweetAlertDialog(context, SweetAlertDialog.PROGRESS_TYPE);
-            progressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-            progressDialog.setTitleText("Loading")
-                    .setCancelable(false);
-            progressDialog.show();
+            context.runOnUiThread(() -> {
+                this.progressDialog = new SweetAlertDialog(context, SweetAlertDialog.PROGRESS_TYPE);
+                progressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                progressDialog.setTitleText("Loading")
+                        .setCancelable(false);
+                progressDialog.show();
+            });
         }
         exceptions.put(HttpStatus.INTERNAL_SERVER, context.getResources().getString(R.string.internal_server_err));
     }
 
     @Override
     public void onResponse(Call<T> call, Response<T> response) {
-        onEndAnimation();
-        if (response.isSuccessful()) {
-            processResponse(response);
-        } else {
-            processException(response);
-        }
+        context.runOnUiThread(() -> {
+            onEndAnimation();
+            if (response.isSuccessful()) {
+                processResponse(response);
+            } else {
+                processException(response);
+            }
+        });
     }
 
     @Override

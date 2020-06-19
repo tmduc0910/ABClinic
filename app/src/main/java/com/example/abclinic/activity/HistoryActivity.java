@@ -9,7 +9,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.abclinic.constant.Constant;
@@ -39,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
@@ -88,38 +88,35 @@ public class HistoryActivity extends CustomActivity implements Receiver {
         };
         MyFirebaseService.subject.attach(notiObserver);
 
-        bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.upload:
-                        Intent intent_acc = new Intent(HistoryActivity.this, UpLoadActivity.class);
-                        startActivity(intent_acc);
-                        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-                        break;
-                    case R.id.notifi:
-                        Intent intent_mess = new Intent(HistoryActivity.this, NotificationActivity.class);
-                        startActivity(intent_mess);
-                        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        bottomNav.setOnNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.upload:
+                    Intent intent_acc = new Intent(HistoryActivity.this, UpLoadActivity.class);
+                    startActivity(intent_acc);
+                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                    break;
+                case R.id.notifi:
+                    Intent intent_mess = new Intent(HistoryActivity.this, NotificationActivity.class);
+                    startActivity(intent_mess);
+                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
 
-                        BottomNavigationView bottomNav = findViewById(R.id.navigation);
-                        BadgeDrawable badge = bottomNav.getBadge(R.id.notifi);
-                        if (badge != null) {
-                            badge.clearNumber();
-                            hasNewNoti = false;
-                        }
-                        break;
-                    case R.id.history:
+                    BottomNavigationView bottomNav = findViewById(R.id.navigation);
+                    BadgeDrawable badge = bottomNav.getBadge(R.id.notifi);
+                    if (badge != null) {
+                        badge.clearNumber();
+                        hasNewNoti = false;
+                    }
+                    break;
+                case R.id.history:
 
-                        break;
-                    case R.id.profile:
-                        Intent intent_home = new Intent(HistoryActivity.this, ProfileActivity.class);
-                        startActivity(intent_home);
-                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                        break;
-                }
-                return false;
+                    break;
+                case R.id.profile:
+                    Intent intent_home = new Intent(HistoryActivity.this, ProfileActivity.class);
+                    startActivity(intent_home);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    break;
             }
+            return false;
         });
     }
 
@@ -221,13 +218,14 @@ public class HistoryActivity extends CustomActivity implements Receiver {
 
     private void putIcon(CustomEventDay.IconType iconType, Calendar c) {
         if (iconType != null) {
-            CustomEventDay.Builder builder = events.get(c.get(Calendar.DAY_OF_MONTH));
+            int key = Integer.parseInt(String.format(Locale.getDefault(), "%d%d", c.get(Calendar.YEAR), c.get(Calendar.DAY_OF_YEAR)));
+            CustomEventDay.Builder builder = events.get(key);
             if (builder == null) {
                 builder = new CustomEventDay.Builder(this)
                         .setCalendar(c);
             }
             builder = builder.display(iconType);
-            events.put(c.get(Calendar.DAY_OF_MONTH), builder);
+            events.put(key, builder);
         }
     }
 

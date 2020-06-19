@@ -144,17 +144,19 @@ public class CustomEventDay extends EventDay {
                             .collect(Collectors.toSet())
                             .toArray(new IconType[0]);
                     Drawable[] drawables = Arrays.stream(iconTypes)
-                            .map(t -> context.getResources().getDrawable(t.getResourceId(), null))
+                            .map(IconType::getResourceId)
+                            .distinct()
+                            .map(i -> context.getResources().getDrawable(i, null))
                             .toArray(Drawable[]::new);
                     LayerDrawable layerDrawable = new LayerDrawable(drawables);
-                    for (int i = 0; i < count; i++) {
+                    for (int i = 0; i < drawables.length; i++) {
                         layerDrawable.setLayerSize(i, 100, 100);
                     }
-                    if (count == 2) {
+                    if (drawables.length == 2) {
                         layerDrawable.setLayerGravity(0, Gravity.START);
                         layerDrawable.setLayerGravity(1, Gravity.END);
                         layerDrawable.setLayerInsetLeft(1, 40);
-                    } else if (count == 3) {
+                    } else if (drawables.length == 3) {
                         layerDrawable.setLayerGravity(0, Gravity.START);
                         layerDrawable.setLayerGravity(1, Gravity.CENTER);
                         layerDrawable.setLayerGravity(2, Gravity.END);

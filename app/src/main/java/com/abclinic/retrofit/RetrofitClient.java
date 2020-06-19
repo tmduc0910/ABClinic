@@ -1,5 +1,6 @@
 package com.abclinic.retrofit;
 
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -19,8 +20,9 @@ public class RetrofitClient {
         if (retrofit == null) {
             builder = new Retrofit.Builder()
                     .baseUrl(getUrl())
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create());
-            builder.addConverterFactory(JacksonConverterFactory.create());
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .addConverterFactory(JacksonConverterFactory.create())
+                    .callbackExecutor(Executors.newCachedThreadPool());
         }
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(CustomInterceptor.getInstance(uid))
@@ -33,7 +35,7 @@ public class RetrofitClient {
     }
 
     public static String getUrl() {
-        return LOCAL_URL_2;
+        return REMOTE_URL;
     }
 
 //

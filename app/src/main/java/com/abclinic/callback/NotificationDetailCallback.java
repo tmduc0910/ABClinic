@@ -1,9 +1,8 @@
 package com.abclinic.callback;
 
-import android.content.Context;
-
 import com.abclinic.entity.Notification;
 import com.abclinic.retrofit.api.NotificationMapper;
+import com.example.abclinic.activity.CustomActivity;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -12,7 +11,7 @@ public class NotificationDetailCallback<T> extends CustomCallback<T> {
     private long notificationId;
     private Notification notification;
 
-    public NotificationDetailCallback(Context context, String key, long notificationId) {
+    public NotificationDetailCallback(CustomActivity context, String key, long notificationId) {
         super(context);
         this.notificationId = notificationId;
     }

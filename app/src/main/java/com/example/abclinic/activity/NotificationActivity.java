@@ -104,27 +104,24 @@ public class NotificationActivity extends CustomActivity implements Receiver {
         };
         MyFirebaseService.subject.attach(notiObserver);
 
-        bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.upload:
-                        startActivity(new Intent(NotificationActivity.this, UpLoadActivity.class));
-                        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-                        break;
-                    case R.id.notifi:
-                        break;
-                    case R.id.history:
-                        startActivity(new Intent(NotificationActivity.this, HistoryActivity.class));
-                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                        break;
-                    case R.id.profile:
-                        startActivity(new Intent(NotificationActivity.this, ProfileActivity.class));
-                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                        break;
-                }
-                return false;
+        bottomNav.setOnNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.upload:
+                    startActivity(new Intent(NotificationActivity.this, UpLoadActivity.class));
+                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                    break;
+                case R.id.notifi:
+                    break;
+                case R.id.history:
+                    startActivity(new Intent(NotificationActivity.this, HistoryActivity.class));
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    break;
+                case R.id.profile:
+                    startActivity(new Intent(NotificationActivity.this, ProfileActivity.class));
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    break;
             }
+            return false;
         });
 
         GetNotificationJob.page = PaginationListener.PAGE_START;

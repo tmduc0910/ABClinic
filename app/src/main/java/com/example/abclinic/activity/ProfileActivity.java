@@ -1,6 +1,5 @@
 package com.example.abclinic.activity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -97,109 +96,83 @@ public class ProfileActivity extends CustomActivity implements PopupMenu.OnMenuI
 
         //exitBtn button
         exitBtn = this.findViewById(R.id.exit);
-        exitBtn.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
-                builder.setMessage("Bạn có chắn chắn muốn thoát không?");
-                builder.setCancelable(true);
-                builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+        exitBtn.setOnClickListener(v -> {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
+            builder.setMessage("Bạn có chắn chắn muốn thoát không?");
+            builder.setCancelable(true);
+            builder.setNegativeButton("Không", (dialog, which) -> dialog.cancel());
+            builder.setPositiveButton("Có", (dialog, which) -> {
+                Call<Void> call = retrofit.create(AuthMapper.class).logout();
+                call.enqueue(new CustomCallback<Void>(ProfileActivity.this) {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-                builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Call<Void> call = retrofit.create(AuthMapper.class).logout();
-                        call.enqueue(new CustomCallback<Void>(ProfileActivity.this) {
-                            @Override
-                            protected void processResponse(Response<Void> response) {
-                                AsyncTask.execute(() -> {
-                                    UserEntity userEntity = appDatabase.getUserDao().getUser(userInfo.getId());
-                                    userEntity.setLogon(false);
-                                    appDatabase.getUserDao().addUser(userEntity);
-                                });
-
-                                Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
-                                intent.putExtra(Constant.IS_LOGOUT, true);
-                                startActivityForResult(intent, CODE_LOGOUT);
-                            }
+                    protected void processResponse(Response<Void> response) {
+                        AsyncTask.execute(() -> {
+                            UserEntity userEntity = appDatabase.getUserDao().getUser(userInfo.getId());
+                            userEntity.setLogon(false);
+                            appDatabase.getUserDao().addUser(userEntity);
                         });
+
+                        Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
+                        intent.putExtra(Constant.IS_LOGOUT, true);
+                        startActivityForResult(intent, CODE_LOGOUT);
                     }
                 });
+            });
 
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
-            }
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
         });
 
         //new GetPatientInfoTask().execute();
 
         profileBtn = this.findViewById(R.id.editInfoButton);
-        profileBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
-                View dialogView = getLayoutInflater().inflate(R.layout.dialog_edit_profile, null);
-                phoneNumberEdt = dialogView.findViewById(R.id.phoneNumberEdit);
-                emailEdt = dialogView.findViewById(R.id.edtemail);
-                addressEdt = dialogView.findViewById(R.id.addressEdit);
+        profileBtn.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
+            View dialogView = getLayoutInflater().inflate(R.layout.dialog_edit_profile, null);
+            phoneNumberEdt = dialogView.findViewById(R.id.phoneNumberEdit);
+            emailEdt = dialogView.findViewById(R.id.edtemail);
+            addressEdt = dialogView.findViewById(R.id.addressEdit);
 
-                phoneNumberEdt.setText(userInfo.getPhoneNumber());
-                addressEdt.setText(userInfo.getAddress());
-                emailEdt.setText(userInfo.getEmail());
+            phoneNumberEdt.setText(userInfo.getPhoneNumber());
+            addressEdt.setText(userInfo.getAddress());
+            emailEdt.setText(userInfo.getEmail());
 
-                acceptBtn = dialogView.findViewById(R.id.acceptButton);
-                cancelBtn = dialogView.findViewById(R.id.cancelButton);
+            acceptBtn = dialogView.findViewById(R.id.acceptButton);
+            cancelBtn = dialogView.findViewById(R.id.cancelButton);
 
-                builder.setView(dialogView);
-                final AlertDialog dialog = builder.create();
-                dialog.show();
+            builder.setView(dialogView);
+            final AlertDialog dialog = builder.create();
+            dialog.show();
 
-                acceptBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String phone = phoneNumberEdt.getText().toString();
-                        String email = emailEdt.getText().toString();
-                        String address = addressEdt.getText().toString();
+            acceptBtn.setOnClickListener(v1 -> {
+                String phone = phoneNumberEdt.getText().toString();
+                String email = emailEdt.getText().toString();
+                String address = addressEdt.getText().toString();
 
-                        if (!phone.isEmpty() && !email.isEmpty() && !address.isEmpty()) {
-//                            phoneNumberTxt.setText(phoneNumberEdt.getText().toString());
-//                            emailTxt.setText(emailEdt.getText().toString());
-//                            addressTxt.setText(addressEdt.getText().toString());
-
-                            RequestUpdateInfoDto requestUpdateInfoDto = new RequestUpdateInfoDto(address, email, phone);
-                            Call<UserInfo> call = retrofit.create(UserInfoMapper.class).changeInfo(requestUpdateInfoDto);
-                            call.enqueue(new CustomCallback<UserInfo>(ProfileActivity.this) {
-                                @Override
-                                protected void processResponse(Response<UserInfo> response) {
-                                    userInfo = response.body();
-                                    updateInfo();
-                                    new SweetAlertDialog(ProfileActivity.this, SweetAlertDialog.SUCCESS_TYPE)
-                                            .setTitleText("Thành công!")
-                                            .setContentText("Đã cập nhật thông tin!")
-                                            .show();
-                                    dialog.dismiss();
-                                }
-                            });
-                        } else {
-                            new SweetAlertDialog(ProfileActivity.this, SweetAlertDialog.ERROR_TYPE)
-                                    .setTitleText("Oops...")
-                                    .setContentText("Đề nghị điền đầy đủ thông tin!")
+                if (!phone.isEmpty() && !email.isEmpty() && !address.isEmpty()) {
+                    RequestUpdateInfoDto requestUpdateInfoDto = new RequestUpdateInfoDto(address, email, phone);
+                    Call<UserInfo> call = retrofit.create(UserInfoMapper.class).changeInfo(requestUpdateInfoDto);
+                    call.enqueue(new CustomCallback<UserInfo>(ProfileActivity.this) {
+                        @Override
+                        protected void processResponse(Response<UserInfo> response) {
+                            userInfo = response.body();
+                            updateInfo();
+                            new SweetAlertDialog(ProfileActivity.this, SweetAlertDialog.SUCCESS_TYPE)
+                                    .setTitleText("Thành công!")
+                                    .setContentText("Đã cập nhật thông tin!")
                                     .show();
+                            dialog.dismiss();
                         }
-                    }
-                });
+                    });
+                } else {
+                    new SweetAlertDialog(ProfileActivity.this, SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("Oops...")
+                            .setContentText("Đề nghị điền đầy đủ thông tin!")
+                            .show();
+                }
+            });
 
-                cancelBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-            }
+            cancelBtn.setOnClickListener(v12 -> dialog.dismiss());
         });
 
         //bottomnavigationbar
@@ -215,37 +188,34 @@ public class ProfileActivity extends CustomActivity implements PopupMenu.OnMenuI
         };
         MyFirebaseService.subject.attach(notiObserver);
 
-        bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.upload:
-                        Intent homeIntent = new Intent(ProfileActivity.this, UpLoadActivity.class);
-                        startActivity(homeIntent);
-                        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-                        break;
-                    case R.id.notifi:
-                        Intent messIntent = new Intent(ProfileActivity.this, NotificationActivity.class);
-                        startActivity(messIntent);
-                        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        bottomNav.setOnNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.upload:
+                    Intent homeIntent = new Intent(ProfileActivity.this, UpLoadActivity.class);
+                    startActivity(homeIntent);
+                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                    break;
+                case R.id.notifi:
+                    Intent messIntent = new Intent(ProfileActivity.this, NotificationActivity.class);
+                    startActivity(messIntent);
+                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
 
-                        BottomNavigationView bottomNav = findViewById(R.id.navigation);
-                        BadgeDrawable badge = bottomNav.getBadge(R.id.notifi);
-                        if (badge != null) {
-                            badge.clearNumber();
-                            hasNewNoti = false;
-                        }
-                        break;
-                    case R.id.history:
-                        Intent historyIntent = new Intent(ProfileActivity.this, HistoryActivity.class);
-                        startActivity(historyIntent);
-                        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-                        break;
-                    case R.id.profile:
-                        break;
-                }
-                return false;
+                    BottomNavigationView bottomNav = findViewById(R.id.navigation);
+                    BadgeDrawable badge = bottomNav.getBadge(R.id.notifi);
+                    if (badge != null) {
+                        badge.clearNumber();
+                        hasNewNoti = false;
+                    }
+                    break;
+                case R.id.history:
+                    Intent historyIntent = new Intent(ProfileActivity.this, HistoryActivity.class);
+                    startActivity(historyIntent);
+                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                    break;
+                case R.id.profile:
+                    break;
             }
+            return false;
         });
 
         GetScheduleJob.enqueueWork(this, null);

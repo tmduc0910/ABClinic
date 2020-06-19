@@ -9,7 +9,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -144,35 +143,30 @@ public class UpLoadActivity extends CustomActivity implements PopupMenu.OnMenuIt
         };
         MyFirebaseService.subject.attach(notiObserver);
 
-        bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        bottomNav.setOnNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.upload:
+                    break;
+                case R.id.notifi:
+                    startActivity(new Intent(UpLoadActivity.this, NotificationActivity.class));
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
-                switch (item.getItemId()) {
-                    case R.id.upload:
-
-                        break;
-                    case R.id.notifi:
-                        startActivity(new Intent(UpLoadActivity.this, NotificationActivity.class));
-                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-
-                        BadgeDrawable badge = bottomNav.getBadge(R.id.notifi);
-                        if (badge != null) {
-                            bottomNav.removeBadge(R.id.notifi);
-                            hasNewNoti = false;
-                        }
-                        break;
-                    case R.id.history:
-                        startActivity(new Intent(UpLoadActivity.this, HistoryActivity.class));
-                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                        break;
-                    case R.id.profile:
-                        startActivity(new Intent(UpLoadActivity.this, ProfileActivity.class));
-                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                        break;
-                }
-                return false;
+                    BadgeDrawable badge = bottomNav.getBadge(R.id.notifi);
+                    if (badge != null) {
+                        bottomNav.removeBadge(R.id.notifi);
+                        hasNewNoti = false;
+                    }
+                    break;
+                case R.id.history:
+                    startActivity(new Intent(UpLoadActivity.this, HistoryActivity.class));
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    break;
+                case R.id.profile:
+                    startActivity(new Intent(UpLoadActivity.this, ProfileActivity.class));
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    break;
             }
+            return false;
         });
 
         // display image from camera capture
@@ -183,56 +177,47 @@ public class UpLoadActivity extends CustomActivity implements PopupMenu.OnMenuIt
         pickDateBtn = findViewById(R.id.pickDateButton);
         timePicker = new TimePicker(this);
 
-        pickDateBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        pickDateBtn.setOnClickListener(view -> {
 
-                c = Calendar.getInstance();
-                c.setTime(new Date());
-                int day = c.get(Calendar.DAY_OF_MONTH);
-                int month = c.get(Calendar.MONTH);
-                int year = c.get(Calendar.YEAR);
+            c = Calendar.getInstance();
+            c.setTime(new Date());
+            int day = c.get(Calendar.DAY_OF_MONTH);
+            int month = c.get(Calendar.MONTH);
+            int year = c.get(Calendar.YEAR);
 
-                dpd = new DatePickerDialog(UpLoadActivity.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int mYear, int mMonth, int mDay) {
-                        DecimalFormat format = new DecimalFormat(Constant.DOUBLE_DIGIT_FORMAT);
-                        format.setRoundingMode(RoundingMode.DOWN);
-                        showDateTxt.setText(String.format("%s/%s/%s",
-                                format.format(Double.valueOf(mDay)),
-                                format.format(Double.valueOf(mMonth)),
-                                mYear));
-                    }
-                }, year, month, day);
-                dpd.show();
-            }
+            dpd = new DatePickerDialog(UpLoadActivity.this, (datePicker, mYear, mMonth, mDay) -> {
+                DecimalFormat format = new DecimalFormat(Constant.DOUBLE_DIGIT_FORMAT);
+                format.setRoundingMode(RoundingMode.DOWN);
+                showDateTxt.setText(String.format("%s/%s/%s",
+                        format.format(Double.valueOf(mDay)),
+                        format.format(Double.valueOf(mMonth + 1)),
+                        mYear));
+            }, year, month, day);
+            dpd.show();
         });
 
         //showTimeTxt
         showTimeTxt = findViewById(R.id.showTime);
         pickTime = findViewById(R.id.btnPickTime);
 
-        pickTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        pickTime.setOnClickListener(view -> {
 
-                c = Calendar.getInstance();
-                int currentHour = c.get(Calendar.HOUR_OF_DAY);
-                int currentMinute = c.get(Calendar.MINUTE);
+            c = Calendar.getInstance();
+            int currentHour = c.get(Calendar.HOUR_OF_DAY);
+            int currentMinute = c.get(Calendar.MINUTE);
 
-                tpd = new TimePickerDialog(UpLoadActivity.this, new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int hourOfDay, int minutes) {
-                        DecimalFormat format = new DecimalFormat(Constant.DOUBLE_DIGIT_FORMAT);
-                        format.setRoundingMode(RoundingMode.DOWN);
-                        showTimeTxt.setText(String.format("%s:%s",
-                                format.format(Double.valueOf(hourOfDay)),
-                                format.format(Double.valueOf(minutes))));
-                    }
-                }, currentHour, currentMinute, false);
-                tpd.show();
-                tpd.onTimeChanged(timePicker, currentHour, currentMinute);
-            }
+            tpd = new TimePickerDialog(UpLoadActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                @Override
+                public void onTimeSet(TimePicker timePicker, int hourOfDay, int minutes) {
+                    DecimalFormat format = new DecimalFormat(Constant.DOUBLE_DIGIT_FORMAT);
+                    format.setRoundingMode(RoundingMode.DOWN);
+                    showTimeTxt.setText(String.format("%s:%s",
+                            format.format(Double.valueOf(hourOfDay)),
+                            format.format(Double.valueOf(minutes))));
+                }
+            }, currentHour, currentMinute, false);
+            tpd.show();
+            tpd.onTimeChanged(timePicker, currentHour, currentMinute);
         });
 
         //submit
