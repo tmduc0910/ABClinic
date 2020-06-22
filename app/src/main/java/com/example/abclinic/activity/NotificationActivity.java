@@ -35,6 +35,8 @@ import com.example.abclinic.NotificationIntent;
 import com.example.abclinic.PaginationListener;
 import com.example.abclinic.R;
 import com.example.abclinic.adapter.ViewNotificationAdapter;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -82,6 +84,28 @@ public class NotificationActivity extends CustomActivity implements Receiver {
                 setResult(RESULT_OK, data);
                 finish();
             }
+
+            String content = extras.getString("content");
+            try {
+                PushNotificationDto dto = new ObjectMapper().readValue(content, PushNotificationDto.class);
+//                setTheme(android.R.style.Theme_NoDisplay);
+                Call<Notification> call = retrofit.create(NotificationMapper.class)
+                        .getNotification(dto.getNotificationId());
+                call.enqueue(new CustomCallback<Notification>(this) {
+                    @Override
+                    protected void processResponse(Response<Notification> response) {
+                        switchActivity(response.body());
+                    }
+
+                    @Override
+                    protected boolean useDialog() {
+                        return false;
+                    }
+                });
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+//            finish();
         }
 
         setContentView(R.layout.activity_notification);
@@ -185,29 +209,33 @@ public class NotificationActivity extends CustomActivity implements Receiver {
                     list.get(pos).setIsRead(true);
                     viewNotificationAdapter.notifyDataSetChanged();
 
-                    Class c;
-                    switch (NotificationType.getType(n.getType())) {
-                        case INQUIRY:
-                        case REPLY:
-                        case MED_ADVICE:
-                        case DIET_ADVICE:
-                            c = InquiryActivity.class;
-                            break;
-                        case SCHEDULE_REMINDER:
-                        case SCHEDULE:
-                            c = UploadHealthResultActivity.class;
-                            break;
-                        default:
-                            return;
-                    }
-                    startActivity(new NotificationIntent(NotificationActivity.this,
-                            c,
-                            n.getType(),
-                            n.getPayloadId()));
+                    switchActivity(n);
                 }
             });
         });
         recyclerView.setAdapter(viewNotificationAdapter);
+    }
+
+    private void switchActivity(Notification n) {
+        Class c;
+        switch (NotificationType.getType(n.getType())) {
+            case INQUIRY:
+            case REPLY:
+            case MED_ADVICE:
+            case DIET_ADVICE:
+                c = InquiryActivity.class;
+                break;
+            case SCHEDULE_REMINDER:
+            case SCHEDULE:
+                c = UploadHealthResultActivity.class;
+                break;
+            default:
+                return;
+        }
+        startActivity(new NotificationIntent(NotificationActivity.this,
+                c,
+                n.getType(),
+                n.getPayloadId()));
     }
 
     private void fetchNotification() {

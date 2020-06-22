@@ -45,6 +45,7 @@ public class LoginActivity extends CustomActivity {
     CheckBox rememberMeChk;
 
     private SweetAlertDialog progressDialog;
+    private String contentJson;
 
     @Override
     public String getKey() {
@@ -74,12 +75,9 @@ public class LoginActivity extends CustomActivity {
                         .setActionTextColor(getResources().getColor(android.R.color.holo_red_light, null))
                         .show();
             }
+            contentJson = data.getString("content");
         }
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
         progressDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
         progressDialog.setTitleText("Loading")
                 .setCancelable(false);
@@ -93,7 +91,11 @@ public class LoginActivity extends CustomActivity {
                 doLogin(accountLogon.getEmail(), accountLogon.getPassword());
             } else runOnUiThread(() -> progressDialog.dismissWithAnimation());
         });
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,8 +129,6 @@ public class LoginActivity extends CustomActivity {
             @Override
             public void processResponse(String res) {
                 getUserInfo(res, pws[0]);
-//                LocalDateTime now = LocalDateTime.now();
-//                getInquiries(now.getMonthValue(), now.getYear());
             }
 
             @Override
@@ -165,7 +165,14 @@ public class LoginActivity extends CustomActivity {
                             Log.d(Constant.DEBUG_TAG, "Subscribe to topic users-" + userInfo.getId());
                         });
                 progressDialog.dismissWithAnimation();
-                startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
+
+                if (contentJson != null) {
+                    Intent intent = new Intent(LoginActivity.this, NotificationActivity.class);
+                    intent.putExtras(getIntent());
+                    startActivity(intent);
+                } else {
+                    startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
+                }
             }
 
             @Override

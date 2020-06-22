@@ -17,17 +17,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-                Intent mySuperIntent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(mySuperIntent);
-                /* This 'finish()' is for exiting the app when back button pressed
-                 *  from Home page which is ActivityHome
-                 */
-                finish();
-            }
+        new Handler().postDelayed(() -> {
+            Intent mySuperIntent = new Intent(MainActivity.this, LoginActivity.class);
+            if (getIntent().getExtras() != null)
+                mySuperIntent.putExtras(getIntent());
+            startActivity(mySuperIntent);
+            finish();
         }, SPLASH_TIME);
 
     }
