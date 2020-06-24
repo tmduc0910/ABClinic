@@ -76,7 +76,7 @@ public class ViewRecordAdapter extends RecyclerView.Adapter<ViewRecordAdapter.Vi
             doctor = r.getDoctor();
             TimeDto timeDto = AbstractTimeCalculator.getCalculator().execute(r.getCreatedAt(), LocalDateTime.now());
             holder.docNameTxt.setText(String.format(Locale.getDefault(), "%d %s trước", timeDto.getValue(), timeDto.getTimeUnit()));
-            holder.expandableCardView.setTitle("Thông tin bác sĩ " + r.getDoctor().getName());
+            holder.expandableCardView.setTitle("Bác sĩ tư vấn: " + r.getDoctor().getName());
             RecordPagerAdapter recordPagerAdapter = new RecordPagerAdapter(context,
                     r.getNote(),
                     r.getDiagnose(),
