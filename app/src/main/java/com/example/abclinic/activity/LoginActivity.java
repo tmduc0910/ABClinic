@@ -160,7 +160,7 @@ public class LoginActivity extends CustomActivity {
                         .execute(userInfo);
                 storageService.saveCache(StorageConstant.KEY_USER, userInfo.toString());
 
-                FirebaseMessaging.getInstance().subscribeToTopic("users-" + userInfo.getId())
+                FirebaseMessaging.getInstance().subscribeToTopic(Constant.TOPIC_PREFIX + userInfo.getId())
                         .addOnCompleteListener((task) -> {
                             Log.d(Constant.DEBUG_TAG, "Subscribe to topic users-" + userInfo.getId());
                         });

@@ -8,6 +8,7 @@ public class Constant {
     public static final String ROOM_DATE_FORMAT = "yyyy-MM-dd";
     public static final String ROOM_DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
     public static final String DOUBLE_DIGIT_FORMAT = "00";
+    public static final String TOPIC_PREFIX = "users-";
 
     public static final int MEDICAL_RECORD = 0;
     public static final int DIET_RECORD = 1;

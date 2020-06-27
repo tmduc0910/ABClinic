@@ -27,16 +27,18 @@ public class DateTimeUtils {
     }
 
     public static LocalDateTime parseDateTime(List<Integer> list) {
-        int size = list.size();
-        while (size < 6) {
-            list.add(0);
-            size++;
-        }
-        try {
-            return parseDateTime(list.stream().mapToInt(i -> i).toArray());
-        } catch (ConcurrentModificationException e) {
-            return parseDateTime(list);
-        }
+        if (list != null) {
+            int size = list.size();
+            while (size < 6) {
+                list.add(0);
+                size++;
+            }
+            try {
+                return parseDateTime(list.stream().mapToInt(i -> i).toArray());
+            } catch (ConcurrentModificationException e) {
+                return parseDateTime(list);
+            }
+        } else return null;
     }
 
     public static LocalDate parseDate(int[] arr) {

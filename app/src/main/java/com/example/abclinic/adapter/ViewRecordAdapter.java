@@ -126,7 +126,7 @@ public class ViewRecordAdapter extends RecyclerView.Adapter<ViewRecordAdapter.Vi
             docSpecialty.setText(doctor.getSpecialties()
                     .stream()
                     .map(Specialty::getName)
-                    .collect(Collectors.joining()));
+                    .collect(Collectors.joining(", ")));
         else if (doctor.getSpecialty() != null)
             docSpecialty.setText(doctor.getSpecialty().getName());
         docEmail.setText(doctor.getEmail());

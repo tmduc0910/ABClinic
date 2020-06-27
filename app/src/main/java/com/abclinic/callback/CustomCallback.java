@@ -56,9 +56,11 @@ public abstract class CustomCallback<T> implements Callback<T> {
 
     @Override
     public void onFailure(Call<T> call, Throwable t) {
-        onEndAnimation();
-        t.printStackTrace();
-        Toast.makeText(context, "Lỗi kết nối máy chủ. Xin vui lòng thử lại.", Toast.LENGTH_LONG).show();
+        context.runOnUiThread(() -> {
+            onEndAnimation();
+            t.printStackTrace();
+            Toast.makeText(context, "Lỗi kết nối máy chủ. Xin vui lòng thử lại.", Toast.LENGTH_LONG).show();
+        });
     }
 
     protected abstract void processResponse(Response<T> response);

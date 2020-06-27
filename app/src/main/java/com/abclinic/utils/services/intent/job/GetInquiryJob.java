@@ -39,9 +39,10 @@ public class GetInquiryJob extends CustomJobIntentService {
         try {
             ArrayList<Inquiry> results = (ArrayList<Inquiry>) call.execute().body();
             List<DataEntity> latestList = appDatabase.getDataDao().getAllByType(NotificationType.INQUIRY.getValue());
-
-            results.removeAll(latestList);
-            SaveDataJob.enqueueWork(this, results);
+            if (results != null) {
+                results.removeAll(latestList);
+                SaveDataJob.enqueueWork(this, results);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

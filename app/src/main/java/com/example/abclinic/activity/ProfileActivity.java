@@ -40,6 +40,7 @@ import com.example.abclinic.R;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.stfalcon.frescoimageviewer.ImageViewer;
 
 import java.util.Collections;
@@ -110,6 +111,8 @@ public class ProfileActivity extends CustomActivity implements PopupMenu.OnMenuI
                             UserEntity userEntity = appDatabase.getUserDao().getUser(userInfo.getId());
                             userEntity.setLogon(false);
                             appDatabase.getUserDao().addUser(userEntity);
+                            FirebaseMessaging.getInstance()
+                                    .unsubscribeFromTopic(Constant.TOPIC_PREFIX + userInfo.getId());
                         });
 
                         Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);

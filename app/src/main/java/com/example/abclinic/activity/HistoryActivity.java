@@ -286,11 +286,15 @@ public class HistoryActivity extends CustomActivity implements Receiver {
                                     eventDay.getIcons().get(pos[0]).getType(),
                                     date.getDayOfMonth(),
                                     date.getMonthValue(),
-                                    date.getYear());
+                                    date.getYear())
+                                    .stream()
+                                    .sorted(((o1, o2) -> o2.getDate().compareTo(o1.getDate())))
+                                    .collect(Collectors.toList());
                             String[] s = new String[1];
                             if (datas.get(0).getType() == NotificationType.INQUIRY.getValue())
                                 s[0] = "Đã gửi";
                             else s[0] = "Đã nhận";
+
                             for (DataEntity data : datas) {
                                 detailItems.add(String.format("%s lúc %s", s[0], data.getDate().toLocalTime().toString()));
                             }

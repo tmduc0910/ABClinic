@@ -17,9 +17,10 @@
     <string name="radio_spec">Khám bệnh</string>
     <string name="radio_diet">Dinh dưỡng</string>
     <string name="inq_desc">Mô tả (*):</string>
-    <string name="inq_datetime">Thời gian (*):</string>
+    <string name="inq_datetime">Thời gian:</string>
     <string name="confirm_inq_true">Đã gửi yêu cầu thành công!!</string>
-    <string name="confirm_inq_false">Bắt buộc điền các trường màu đỏ!!</string>
+    <string name="confirm_inq_red">Bắt buộc nhập các trường màu đỏ!!</string>
+    <string name="confirm_inq_time">Bắt buộc nhập cả hai trường thời gian!!</string>
     <string name="confirm_ava">Đã đổi ảnh đại diện thành công!!</string>
 
     <!--    Message lỗi-->

@@ -197,7 +197,6 @@ public class Inquiry implements ISaveable {
         this.updatedAt = updatedAt;
     }
 
-
     public Inquiry sort() {
         medicalRecords = this.getMedicalRecords()
                 .stream()

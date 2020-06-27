@@ -81,7 +81,7 @@ public class UpLoadActivity extends CustomActivity implements PopupMenu.OnMenuIt
     private ViewImageAdapter viewImageAdapter;
     private List<RecyclerImageDto> images;
     private String uri;
-    private RecyclerImageDto dto;
+    private RecyclerImageDto dto = new RecyclerImageDto();
     private ResponseAlbumDto album;
 
     @Override
@@ -225,10 +225,12 @@ public class UpLoadActivity extends CustomActivity implements PopupMenu.OnMenuIt
         btnSubmit.setOnClickListener((v) -> {
             try {
                 if (getRadioBtnIndex() < 0 ||
-                        descEdt.getText() == null ||
-                        showDateTxt.getText().toString().equals("") ||
-                        showTimeTxt.getText().toString().equals("")) {
-                    confirmTxt.setText(R.string.confirm_inq_false);
+                        descEdt.getText().toString().equals("")) {
+                    confirmTxt.setText(R.string.confirm_inq_red);
+                    confirmTxt.setVisibility(View.VISIBLE);
+                } else if ((!showDateTxt.getText().toString().equals("") && showTimeTxt.getText().toString().equals("")) ||
+                        (!showTimeTxt.getText().toString().equals("") && showDateTxt.getText().toString().equals(""))) {
+                    confirmTxt.setText(R.string.confirm_inq_time);
                     confirmTxt.setVisibility(View.VISIBLE);
                 } else {
                     String uid = storageService.getUid();
@@ -276,6 +278,7 @@ public class UpLoadActivity extends CustomActivity implements PopupMenu.OnMenuIt
                     radioGroup.getChildAt(i).setEnabled(false);
                 }
                 choosePicBtn.setEnabled(false);
+                deletePicBtn.setEnabled(false);
                 descEdt.setEnabled(false);
                 pickDateBtn.setEnabled(false);
                 showDateTxt.setEnabled(false);
@@ -323,7 +326,6 @@ public class UpLoadActivity extends CustomActivity implements PopupMenu.OnMenuIt
 
         InquiryCacheDto cacheDto = storageService.getInquiryCache();
         updateCache(cacheDto);
-        dto = new RecyclerImageDto();
     }
 
     private void updateCache(InquiryCacheDto cacheDto) {
@@ -375,6 +377,7 @@ public class UpLoadActivity extends CustomActivity implements PopupMenu.OnMenuIt
                     Uri uri = Uri.parse(this.uri);
                     dto.setUri(uri);
                     images.add(dto);
+                    dto = new RecyclerImageDto();
                 }
                 break;
             case 1:
