@@ -7,11 +7,11 @@ public enum Gender {
 
     public static Gender toGender(int i) {
         switch (i) {
-            case 1:
+            case 0:
                 return Gender.MALE;
-            case 2:
+            case 1:
                 return Gender.FEMALE;
-            case 3:
+            case 2:
                 return Gender.OTHER;
             default:
                 return null;
