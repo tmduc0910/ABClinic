@@ -57,7 +57,7 @@ dependencies {
     implementation 'com.facebook.fresco:fresco:2.2.0'
     implementation 'com.github.pedrovgs:draggablepanel:1.9'
     implementation 'me.relex:circleindicator:2.1.4'
-    implementation 'com.github.ImaginativeShohag:Why-Not-Image-Carousel:v1.0.2'
+    implementation 'com.github.ImaginativeShohag:Why-Not-Image-Carousel:v1.1.0'
     implementation 'com.alespero:expandable-cardview:0.8'
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
