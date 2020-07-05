@@ -59,7 +59,6 @@ dependencies {
     implementation 'me.relex:circleindicator:2.1.4'
     implementation 'com.github.ImaginativeShohag:Why-Not-Image-Carousel:v1.0.2'
     implementation 'com.alespero:expandable-cardview:0.8'
-    implementation 'com.github.iamBedant:OutlineTextView:1.0.5'
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     implementation 'com.github.denzcoskun:ImageSlideshow:0.0.6'
@@ -68,11 +67,11 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:2.2.5"
     implementation 'com.github.stfalcon:chatkit:0.3.3'
     implementation 'com.github.forresthopkinsa:stompprotocolandroid:17.11.0'
-    implementation 'com.google.firebase:firebase-core:17.4.2'
-    implementation 'com.google.firebase:firebase-messaging:20.2.0'
+    implementation 'com.google.firebase:firebase-core:17.4.3'
+    implementation 'com.google.firebase:firebase-messaging:20.2.1'
     implementation 'com.applandeo:material-calendar-view:1.7.0'
 
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.0.5'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.0.9'
 
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
 }
