@@ -11,7 +11,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 public class RetrofitClient {
     private static final String LOCAL_URL_1 = "http://192.168.43.129:8109/api/";
     private static final String LOCAL_URL_2 = "http://192.168.1.24:8109/api/";
-    private static final String REMOTE_URL_1 = "https://fathomless-savannah-38522.herokuapp.com/api/";
+//    private static final String REMOTE_URL_1 = "https://fathomless-savannah-38522.herokuapp.com/api/";
     private static final String REMOTE_URL_2 = "https://abclinic-server.herokuapp.com/api/";
 
     private static Retrofit retrofit = null;
