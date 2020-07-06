@@ -10,7 +10,6 @@ import com.abclinic.constant.HttpStatus;
 import com.abclinic.constant.NotificationType;
 import com.abclinic.constant.StorageConstant;
 import com.abclinic.dto.MessageDto;
-import com.abclinic.dto.PushNotificationDto;
 import com.abclinic.dto.RequestCreateReplyDto;
 import com.abclinic.entity.Inquiry;
 import com.abclinic.entity.Reply;
@@ -19,7 +18,6 @@ import com.abclinic.retrofit.api.InquiryMapper;
 import com.abclinic.retrofit.api.ReplyMapper;
 import com.abclinic.utils.services.JsonService;
 import com.abclinic.utils.services.MyFirebaseService;
-import com.abclinic.websocket.observer.IObserver;
 import com.example.abclinic.R;
 import com.example.abclinic.adapter.ReplyListAdapter;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -59,29 +57,26 @@ public class ReplyActivity extends CustomActivity {
         messagesList.setAdapter(replyListAdapter);
 
         if (observer == null) {
-            observer = new IObserver<PushNotificationDto>() {
-                @Override
-                public void process(PushNotificationDto notificationDto) {
-                    if (notificationDto.getType() == NotificationType.REPLY.getValue()) {
-                        Call<Inquiry> inquiryCall = retrofit.create(InquiryMapper.class)
-                                .getInquiry(inquiryId);
-                        inquiryCall.enqueue(new CustomCallback<Inquiry>(ReplyActivity.this) {
-                            @Override
-                            protected void processResponse(Response<Inquiry> response) {
-                                List<Reply> rep = response.body().getReplies();
-                                if (rep.size() != replies.size()) {
-                                    Reply newReply = rep.get(rep.size() - 1);
-                                    replyListAdapter.addToStart(new MessageDto(newReply), true);
-                                    replies.add(newReply);
-                                }
+            observer = notificationDto -> {
+                if (notificationDto.getType() == NotificationType.REPLY.getValue()) {
+                    Call<Inquiry> inquiryCall = retrofit.create(InquiryMapper.class)
+                            .getInquiry(inquiryId);
+                    inquiryCall.enqueue(new CustomCallback<Inquiry>(ReplyActivity.this) {
+                        @Override
+                        protected void processResponse(Response<Inquiry> response) {
+                            List<Reply> rep = response.body().getReplies();
+                            if (rep.size() != replies.size()) {
+                                Reply newReply = rep.get(rep.size() - 1);
+                                replyListAdapter.addToStart(new MessageDto(newReply), true);
+                                replies.add(newReply);
                             }
+                        }
 
-                            @Override
-                            protected boolean useDialog() {
-                                return false;
-                            }
-                        });
-                    }
+                        @Override
+                        protected boolean useDialog() {
+                            return false;
+                        }
+                    });
                 }
             };
             MyFirebaseService.subject.attach(observer);

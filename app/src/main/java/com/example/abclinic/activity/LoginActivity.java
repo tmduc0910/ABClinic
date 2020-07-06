@@ -29,7 +29,10 @@ import com.abclinic.utils.services.MyFirebaseService;
 import com.abclinic.utils.services.PermissionUtils;
 import com.example.abclinic.R;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.io.IOException;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
@@ -160,10 +163,18 @@ public class LoginActivity extends CustomActivity {
                         .execute(userInfo);
                 storageService.saveCache(StorageConstant.KEY_USER, userInfo.toString());
 
-                FirebaseMessaging.getInstance().subscribeToTopic(Constant.TOPIC_PREFIX + userInfo.getId())
-                        .addOnCompleteListener((task) -> {
-                            Log.d(Constant.DEBUG_TAG, "Subscribe to topic users-" + userInfo.getId());
-                        });
+                AsyncTask.execute(() -> {
+                    try {
+                        FirebaseInstanceId.getInstance().deleteInstanceId();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } finally {
+                        FirebaseMessaging.getInstance().subscribeToTopic(Constant.TOPIC_PREFIX + userInfo.getId())
+                                .addOnCompleteListener((task) -> {
+                                    Log.d(Constant.DEBUG_TAG, "Subscribe to topic users-" + userInfo.getId());
+                                });
+                    }
+                });
                 progressDialog.dismissWithAnimation();
 
                 if (contentJson != null) {

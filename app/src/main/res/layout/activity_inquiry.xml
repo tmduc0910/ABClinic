@@ -61,7 +61,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:text="status"
                     android:textColor="@color/colorAccent"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -88,8 +87,7 @@
                     style="@style/MyEditTextStyle1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text="15/4/2019" />
+                    android:layout_weight="2" />
 
             </LinearLayout>
 
@@ -115,8 +113,7 @@
                     style="@style/MyEditTextStyle1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text="15/4/2019" />
+                    android:layout_weight="2" />
 
             </LinearLayout>
 
@@ -142,8 +139,7 @@
                     style="@style/MyEditTextStyle1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Gì đó" />
+                    android:layout_weight="1" />
             </LinearLayout>
 
             <com.denzcoskun.imageslider.ImageSlider
