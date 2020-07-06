@@ -21,7 +21,7 @@ public class SaveDataJob extends CustomJobIntentService {
     public static void enqueueWork(Context context, NotificationListDto notifications) {
         ArrayList<ISaveable> datas = (ArrayList<ISaveable>) notifications.getList().stream()
                 .map(Notification::getData)
-                .sorted((o1, o2) -> o1.getCreatedAt().compareTo(o2.getCreatedAt()))
+                .sorted((o1, o2) -> o2.getCreatedAt().compareTo(o1.getCreatedAt()))
                 .collect(Collectors.toList());
         enqueueWork(context, datas);
     }

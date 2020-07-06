@@ -141,8 +141,8 @@ public class CustomEventDay extends EventDay {
                 default:
                     IconType[] iconTypes = Arrays.stream(values)
                             .mapToObj(IconType::getType)
-                            .collect(Collectors.toSet())
-                            .toArray(new IconType[0]);
+                            .distinct()
+                            .toArray(IconType[]::new);
                     Drawable[] drawables = Arrays.stream(iconTypes)
                             .map(IconType::getResourceId)
                             .distinct()
