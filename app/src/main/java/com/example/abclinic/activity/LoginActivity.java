@@ -182,7 +182,7 @@ public class LoginActivity extends CustomActivity {
                     intent.putExtras(getIntent());
                     startActivity(intent);
                 } else {
-                    startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
+                    startActivity(new Intent(LoginActivity.this, HistoryActivity.class));
                 }
             }
 

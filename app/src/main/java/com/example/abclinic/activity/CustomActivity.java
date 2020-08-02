@@ -61,31 +61,6 @@ public abstract class CustomActivity extends AppCompatActivity {
     }
 
     protected void getInquiries(int month, int year) {
-//        Call<List<Inquiry>> call = retrofit.create(InquiryMapper.class).getInquiryListByMonth(month, year);
-//        call.enqueue(new CustomCallback<List<Inquiry>>(this) {
-//            @Override
-//            protected void processResponse(Response<List<Inquiry>> response) {
-//                AsyncTask.execute(() -> {
-//                    List<DataEntity> latestList = appDatabase.getDataDao().getAllByType(NotificationType.INQUIRY.getValue());
-//                    List<Inquiry> results = response.body();
-//
-//                    results.removeAll(latestList);
-//                    UserInfo userInfo = storageService.getUserInfo();
-//                    appDatabase.getDataDao().save(results.stream()
-//                            .map(r -> new DataEntity(userInfo.getId(),
-//                                    NotificationType.INQUIRY.getValue(),
-//                                    r.getId(),
-//                                    r.getCreatedAt()))
-//                            .toArray(DataEntity[]::new));
-//                });
-//            }
-//
-//            @Override
-//            protected boolean useDialog() {
-//                return false;
-//            }
-//        });
-
         GetInquiryJob.enqueueWork(this, month, year);
     }
 

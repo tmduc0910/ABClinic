@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
         "id",
         "patient",
         "albumId",
+        "chain",
         "replies",
         "medicalRecords",
         "dietRecords",
@@ -52,6 +53,8 @@ public class Inquiry implements ISaveable {
     private long id;
     @JsonProperty("albumId")
     private String albumId;
+    @JsonProperty("chain")
+    private Chain chain;
     @JsonProperty("patient")
     private UserInfo patient;
     @JsonProperty("replies")
@@ -98,6 +101,14 @@ public class Inquiry implements ISaveable {
 
     public void setAlbumId(String albumId) {
         this.albumId = albumId;
+    }
+
+    public Chain getChain() {
+        return chain;
+    }
+
+    public void setChain(Chain chain) {
+        this.chain = chain;
     }
 
     @JsonProperty("patient")

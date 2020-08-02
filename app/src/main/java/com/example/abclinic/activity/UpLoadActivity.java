@@ -83,6 +83,7 @@ public class UpLoadActivity extends CustomActivity implements PopupMenu.OnMenuIt
     private String uri;
     private RecyclerImageDto dto = new RecyclerImageDto();
     private ResponseAlbumDto album;
+    private long chainId;
 
     @Override
     public String getKey() {
@@ -99,6 +100,7 @@ public class UpLoadActivity extends CustomActivity implements PopupMenu.OnMenuIt
             storageService.deleteInquiryCache();
             isFirstRun = false;
         }
+
         descEdt = findViewById(R.id.Description);
         radioGroup = findViewById(R.id.radiogroup);
         specRadio = findViewById(R.id.selectrecord);
@@ -238,6 +240,7 @@ public class UpLoadActivity extends CustomActivity implements PopupMenu.OnMenuIt
                     RequestCreateInquiryDto requestCreateInquiryDto = new RequestCreateInquiryDto(
                             getRadioBtnIndex(),
                             null,
+                            chainId,
                             descEdt.getText().toString(),
                             showDateTxt.getText().toString() + " " + showTimeTxt.getText().toString() + ":00"
                     );
@@ -262,6 +265,17 @@ public class UpLoadActivity extends CustomActivity implements PopupMenu.OnMenuIt
                 e.printStackTrace();
             }
         });
+
+        if (getIntent().getExtras() != null) {
+            chainId = getIntent().getExtras().getLong(Constant.CHAIN_ID, 0);
+            if (chainId != 0) {
+                int type = getIntent().getExtras().getInt(Constant.TYPE);
+                ((RadioButton) radioGroup.getChildAt(type)).setChecked(true);
+                for (int i = 0; i < radioGroup.getChildCount(); i++) {
+                    radioGroup.getChildAt(i).setEnabled(false);
+                }
+            }
+        }
     }
 
     private void createInquiry(RequestCreateInquiryDto requestCreateInquiryDto) {

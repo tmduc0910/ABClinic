@@ -15,6 +15,7 @@ import com.abclinic.constant.Constant;
 import com.abclinic.constant.NotificationType;
 import com.abclinic.dto.NotificationListDto;
 import com.abclinic.dto.PushNotificationDto;
+import com.abclinic.entity.Inquiry;
 import com.abclinic.entity.Notification;
 import com.abclinic.entity.UserInfo;
 import com.abclinic.room.entity.DataEntity;
@@ -26,6 +27,7 @@ import com.abclinic.utils.services.intent.job.Receiver;
 import com.abclinic.utils.services.intent.job.ServiceResultReceiver;
 import com.abclinic.websocket.observer.IObserver;
 import com.applandeo.materialcalendarview.CalendarView;
+import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
 import com.example.abclinic.CustomEventDay;
 import com.example.abclinic.NotificationIntent;
 import com.example.abclinic.R;
@@ -57,6 +59,7 @@ public class HistoryActivity extends CustomActivity implements Receiver {
     private UserInfo userInfo;
     private Map<Integer, CustomEventDay.Builder> events = new TreeMap<>();
     private ServiceResultReceiver resultReceiver;
+    private ArrayList<Inquiry> inquiries;
 
     @Override
     public String getKey() {
@@ -70,10 +73,6 @@ public class HistoryActivity extends CustomActivity implements Receiver {
         calendarView = findViewById(R.id.calendarView);
         resultSubmit = findViewById(R.id.resultSubmit);
         userInfo = storageService.getUserInfo();
-
-        month = LocalDateTime.now().getMonthValue();
-        year = LocalDateTime.now().getYear();
-        requireData();
 
         //bottomnavigationbar
         bottomNav = findViewById(R.id.navigation);
@@ -123,17 +122,39 @@ public class HistoryActivity extends CustomActivity implements Receiver {
     @Override
     protected void onResume() {
         super.onResume();
+        inquiries = null;
+        if (getIntent().getExtras() != null) {
+            inquiries = getIntent().getExtras().getParcelableArrayList(Constant.INQUIRIES);
+            if (inquiries != null) {
+                LocalDateTime date = (LocalDateTime) getIntent().getExtras().getSerializable(Constant.DATE);
+                month = date.getMonthValue();
+                year = date.getYear();
+                try {
+                    map = new HashMap<>();
+                    calendarView.setDate(DateTimeUtils.toDate(date));
+                } catch (OutOfDateRangeException e) {
+                    e.printStackTrace();
+                }
+                updateCalendar(inquiries, month, year);
+            }
+        } else {
+            month = LocalDateTime.now().getMonthValue();
+            year = LocalDateTime.now().getYear();
+            requireData();
 
-        if (hasNewNoti)
-            bottomNav.getOrCreateBadge(R.id.notifi).setVisible(true);
-        updateCalendar(month, year);
+            if (hasNewNoti)
+                bottomNav.getOrCreateBadge(R.id.notifi).setVisible(true);
+            updateCalendar(month, year);
+        }
 
         calendarView.setOnForwardPageChangeListener(() -> {
             if (month == 12) {
                 month = 1;
                 year++;
             } else month++;
-            updateCalendar(month, year);
+            if (inquiries != null)
+                updateCalendar(inquiries, month, year);
+            else updateCalendar(month, year);
         });
 
         calendarView.setOnPreviousPageChangeListener(() -> {
@@ -141,7 +162,9 @@ public class HistoryActivity extends CustomActivity implements Receiver {
                 month = 12;
                 year--;
             } else month--;
-            updateCalendar(month, year);
+            if (inquiries != null)
+                updateCalendar(inquiries, month, year);
+            else updateCalendar(month, year);
         });
 
         calendarView.setOnDayClickListener(eventDay -> {
@@ -165,55 +188,49 @@ public class HistoryActivity extends CustomActivity implements Receiver {
         return String.format("%s%s", month, year);
     }
 
-    private void updateCalendar(int month, int year) {
+    private void updateCalendar(List<Inquiry> data, int month, int year) {
         getInquiries(month, year);
         if (map.get(getKey(month, year)) == null) {
             requireData();
-            appDatabase.getDataDao().getDatas(userInfo.getId(), month, year)
-                    .observe(this, list -> {
-                        map.put(getKey(month, year), list);
-                        for (DataEntity v : Objects.requireNonNull(map.get(getKey(month, year)))) {
-                            NotificationType type = NotificationType.getType(v.getType());
-                            CustomEventDay.IconType iconType = null;
-                            switch (type) {
-                                case INQUIRY:
-                                    iconType = CustomEventDay.IconType.INQUIRY;
-                                    break;
-                                case MED_ADVICE:
-                                    iconType = CustomEventDay.IconType.MED_RECORD;
-                                    break;
-                                case DIET_ADVICE:
-                                    iconType = CustomEventDay.IconType.DIET_RECORD;
-                                    break;
-                                case REPLY:
-                                    iconType = CustomEventDay.IconType.REPLY;
-                                    break;
-                            }
-                            putIcon(iconType, DateTimeUtils.toCalendar(v.getDate()));
-                        }
-                        calendarView.setEvents(events.values()
-                                .stream()
-                                .map(CustomEventDay.Builder::build)
-                                .collect(Collectors.toList()));
-                    });
+            if (data == null) {
+                appDatabase.getDataDao().getDatas(userInfo.getId(), month, year)
+                        .observe(this, list -> {
+                            map.put(getKey(month, year), list);
+                            updateEventDays(map.get(getKey(month, year)));
+                        });
 
-            appDatabase.getScheduleDao().getAvailableSchedules(userInfo.getId())
-                    .observe(this, list -> {
-                        for (ScheduleEntity s : list) {
-                            if (s.getEndedAt().isAfter(LocalDateTime.now()))
-                                putIcon(CustomEventDay.IconType.SCHEDULE, DateTimeUtils.toCalendar(s.getEndedAt()));
-                        }
-                        calendarView.setEvents(events.values()
-                                .stream()
-                                .map(CustomEventDay.Builder::build)
-                                .collect(Collectors.toList()));
-                    });
+                appDatabase.getScheduleDao().getAvailableSchedules(userInfo.getId())
+                        .observe(this, list -> {
+                            for (ScheduleEntity s : list) {
+                                if (s.getEndedAt().isAfter(LocalDateTime.now()))
+                                    putIcon(CustomEventDay.IconType.SCHEDULE, DateTimeUtils.toCalendar(s.getEndedAt()));
+                            }
+                            calendarView.setEvents(events.values()
+                                    .stream()
+                                    .map(CustomEventDay.Builder::build)
+                                    .collect(Collectors.toList()));
+                        });
+            } else {
+                for (Inquiry i : data) {
+                    LocalDateTime date = i.getCreatedAt();
+                    String key = getKey(date.getMonthValue(), date.getYear());
+
+                    if (map.get(key) == null)
+                        map.put(key, new ArrayList<>());
+                    map.get(key).add(new DataEntity(userInfo.getId(), NotificationType.INQUIRY.getValue(), i.getId(), i.getCreatedAt()));
+                    updateEventDays(map.get(key));
+                }
+            }
         } else {
             calendarView.setEvents(events.values()
                     .stream()
                     .map(CustomEventDay.Builder::build)
                     .collect(Collectors.toList()));
         }
+    }
+
+    private void updateCalendar(int month, int year) {
+        updateCalendar(null, month, year);
     }
 
     private void putIcon(CustomEventDay.IconType iconType, Calendar c) {
@@ -246,6 +263,32 @@ public class HistoryActivity extends CustomActivity implements Receiver {
                         requireData();
                     }
                 });
+    }
+
+    private void updateEventDays(List<DataEntity> list) {
+        for (DataEntity v : Objects.requireNonNull(list)) {
+            NotificationType type = NotificationType.getType(v.getType());
+            CustomEventDay.IconType iconType = null;
+            switch (type) {
+                case INQUIRY:
+                    iconType = CustomEventDay.IconType.INQUIRY;
+                    break;
+                case MED_ADVICE:
+                    iconType = CustomEventDay.IconType.MED_RECORD;
+                    break;
+                case DIET_ADVICE:
+                    iconType = CustomEventDay.IconType.DIET_RECORD;
+                    break;
+                case REPLY:
+                    iconType = CustomEventDay.IconType.REPLY;
+                    break;
+            }
+            putIcon(iconType, DateTimeUtils.toCalendar(v.getDate()));
+        }
+        calendarView.setEvents(events.values()
+                .stream()
+                .map(CustomEventDay.Builder::build)
+                .collect(Collectors.toList()));
     }
 
     private void makeHistoryDialog(CustomEventDay eventDay) {
@@ -282,12 +325,17 @@ public class HistoryActivity extends CustomActivity implements Receiver {
                                             .collect(Collectors.toList()));
 
                         } else {
-                            List<DataEntity> datas = appDatabase.getDataDao().getDatas(userInfo.getId(),
-                                    eventDay.getIcons().get(pos[0]).getType(),
-                                    date.getDayOfMonth(),
-                                    date.getMonthValue(),
-                                    date.getYear())
+//                            List<DataEntity> datas = appDatabase.getDataDao().getDatas(userInfo.getId(),
+//                                    eventDay.getIcons().get(pos[0]).getType(),
+//                                    date.getDayOfMonth(),
+//                                    date.getMonthValue(),
+//                                    date.getYear())
+//                                    .stream()
+//                                    .sorted(((o1, o2) -> o2.getDate().compareTo(o1.getDate())))
+//                                    .collect(Collectors.toList());
+                            List<DataEntity> datas = map.get(getKey(month, year))
                                     .stream()
+                                    .filter(data -> data.getType() == eventDay.getIcons().get(pos[0]).getType())
                                     .sorted(((o1, o2) -> o2.getDate().compareTo(o1.getDate())))
                                     .collect(Collectors.toList());
                             String[] s = new String[1];

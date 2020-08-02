@@ -3,7 +3,6 @@ package com.example.abclinic.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,7 +21,6 @@ import com.abclinic.constant.PayloadStatus;
 import com.abclinic.constant.StorageConstant;
 import com.abclinic.entity.Inquiry;
 import com.abclinic.entity.Record;
-import com.abclinic.entity.Reply;
 import com.abclinic.retrofit.api.ImageMapper;
 import com.abclinic.retrofit.api.InquiryMapper;
 import com.abclinic.retrofit.api.RecordMapper;
@@ -32,10 +30,11 @@ import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.abclinic.R;
 import com.example.abclinic.adapter.ViewRecordAdapter;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.stfalcon.frescoimageviewer.ImageViewer;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,14 +47,15 @@ public class InquiryActivity extends CustomActivity {
     ImageSlider imageSlider;
     RecyclerView recyclerView;
     ViewRecordAdapter viewRecordAdapter;
-    FloatingActionButton actionButton;
+    FloatingActionMenu fabMenu;
+    FloatingActionButton fabPrev, fabNext, fabChain, fabCreate, fabChat;
+//    FloatingActionButton actionButton;
 
     private LinearLayoutManager linearLayoutManager;
     private int type;
     private long id;
     private Inquiry inquiry;
     private Record record;
-    private Reply reply;
     private List<String> images;
 
     @Override
@@ -75,7 +75,13 @@ public class InquiryActivity extends CustomActivity {
         descTxt = findViewById(R.id.descriptxt);
         imageSlider = findViewById(R.id.carousel);
         recyclerView = findViewById(R.id.recycler_record);
-        actionButton = findViewById(R.id.float_btn);
+        fabMenu = findViewById(R.id.floating_menu);
+        fabPrev = findViewById(R.id.fab_prev);
+        fabNext = findViewById(R.id.fab_next);
+        fabChain = findViewById(R.id.fab_chain);
+        fabCreate = findViewById(R.id.fab_add);
+        fabChat = findViewById(R.id.fab_chat);
+//        actionButton = findViewById(R.id.float_btn);
 
         linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false) {
         };
@@ -89,49 +95,47 @@ public class InquiryActivity extends CustomActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        actionButton.setOnClickListener((v) -> {
-            Snackbar.make(scrollView, "Here's a Snackbar", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
-        });
-        actionButton.setOnTouchListener(new View.OnTouchListener() {
+//        actionButton.setOnTouchListener(new View.OnTouchListener() {
+//
+//            float startX;
+//            float startRawX;
+//            float distanceX;
+//            int lastAction;
+//
+//            @Override
+//            public boolean onTouch(View view, MotionEvent event) {
+//                switch (event.getActionMasked()) {
+//                    case MotionEvent.ACTION_DOWN:
+//                        startX = view.getX() - event.getRawX();
+//                        startRawX = event.getRawX();
+//                        lastAction = MotionEvent.ACTION_DOWN;
+//                        break;
+//
+//                    case MotionEvent.ACTION_MOVE:
+//                        view.setX(event.getRawX() + startX);
+//                        view.setY(event.getRawY() + startX);
+//
+//                        lastAction = MotionEvent.ACTION_MOVE;
+//                        break;
+//
+//                    case MotionEvent.ACTION_UP:
+//                        distanceX = event.getRawX() - startRawX;
+//                        if (Math.abs(distanceX) < 10) {
+////                            Toast.makeText(InquiryActivity.this, "FAB CLICKED", Toast.LENGTH_SHORT).show();
+//                            startActivity(makeReplyIntent());
+//                        }
+//
+//                        break;
+//                    case MotionEvent.ACTION_BUTTON_PRESS:
+//                        startActivity(makeReplyIntent());
+//                    default:
+//                        return false;
+//                }
+//                return true;
+//            }
+//        });
 
-            float startX;
-            float startRawX;
-            float distanceX;
-            int lastAction;
-
-            @Override
-            public boolean onTouch(View view, MotionEvent event) {
-                switch (event.getActionMasked()) {
-                    case MotionEvent.ACTION_DOWN:
-                        startX = view.getX() - event.getRawX();
-                        startRawX = event.getRawX();
-                        lastAction = MotionEvent.ACTION_DOWN;
-                        break;
-
-                    case MotionEvent.ACTION_MOVE:
-                        view.setX(event.getRawX() + startX);
-                        view.setY(event.getRawY() + startX);
-
-                        lastAction = MotionEvent.ACTION_MOVE;
-                        break;
-
-                    case MotionEvent.ACTION_UP:
-                        distanceX = event.getRawX() - startRawX;
-                        if (Math.abs(distanceX) < 10) {
-//                            Toast.makeText(InquiryActivity.this, "FAB CLICKED", Toast.LENGTH_SHORT).show();
-                            startActivity(makeReplyIntent());
-                        }
-
-                        break;
-                    case MotionEvent.ACTION_BUTTON_PRESS:
-                        startActivity(makeReplyIntent());
-                    default:
-                        return false;
-                }
-                return true;
-            }
-        });
+        fabMenu.setClosedOnTouchOutside(true);
         handleResponse(NotificationType.getType(type), id);
     }
 
@@ -180,6 +184,7 @@ public class InquiryActivity extends CustomActivity {
                 } catch (Throwable t) {
                     Toast.makeText(InquiryActivity.this, "Trạng thái không hợp lệ", Toast.LENGTH_LONG).show();
                 }
+                initFab();
                 createdTimeTxt.setText(DateTimeUtils.toString(inquiry.getCreatedAt()));
                 dateTxt.setText(DateTimeUtils.toString(inquiry.getDate()));
                 descTxt.setText(inquiry.getContent());
@@ -240,6 +245,53 @@ public class InquiryActivity extends CustomActivity {
         List<SlideModel> models = images.stream().map(SlideModel::new).collect(Collectors.toList());
         imageSlider.setImageList(models, true);
         imageSlider.setItemClickListener(this::showImageFull);
+    }
+
+    private void initFab() {
+        if (inquiry.getChain() == null) {
+            fabNext.setEnabled(false);
+            fabPrev.setEnabled(false);
+            fabChain.setEnabled(false);
+            fabCreate.setEnabled(false);
+        } else {
+            if (inquiry.getChain().getNextInquiry() == null)
+                fabNext.setEnabled(false);
+            if (inquiry.getChain().getPrevInquiry() == null)
+                fabPrev.setEnabled(false);
+        }
+
+        fabChat.setOnClickListener(v -> startActivity(makeReplyIntent()));
+        fabNext.setOnClickListener(v -> {
+            Intent intent = new Intent(InquiryActivity.this, getClass());
+            intent.putExtra(Constant.TYPE, inquiry.getType());
+            intent.putExtra(Constant.PAYLOAD_ID, inquiry.getChain().getNextInquiry().getId());
+            startActivity(intent);
+        });
+        fabPrev.setOnClickListener(v -> {
+            Intent intent = new Intent(InquiryActivity.this, getClass());
+            intent.putExtra(Constant.TYPE, inquiry.getType());
+            intent.putExtra(Constant.PAYLOAD_ID, inquiry.getChain().getPrevInquiry().getId());
+            startActivity(intent);
+        });
+        fabCreate.setOnClickListener(v -> {
+            Intent intent = new Intent(InquiryActivity.this, UpLoadActivity.class);
+            intent.putExtra(Constant.CHAIN_ID, inquiry.getChain().getChainId());
+            intent.putExtra(Constant.TYPE, inquiry.getType());
+            startActivity(intent);
+        });
+        fabChain.setOnClickListener(v -> {
+            Call<List<Inquiry>> call = retrofit.create(InquiryMapper.class)
+                    .getInquiryListByChain(inquiry.getChain().getChainId());
+            call.enqueue(new CustomCallback<List<Inquiry>>(this) {
+                @Override
+                protected void processResponse(Response<List<Inquiry>> response) {
+                    Intent intent = new Intent(InquiryActivity.this, HistoryActivity.class);
+                    intent.putParcelableArrayListExtra(Constant.INQUIRIES, (ArrayList<Inquiry>) response.body());
+                    intent.putExtra(Constant.DATE, inquiry.getCreatedAt());
+                    startActivity(intent);
+                }
+            });
+        });
     }
 
     private void focusOn(int pos) {

@@ -18,6 +18,9 @@ public class Constant {
     public static final String REPLIES = "replies";
     public static final String INQUIRY_ID = "inquiryId";
     public static final String IS_LOGOUT = "isLogout";
+    public static final String CHAIN_ID = "chainId";
+    public static final String INQUIRIES = "inquiries";
+    public static final String DATE = "date";
 }
 
 

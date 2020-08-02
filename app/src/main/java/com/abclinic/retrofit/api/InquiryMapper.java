@@ -27,4 +27,7 @@ public interface InquiryMapper {
 
     @GET("inquiries/{id}")
     Call<Inquiry> getInquiry(@Path("id") long id);
+
+    @GET("inquiries/chain/{id}")
+    Call<List<Inquiry>> getInquiryListByChain(@Path("id") long chainId);
 }
